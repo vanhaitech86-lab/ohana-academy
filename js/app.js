@@ -69,9 +69,13 @@ function buildCourseCard(course, currentUser) {
   return `
     <div class="course-card fade-in-up" onclick="window.location='course-detail.html?id=${course.id}'">
       <div class="course-thumb">
-        <div style="width:100%;height:100%;background:linear-gradient(135deg, ${catColor}, #0f172a);display:flex;align-items:center;justify-content:center;font-size:56px;color:white;">
-          ${catIcon}
-        </div>
+        ${course.thumbnail ? `
+          <img src="${course.thumbnail}" alt="${course.title}" style="width:100%;height:100%;object-fit:cover;">
+        ` : `
+          <div style="width:100%;height:100%;background:linear-gradient(135deg, ${catColor}, #0f172a);display:flex;align-items:center;justify-content:center;font-size:56px;color:white;">
+            ${catIcon}
+          </div>
+        `}
         <div class="course-thumb-overlay"></div>
         <div class="course-play-btn">▶</div>
         <span class="course-level-badge" style="background:${levelColor};color:white;">${course.level}</span>
@@ -168,6 +172,9 @@ function loadHomepage() {
   // Render course cards
   renderCourseGrid(allCourses, user);
 
+  // Render Official YouTube Videos Showcase
+  renderYtVideos();
+
   // Live Stats Counter
   const totalCourses = CourseDB.getAll().length;
   const totalUsers = UserDB.getAll().length;
@@ -180,6 +187,33 @@ function loadHomepage() {
   if (statC) statC.textContent = totalCourses;
   if (statU) statU.textContent = totalUsers;
   if (statR) statR.textContent = totalResults;
+}
+
+// ─── Render Official YouTube Videos ────────────────────────────
+function renderYtVideos() {
+  const container = document.getElementById('ytVideosGrid');
+  if (!container || !window.OFFICIAL_YOUTUBE_VIDEOS) return;
+
+  container.innerHTML = window.OFFICIAL_YOUTUBE_VIDEOS.map(v => `
+    <div class="yt-video-card fade-in-up" onclick="window.location='lesson.html?course=${v.courseId}&lesson=${v.lessonId}'">
+      <div class="yt-video-thumb-wrap">
+        <img src="${v.thumbnail}" alt="${v.title}" class="yt-video-thumb" loading="lazy">
+        <div class="yt-video-overlay">
+          <div class="yt-play-icon">▶</div>
+        </div>
+        <span class="yt-video-duration">${v.duration}</span>
+        <span class="yt-video-badge">Ohana SOP</span>
+      </div>
+      <div class="yt-video-info">
+        <div class="yt-video-category">${v.category}</div>
+        <div class="yt-video-title" title="${v.title}">${v.title}</div>
+        <div class="yt-video-footer">
+          <span class="yt-channel-tag">📺 Ohana Astronixa VN</span>
+          <span class="yt-watch-cta">Xem bài học →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 // ─── Load Courses Catalog Page ─────────────────────────────────

@@ -14,7 +14,7 @@ const DB_KEYS = {
   session:     'ohana_session',
   settings:    'ohana_settings',
 };
-const DB_VERSION = '1.0';
+const DB_VERSION = '2.1';
 
 // ─── Default Users ─────────────────────────────────────────────
 const DEFAULT_USERS = [
@@ -221,25 +221,25 @@ const DEFAULT_COURSES = [
     tags: ['Giao tiếp', 'Lắng nghe chủ động', 'Thuyết trình', 'Thương lượng', 'EQ']
   },
 
-  // ── Khóa 6: Quy trình Ohana ──
+  // ── Khóa 6: Quy trình Ohana Astronixa ──
   {
     id: 6,
-    title: 'Quy Trình Chuẩn Vận Hành & Văn Hóa Doanh Nghiệp Ohana',
-    description: 'Chương trình onboarding bắt buộc cho mọi thành viên Ohana: triết lý gia đình Ohana, tiêu chuẩn dịch vụ khách hàng 5 sao, quy trình phối hợp liên phòng ban và các quy định hành chính nội bộ.',
+    title: 'Quy Trình Chuẩn Vận Hành & Văn Hóa Doanh Nghiệp Ohana Astronixa',
+    description: 'Chương trình đào tạo video chính thức từ Kênh Ohana Astronixa VN: Triết lý văn hóa đại gia đình Ohana và trọn bộ video hướng dẫn thao tác đăng ký, KYC, nạp tiền ví, mua gói sản phẩm, rút tiền an toàn.',
     categoryId: 6,
-    instructor: 'Hội đồng Quản trị & Ban Văn hóa Ohana Group',
-    thumbnail: '',
-    duration: '4 giờ',
-    totalLessons: 4,
+    instructor: 'Ban Đào Tạo & Truyền Thông Ohana Astronixa VN',
+    thumbnail: 'https://i.ytimg.com/vi/G2KI_UpLvj4/hqdefault.jpg',
+    duration: '22 phút',
+    totalLessons: 7,
     level: 'Cơ bản',
     allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
-    lessonIds: [21, 22, 23, 24],
+    lessonIds: [21, 22, 23, 24, 25, 26, 27],
     quizId: 6,
     rating: 5.0,
-    enrollCount: 420,
+    enrollCount: 528,
     status: 'active',
     createdAt: '2026-01-05',
-    tags: ['Quy trình Ohana', 'Văn hóa Ohana', 'SOP', 'Onboarding', 'Dịch vụ 5 sao']
+    tags: ['Quy trình Ohana', 'Astronixa', 'Văn hóa Ohana', 'SOP', 'Onboarding', 'Hướng dẫn Astronixa']
   }
 ];
 
@@ -532,25 +532,25 @@ const DEFAULT_LESSONS = [
     interactiveQs: []
   },
 
-  // ── Khóa 6: Quy trình Ohana ──
+  // ── Khóa 6: Quy trình Ohana Astronixa ──
   {
     id: 21, courseId: 6, order: 1,
-    title: 'Bài 1: Giá trị Cốt lõi & Văn hóa Gia đình Ohana',
-    description: 'Khám phá ý nghĩa "Ohana nghĩa là Gia đình - Không ai bị bỏ lại phía sau": Sứ mệnh, tầm nhìn, 5 giá trị cốt lõi và niềm tự hào Ohana.',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    duration: '35 phút',
-    docName: 'So-tay-Van-hoa-Ohana.pdf',
+    title: 'Bài 1: Ohana Astronixa - Chung Vũ Trụ! Chung Mái Nhà!',
+    description: 'Video văn hóa chính thức: Khám phá tầm nhìn, sứ mệnh và thông điệp lan tỏa tinh thần gắn kết đại gia đình Ohana Astronixa - Chung một mái nhà, cùng nhau phát triển.',
+    videoUrl: 'https://www.youtube.com/embed/G2KI_UpLvj4',
+    duration: '4:55',
+    docName: 'So-tay-Van-hoa-Ohana-Astronixa.pdf',
     docUrl: '',
     type: 'video',
     interactiveQs: [
       {
-        id: 601, timestamp: 40,
-        text: 'Ý nghĩa thiêng liêng nhất của thông điệp "Ohana" là gì?',
+        id: 601, timestamp: 45,
+        text: 'Ý nghĩa triết lý cốt lõi của thông điệp "Ohana Astronixa" là gì?',
         options: [
-          'Chỉ là tên một thương hiệu',
-          'Gia đình – Gắn kết, yêu thương và không ai bị bỏ lại phía sau',
+          'Kinh doanh đơn độc',
+          'Chung Vũ Trụ! Chung Mái Nhà! Yêu thương, gắn kết và không ai bị bỏ lại phía sau',
           'Một câu chào thông thường',
-          'Một kỹ thuật kinh doanh'
+          'Một thuật ngữ kỹ thuật'
         ],
         correct: 1
       }
@@ -558,33 +558,66 @@ const DEFAULT_LESSONS = [
   },
   {
     id: 22, courseId: 6, order: 2,
-    title: 'Bài 2: Quy trình Phối hợp Liên phòng ban & Chuẩn mực Tác phong',
-    description: 'Nguyên tắc làm việc nhóm, giao việc và nghiệm thu (SLA), quy tắc ứng xử nơi công sở và văn hóa phản hồi tích cực (Feedback Culture).',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    duration: '40 phút',
-    docName: 'Quy-che-Phoi-hop-Noi-bo-Ohana.pdf',
+    title: 'Bài 2: OHANA THEME SONG (VN VERSION): Ohana! Một vũ trụ! Một gia đình!',
+    description: 'Ca khúc truyền thống chính thức của Ohana Astronixa phiên bản Tiếng Việt: Giai điệu hào hùng, tràn đầy năng lượng và tình yêu thương của cộng đồng Ohana.',
+    videoUrl: 'https://www.youtube.com/embed/mNPxj-qGiUU',
+    duration: '7:32',
+    docName: 'Loi-bai-hat-Ohana-Theme-Song.pdf',
     docUrl: '',
     type: 'video',
     interactiveQs: []
   },
   {
     id: 23, courseId: 6, order: 3,
-    title: 'Bài 3: Tiêu chuẩn Dịch vụ Khách hàng 5 Sao Ohana',
-    description: 'Quy chuẩn chào đón, hỗ trợ tận tâm, đồng hành cùng khách hàng từ trước, trong và sau dịch vụ để tạo ra trải nghiệm "Wow Service".',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    duration: '45 phút',
-    docName: 'Tieu-chuan-Dich-vu-5-Sao-Ohana.pdf',
+    title: 'Bài 3: HƯỚNG DẪN ĐĂNG KÝ TÀI KHOẢN ASTRONIXA',
+    description: 'Video hướng dẫn thao tác từng bước đăng ký tài khoản thành viên trên hệ thống Astronixa nhanh chóng, bảo mật và chính xác tuyệt đối.',
+    videoUrl: 'https://www.youtube.com/embed/k7eo_NnI7uI',
+    duration: '1:16',
+    docName: 'Quy-trinh-Dang-ky-Tai-khoan-Astronixa.pdf',
     docUrl: '',
     type: 'video',
     interactiveQs: []
   },
   {
     id: 24, courseId: 6, order: 4,
-    title: 'Bài 4: Quy trình Xử lý Sự cố & Chính sách Bảo mật Thông tin',
-    description: 'Các bước xử lý tình huống khẩn cấp, bảo mật dữ liệu khách hàng theo quy định pháp luật và kênh hỗ trợ nội bộ nhanh chóng.',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    duration: '35 phút',
-    docName: 'Chinh-sach-Bao-mat-va-Ung-pho-Su-co.pdf',
+    title: 'Bài 4: HƯỚNG DẪN KYC TÀI KHOẢN ASTRONIXA',
+    description: 'Hướng dẫn quy trình xác minh danh tính (KYC) trên nền tảng Astronixa để bảo đảm an toàn tài sản, bảo mật tài khoản và quyền lợi của thành viên.',
+    videoUrl: 'https://www.youtube.com/embed/3Gr7Zo8cK8Q',
+    duration: '2:03',
+    docName: 'Huong-dan-KYC-Astronixa-Chuan.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 25, courseId: 6, order: 5,
+    title: 'Bài 5: HƯỚNG DẪN NẠP TIỀN VÀO VÍ ASTRONIXA',
+    description: 'Các bước nạp tiền vào ví Astronixa chi tiết, thao tác đúng quy chuẩn để số dư được ghi nhận nhanh chóng và an toàn.',
+    videoUrl: 'https://www.youtube.com/embed/8Oljb4DCwlo',
+    duration: '1:22',
+    docName: 'Quy-trinh-Nap-Tien-Vi-Astronixa.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 26, courseId: 6, order: 6,
+    title: 'Bài 6: HƯỚNG DẪN MUA GÓI SẢN PHẨM TRÊN ASTRONIXA',
+    description: 'Hướng dẫn lựa chọn gói sản phẩm, thao tác thanh toán kích hoạt gói thành viên và kiểm tra quyền lợi trên hệ sinh thái Astronixa.',
+    videoUrl: 'https://www.youtube.com/embed/sPvb7_qvIWs',
+    duration: '1:39',
+    docName: 'Huong-dan-Kich-hoat-Goi-San-pham.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 27, courseId: 6, order: 7,
+    title: 'Bài 7: HƯỚNG DẪN RÚT TIỀN VỀ VÍ ASTRONIXA',
+    description: 'Quy trình tạo lệnh rút tiền từ tài khoản Astronixa về ví cá nhân an toàn, kiểm tra địa chỉ ví và xác thực giao dịch thành công.',
+    videoUrl: 'https://www.youtube.com/embed/l9vAc7C8Zz4',
+    duration: '2:32',
+    docName: 'Quy-trinh-Rut-Tien-An-Toan-Astronixa.pdf',
     docUrl: '',
     type: 'video',
     interactiveQs: []
@@ -886,6 +919,87 @@ const DEFAULT_QUIZZES = [
   }
 ];
 
+// ─── Official YouTube Videos (Ohana Astronixa VN) ──────────────
+const OFFICIAL_YOUTUBE_VIDEOS = [
+  {
+    id: 'G2KI_UpLvj4',
+    title: 'Ohana Astronixa - Chung Vũ Trụ! Chung Mái Nhà!',
+    duration: '4:55',
+    category: 'Văn hóa & Tầm nhìn',
+    embedUrl: 'https://www.youtube.com/embed/G2KI_UpLvj4',
+    watchUrl: 'https://www.youtube.com/watch?v=G2KI_UpLvj4',
+    thumbnail: 'https://i.ytimg.com/vi/G2KI_UpLvj4/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 21
+  },
+  {
+    id: 'mNPxj-qGiUU',
+    title: 'OHANA THEME SONG (VN VERSION): Ohana! Một vũ trụ! Một gia đình!',
+    duration: '7:32',
+    category: 'Văn hóa & Ca khúc truyền thống',
+    embedUrl: 'https://www.youtube.com/embed/mNPxj-qGiUU',
+    watchUrl: 'https://www.youtube.com/watch?v=mNPxj-qGiUU',
+    thumbnail: 'https://i.ytimg.com/vi/mNPxj-qGiUU/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 22
+  },
+  {
+    id: 'k7eo_NnI7uI',
+    title: 'HƯỚNG DẪN ĐĂNG KÝ TÀI KHOẢN ASTRONIXA',
+    duration: '1:16',
+    category: 'Quy trình thao tác Astronixa',
+    embedUrl: 'https://www.youtube.com/embed/k7eo_NnI7uI',
+    watchUrl: 'https://www.youtube.com/watch?v=k7eo_NnI7uI',
+    thumbnail: 'https://i.ytimg.com/vi/k7eo_NnI7uI/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 23
+  },
+  {
+    id: '3Gr7Zo8cK8Q',
+    title: 'HƯỚNG DẪN KYC TÀI KHOẢN ASTRONIXA',
+    duration: '2:03',
+    category: 'Định danh tài khoản & Bảo mật',
+    embedUrl: 'https://www.youtube.com/embed/3Gr7Zo8cK8Q',
+    watchUrl: 'https://www.youtube.com/watch?v=3Gr7Zo8cK8Q',
+    thumbnail: 'https://i.ytimg.com/vi/3Gr7Zo8cK8Q/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 24
+  },
+  {
+    id: '8Oljb4DCwlo',
+    title: 'HƯỚNG DẪN NẠP TIỀN VÀO VÍ ASTRONIXA',
+    duration: '1:22',
+    category: 'Quy trình thao tác Astronixa',
+    embedUrl: 'https://www.youtube.com/embed/8Oljb4DCwlo',
+    watchUrl: 'https://www.youtube.com/watch?v=8Oljb4DCwlo',
+    thumbnail: 'https://i.ytimg.com/vi/8Oljb4DCwlo/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 25
+  },
+  {
+    id: 'sPvb7_qvIWs',
+    title: 'HƯỚNG DẪN MUA GÓI SẢN PHẨM TRÊN ASTRONIXA',
+    duration: '1:39',
+    category: 'Quy trình thao tác Astronixa',
+    embedUrl: 'https://www.youtube.com/embed/sPvb7_qvIWs',
+    watchUrl: 'https://www.youtube.com/watch?v=sPvb7_qvIWs',
+    thumbnail: 'https://i.ytimg.com/vi/sPvb7_qvIWs/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 26
+  },
+  {
+    id: 'l9vAc7C8Zz4',
+    title: 'HƯỚNG DẪN RÚT TIỀN VỀ VÍ ASTRONIXA',
+    duration: '2:32',
+    category: 'Quy trình thao tác Astronixa',
+    embedUrl: 'https://www.youtube.com/embed/l9vAc7C8Zz4',
+    watchUrl: 'https://www.youtube.com/watch?v=l9vAc7C8Zz4',
+    thumbnail: 'https://i.ytimg.com/vi/l9vAc7C8Zz4/hqdefault.jpg',
+    courseId: 6,
+    lessonId: 27
+  }
+];
+
 // ─── Storage Helpers ──────────────────────────────────────────
 function getDB(key) {
   try {
@@ -909,16 +1023,23 @@ function setDB(key, data) {
 function initDB() {
   const storedVer = localStorage.getItem('ohana_db_version');
 
-  // Khởi tạo các bảng dữ liệu nếu chưa có
+  // Khởi tạo các bảng dữ liệu nếu chưa có hoặc khi cập nhật phiên bản DB
   if (!localStorage.getItem(DB_KEYS.users))       setDB(DB_KEYS.users, DEFAULT_USERS);
   if (!localStorage.getItem(DB_KEYS.categories))  setDB(DB_KEYS.categories, DEFAULT_CATEGORIES);
-  if (!localStorage.getItem(DB_KEYS.courses))     setDB(DB_KEYS.courses, DEFAULT_COURSES);
-  if (!localStorage.getItem(DB_KEYS.lessons))     setDB(DB_KEYS.lessons, DEFAULT_LESSONS);
-  if (!localStorage.getItem(DB_KEYS.quizzes))     setDB(DB_KEYS.quizzes, DEFAULT_QUIZZES);
+  if (!localStorage.getItem(DB_KEYS.courses) || storedVer !== DB_VERSION) {
+    setDB(DB_KEYS.courses, DEFAULT_COURSES);
+  }
+  if (!localStorage.getItem(DB_KEYS.lessons) || storedVer !== DB_VERSION) {
+    setDB(DB_KEYS.lessons, DEFAULT_LESSONS);
+  }
+  if (!localStorage.getItem(DB_KEYS.quizzes) || storedVer !== DB_VERSION) {
+    setDB(DB_KEYS.quizzes, DEFAULT_QUIZZES);
+  }
   if (!localStorage.getItem(DB_KEYS.results))     setDB(DB_KEYS.results, []);
   if (!localStorage.getItem(DB_KEYS.enrollments)) setDB(DB_KEYS.enrollments, []);
   if (!localStorage.getItem(DB_KEYS.progress))    setDB(DB_KEYS.progress, []);
-  if (!localStorage.getItem(DB_KEYS.settings)) {
+  if (!localStorage.getItem(DB_KEYS.settings) || storedVer !== DB_VERSION) {
+    const prevSettings = getDB(DB_KEYS.settings) || {};
     setDB(DB_KEYS.settings, {
       siteName: 'OHANA Academy',
       hotline: '0988 739 896',
@@ -926,8 +1047,10 @@ function initDB() {
       website: 'https://ohana.vn',
       address: 'Hà Nội & TP. Hồ Chí Minh, Việt Nam',
       facebook: 'https://facebook.com/ohana.academy',
-      youtube: 'https://youtube.com/@ohana.academy',
-      zalo: 'https://zalo.me/ohana'
+      youtube: 'https://www.youtube.com/@OhanaAstronixaVN',
+      zalo: 'https://zalo.me/ohana',
+      ...prevSettings,
+      youtube: 'https://www.youtube.com/@OhanaAstronixaVN'
     });
   }
 
@@ -1241,3 +1364,4 @@ window.LEVEL_COLORS = LEVEL_COLORS;
 window.formatDate = formatDate;
 window.generateStars = generateStars;
 window.showToast = showToast;
+window.OFFICIAL_YOUTUBE_VIDEOS = OFFICIAL_YOUTUBE_VIDEOS;
