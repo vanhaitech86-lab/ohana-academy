@@ -14,24 +14,35 @@
 <!-- ─── Admin Header ───────────────────────────────────────── -->
 <header class="site-header">
   <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-icon">🌺</div>
-      <div class="logo-text">
-        <strong>OHANA <span>ACADEMY</span></strong>
-        <small style="color:var(--ohana-orange);">Bảng Quản Trị (Admin)</small>
-      </div>
-    </a>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <button class="admin-mobile-toggle" id="adminSidebarToggle" onclick="toggleAdminSidebar()" aria-label="Toggle menu" title="Mở danh mục quản trị">
+        ☰
+      </button>
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🌺</div>
+        <div class="logo-text">
+          <strong>OHANA <span>ACADEMY</span></strong>
+          <small style="color:var(--ohana-orange);">Bảng Quản Trị Hệ Thống</small>
+        </div>
+      </a>
+    </div>
 
-    <div style="display:flex; align-items:center; gap:16px;">
-      <a href="index.html" class="btn btn-outline btn-sm">🌐 Xem trang chủ</a>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <a href="index.html" class="btn btn-outline btn-sm" style="display:inline-flex; align-items:center; gap:6px;">
+        <span>🌐</span> <span class="hide-mobile">Xem trang học viên</span>
+      </a>
+      
       <div class="user-menu" style="display:flex;">
-        <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">A</span></button>
+        <button class="user-avatar-btn" id="userAvatarBtn">
+          <span id="userAvatar">👑</span>
+        </button>
         <div class="user-dropdown" id="userDropdown">
           <div class="dropdown-header">
-            <div class="name" id="userName">Admin</div>
+            <div class="name" id="userName">Quản trị viên Ohana</div>
             <div class="role" id="userRoleBadge">Quản trị viên</div>
           </div>
-          <a href="index.html" class="dropdown-item"><span>🏠</span> Về trang người học</a>
+          <a href="index.html" class="dropdown-item"><span>🏠</span> Về trang học viên</a>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> Danh mục khóa học</a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
         </div>
@@ -40,14 +51,22 @@
   </div>
 </header>
 
+<!-- Mobile Sidebar Backdrop -->
+<div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeAdminSidebar()"></div>
+
 <!-- ─── Admin Layout ───────────────────────────────────────── -->
 <div class="admin-layout">
   
   <!-- Sidebar -->
-  <aside class="admin-sidebar">
+  <aside class="admin-sidebar" id="adminSidebar">
     <div class="admin-brand">
-      <div class="admin-brand-title">HỆ THỐNG ĐÀO TẠO</div>
-      <div class="admin-brand-sub">OHANA E-LEARNING SYSTEM</div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div class="admin-brand-title">HỆ THỐNG ĐÀO TẠO</div>
+          <div class="admin-brand-sub">OHANA ADMIN PORTAL</div>
+        </div>
+        <button class="admin-sidebar-close" onclick="closeAdminSidebar()">✕</button>
+      </div>
     </div>
 
     <nav class="admin-nav">
@@ -63,6 +82,10 @@
         <span class="admin-nav-icon">🎥</span>
         <span>Quản lý Bài giảng</span>
       </div>
+      <div class="admin-nav-item" data-tab="youtube">
+        <span class="admin-nav-icon">📺</span>
+        <span>Video YouTube SOP</span>
+      </div>
       <div class="admin-nav-item" data-tab="quizzes">
         <span class="admin-nav-icon">📝</span>
         <span>Đề thi & Đánh giá</span>
@@ -73,7 +96,7 @@
       </div>
       <div class="admin-nav-item" data-tab="results">
         <span class="admin-nav-icon">🏆</span>
-        <span>Kết quả học tập</span>
+        <span>Bảng điểm & Kết quả</span>
       </div>
       <div class="admin-nav-item" data-tab="settings">
         <span class="admin-nav-icon">⚙️</span>
@@ -81,16 +104,22 @@
       </div>
     </nav>
 
-    <div style="padding: 16px 20px; border-top: 1px solid var(--gray-200); font-size: 11.5px; color: var(--gray-400);">
-      Phiên bản v2.0.0<br>
-      © 2026 OHANA Group
+    <div class="admin-sidebar-footer">
+      <div style="font-weight:700; color:var(--gray-700); margin-bottom:2px;">OHANA E-Learning</div>
+      <div>Phiên bản v2.1.0 · 2026</div>
     </div>
   </aside>
 
   <!-- Main Content Area -->
   <main class="admin-main">
     <div class="admin-header">
-      <h1 class="admin-title" id="adminPageTitle">Bảng Điều Khiển Tổng Quan</h1>
+      <div>
+        <h1 class="admin-title" id="adminPageTitle">Bảng Điều Khiển Tổng Quan</h1>
+        <p class="admin-subtitle" id="adminPageSubtitle">Thống kê dữ liệu học tập và giám sát hệ thống thời gian thực</p>
+      </div>
+      <div id="adminHeaderActions" style="display:flex; align-items:center; gap:10px;">
+        <!-- Dynamic header actions per tab -->
+      </div>
     </div>
 
     <div id="adminContent">
@@ -98,6 +127,71 @@
     </div>
   </main>
 
+</div>
+
+<!-- ─── Video Preview Modal ─────────────────────────────────── -->
+<div class="modal-overlay" id="adminVideoPreviewModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title" id="avpTitle">Xem trước Video Đào tạo</h3>
+      <button class="modal-close" onclick="closeAdminVideoPreview()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0; background:#000;">
+      <div style="position:relative; padding-top:56.25%;">
+        <iframe id="avpIframe" src="" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span id="avpMeta" style="font-size:13px; color:var(--gray-500); margin-right:auto;"></span>
+      <button class="btn btn-secondary" onclick="closeAdminVideoPreview()">Đóng lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Quiz Question Editor Modal ──────────────────────────── -->
+<div class="modal-overlay" id="quizEditorModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title" id="qemTitle">Chỉnh Sửa Đề Thi & Ngân Hàng Câu Hỏi</h3>
+      <button class="modal-close" onclick="closeModal('quizEditorModal')">✕</button>
+    </div>
+    <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
+      <input type="hidden" id="qemQuizId">
+      <div class="form-row" style="margin-bottom:18px;">
+        <div class="form-group">
+          <label class="form-label">Tên bài kiểm tra <span class="required">*</span></label>
+          <input type="text" class="form-control" id="qemName">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Thời gian làm bài (Phút) <span class="required">*</span></label>
+          <input type="number" class="form-control" id="qemTime" min="5" max="120">
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:20px;">
+        <div class="form-group">
+          <label class="form-label">Điểm số đạt yêu cầu (%) <span class="required">*</span></label>
+          <input type="number" class="form-control" id="qemPass" min="10" max="100" step="5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Khóa học áp dụng</label>
+          <input type="text" class="form-control" id="qemCourseTitle" readonly style="background:var(--gray-100); color:var(--gray-600);">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-top:14px; border-top:1px solid var(--gray-200);">
+        <strong style="font-size:15px; color:var(--gray-900);">📝 Danh Sách Câu Hỏi Trắc Nghiệm (<span id="qemQuestionCount">0</span> câu)</strong>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addQuestionItem()">+ Thêm câu hỏi mới</button>
+      </div>
+
+      <div id="qemQuestionsList">
+        <!-- Injected question blocks -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('quizEditorModal')">Hủy bỏ</button>
+      <button class="btn btn-primary" onclick="saveQuizEditor()">💾 Lưu thay đổi đề thi</button>
+    </div>
+  </div>
 </div>
 
 <script src="js/data.js"></script>
