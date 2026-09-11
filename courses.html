@@ -28,11 +28,11 @@
     }
     .filter-form {
       display: grid;
-      grid-template-columns: 1.8fr 1fr 1fr auto;
-      gap: 16px;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
+      gap: 12px;
       align-items: center;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 992px) {
       .filter-form { grid-template-columns: 1fr; }
     }
   </style>
@@ -112,6 +112,13 @@
         </select>
       </div>
       <div>
+        <select id="typeFilter" class="form-control">
+          <option value="">Tất cả loại hình</option>
+          <option value="free">🎁 Khóa học Miễn phí</option>
+          <option value="paid">🎓 Trả phí · Cấp chứng chỉ</option>
+        </select>
+      </div>
+      <div>
         <select id="levelFilter" class="form-control">
           <option value="">Tất cả cấp độ</option>
           <option value="Cơ bản">Cơ bản</option>
@@ -124,6 +131,14 @@
           Lọc kết quả
         </button>
       </div>
+    </div>
+
+    <!-- Quick Filter Pills -->
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; padding-top:12px; border-top:1px dashed var(--gray-200); align-items:center;">
+      <span style="font-size:12.5px; font-weight:700; color:var(--gray-600);">⚡ Phân loại nhanh:</span>
+      <a href="courses.html" class="btn btn-sm btn-outline" style="border-radius:var(--radius-full); padding:3px 12px; font-size:12px;">🌟 Tất cả</a>
+      <a href="courses.html?type=free" class="btn btn-sm" style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-full); font-weight:700; padding:3px 12px; font-size:12px;">🎁 Khóa học Miễn phí</a>
+      <a href="courses.html?type=paid" class="btn btn-sm" style="background:rgba(217,119,6,0.12); color:#b45309; border:1px solid rgba(217,119,6,0.3); border-radius:var(--radius-full); font-weight:700; padding:3px 12px; font-size:12px;">🎓 Trả phí Cấp chứng chỉ</a>
     </div>
   </div>
 

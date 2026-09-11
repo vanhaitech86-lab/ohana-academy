@@ -66,6 +66,9 @@ function buildCourseCard(course, currentUser) {
   const pct = Math.round((progress.completedLessons.length / Math.max(course.totalLessons, 1)) * 100);
   const levelColor = LEVEL_COLORS[course.level] || '#10b981';
 
+  const isPaid = course.priceType === 'paid' || (course.price && course.price > 0);
+  const hasCert = !!course.hasCertificate;
+
   return `
     <div class="course-card fade-in-up" onclick="window.location='course-detail.html?id=${course.id}'">
       <div class="course-thumb">
@@ -78,12 +81,33 @@ function buildCourseCard(course, currentUser) {
         `}
         <div class="course-thumb-overlay"></div>
         <div class="course-play-btn">▶</div>
+        
+        <!-- Badges on Thumbnail -->
+        ${isPaid || hasCert ? `
+          <span class="course-type-badge cert">🎓 Cấp chứng chỉ</span>
+        ` : `
+          <span class="course-type-badge free">🎁 Miễn phí</span>
+        `}
         <span class="course-level-badge" style="background:${levelColor};color:white;">${course.level}</span>
       </div>
       <div class="course-body">
         <div class="course-category" style="color:${catColor}">${catName}</div>
         <div class="course-title" title="${course.title}">${course.title}</div>
         <div class="course-instructor">👨‍🏫 ${course.instructor}</div>
+
+        <!-- Pricing & Certificate Badges -->
+        ${hasCert ? `<div class="course-cert-pill">🎖️ Kèm Chứng chỉ tốt nghiệp</div>` : ''}
+
+        <div class="course-pricing-row">
+          ${isPaid ? `
+            <span class="course-price-val">${window.formatMoney ? window.formatMoney(course.price) : course.price + ' đ'}</span>
+            ${course.originalPrice ? `<span class="course-price-orig">${window.formatMoney ? window.formatMoney(course.originalPrice) : ''}</span>` : ''}
+          ` : `
+            <span class="course-price-val free">🎁 Miễn phí 100%</span>
+            ${course.originalPrice ? `<span class="course-price-orig">${window.formatMoney ? window.formatMoney(course.originalPrice) : ''}</span>` : ''}
+          `}
+        </div>
+
         <div class="course-meta">
           <div class="course-meta-item"><span>⏱</span> ${course.duration}</div>
           <div class="course-meta-item"><span>📚</span> ${course.totalLessons} bài giảng</div>
@@ -140,9 +164,16 @@ window.filterCourses = function(catId, el) {
   const user = Auth.getCurrentUser();
   const allCourses = user ? CourseDB.getByRole(user.role) : CourseDB.getAll().filter(c => c.status === 'active');
 
-  const filtered = catId === 'all'
-    ? allCourses
-    : allCourses.filter(c => c.categoryId === parseInt(catId));
+  let filtered = allCourses;
+  if (catId === 'all') {
+    filtered = allCourses;
+  } else if (catId === '7' || catId === 'free') {
+    filtered = allCourses.filter(c => c.priceType === 'free' || c.categoryId === 7 || (!c.priceType && (!c.price || c.price === 0)));
+  } else if (catId === '8' || catId === 'paid-cert' || catId === 'paid') {
+    filtered = allCourses.filter(c => c.priceType === 'paid' || c.hasCertificate || c.categoryId === 8);
+  } else {
+    filtered = allCourses.filter(c => c.categoryId === parseInt(catId));
+  }
 
   renderCourseGrid(filtered, user);
 };
@@ -156,12 +187,16 @@ function loadHomepage() {
   // Category bar
   const catBar = document.getElementById('categoryBar');
   if (catBar) {
+    const specialCats = categories.filter(c => c.id === 7 || c.id === 8);
+    const standardCats = categories.filter(c => c.id !== 7 && c.id !== 8);
+    const orderedCats = [...specialCats, ...standardCats];
+
     catBar.innerHTML = `
       <div class="cat-item active" data-cat="all" onclick="filterCourses('all', this)">
         <span class="cat-icon">🌟</span>
         <span class="cat-label">Tất cả khóa học</span>
       </div>
-      ${categories.map(c => `
+      ${orderedCats.map(c => `
         <div class="cat-item" data-cat="${c.id}" onclick="filterCourses('${c.id}', this)">
           <span class="cat-icon">${c.icon}</span>
           <span class="cat-label">${c.name}</span>
@@ -226,6 +261,7 @@ function loadCoursesPage() {
   const searchQ = (params.get('q') || '').toLowerCase();
   const catFilter = params.get('cat') || '';
   const levelFilter = params.get('level') || '';
+  const typeFilter = params.get('type') || '';
 
   let filtered = allCourses;
   if (searchQ) {
@@ -237,7 +273,20 @@ function loadCoursesPage() {
     );
   }
   if (catFilter) {
-    filtered = filtered.filter(c => c.categoryId === parseInt(catFilter));
+    if (catFilter === '7' || catFilter === 'free') {
+      filtered = filtered.filter(c => c.priceType === 'free' || c.categoryId === 7 || (!c.priceType && (!c.price || c.price === 0)));
+    } else if (catFilter === '8' || catFilter === 'paid-cert' || catFilter === 'paid') {
+      filtered = filtered.filter(c => c.priceType === 'paid' || c.hasCertificate || c.categoryId === 8);
+    } else {
+      filtered = filtered.filter(c => c.categoryId === parseInt(catFilter));
+    }
+  }
+  if (typeFilter) {
+    if (typeFilter === 'free') {
+      filtered = filtered.filter(c => c.priceType === 'free' || c.categoryId === 7 || (!c.priceType && (!c.price || c.price === 0)));
+    } else if (typeFilter === 'paid') {
+      filtered = filtered.filter(c => c.priceType === 'paid' || c.hasCertificate || c.categoryId === 8);
+    }
   }
   if (levelFilter) {
     filtered = filtered.filter(c => c.level === levelFilter);
@@ -247,8 +296,15 @@ function loadCoursesPage() {
   const catSelect = document.getElementById('catFilter');
   if (catSelect) {
     catSelect.innerHTML = `<option value="">Tất cả danh mục</option>` +
-      categories.map(c => `<option value="${c.id}" ${c.id == catFilter ? 'selected' : ''}>${c.name}</option>`).join('');
+      categories.map(c => `<option value="${c.id}" ${c.id == catFilter ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
     catSelect.addEventListener('change', applyFilters);
+  }
+
+  // Populate Type Filter Dropdown if exists
+  const typeSelect = document.getElementById('typeFilter');
+  if (typeSelect) {
+    typeSelect.value = typeFilter;
+    typeSelect.addEventListener('change', applyFilters);
   }
 
   // Populate Level Filter
@@ -279,11 +335,13 @@ function applyFilters() {
   const q = document.getElementById('courseSearch')?.value || '';
   const cat = document.getElementById('catFilter')?.value || '';
   const level = document.getElementById('levelFilter')?.value || '';
+  const type = document.getElementById('typeFilter')?.value || '';
 
   const url = new URL(window.location);
   if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
   if (cat) url.searchParams.set('cat', cat); else url.searchParams.delete('cat');
   if (level) url.searchParams.set('level', level); else url.searchParams.delete('level');
+  if (type) url.searchParams.set('type', type); else url.searchParams.delete('type');
 
   window.history.replaceState({}, '', url);
   loadCoursesPage();

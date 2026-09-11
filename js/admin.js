@@ -631,11 +631,16 @@ function renderCourses(el) {
         <div>
           <span class="table-title">Quản lý Khóa học OHANA (${courses.length})</span>
           <p style="font-size:13px; color:var(--gray-500); margin-top:4px;">
-            Danh sách khóa học AI, Bán hàng, Giao tiếp và Quy trình nội bộ Ohana
+            Danh sách khóa học Miễn phí, Trả phí Cấp chứng chỉ, AI và Quy trình Ohana
           </p>
         </div>
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-          <input type="text" class="search-input" placeholder="Tìm tên khóa học..." oninput="filterCoursesList(this.value)" style="max-width:240px;">
+          <select id="adminCourseTypeFilter" class="form-control" style="width:auto; padding:6px 12px; font-size:13px;" onchange="filterAdminCourseType(this.value)">
+            <option value="all">🌟 Tất cả khóa học</option>
+            <option value="free">🎁 Khóa học Miễn phí</option>
+            <option value="paid">🎓 Trả phí · Cấp chứng chỉ</option>
+          </select>
+          <input type="text" id="adminCourseSearchInput" class="search-input" placeholder="Tìm tên khóa học..." oninput="filterCoursesList(this.value)" style="max-width:200px;">
           <button class="btn btn-primary btn-sm" onclick="openCourseModal()">+ Thêm Khóa học</button>
         </div>
       </div>
@@ -644,6 +649,7 @@ function renderCourses(el) {
           <tr>
             <th style="width:70px;">Ảnh</th>
             <th>Tên khóa học</th>
+            <th>Phân loại & Học phí</th>
             <th>Danh mục</th>
             <th>Cấp độ</th>
             <th>Thời lượng</th>
@@ -663,6 +669,8 @@ function renderCourses(el) {
 function renderCoursesRows(courses) {
   return courses.map(c => {
     const cat = CategoryDB.getById(c.categoryId);
+    const isPaid = c.priceType === 'paid' || (c.price && c.price > 0);
+    const hasCert = !!c.hasCertificate;
     return `
       <tr>
         <td>
@@ -677,6 +685,16 @@ function renderCoursesRows(courses) {
         <td>
           <strong style="font-size: 14px; color: var(--gray-900); display: block;">${c.title}</strong>
           <span style="font-size: 12px; color: var(--gray-500);">Giảng viên: ${c.instructor}</span>
+        </td>
+        <td>
+          ${isPaid ? `
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <span class="badge" style="background:rgba(217,119,6,0.12); color:#b45309; font-weight:800; width:fit-content;">🎓 Trả phí: ${formatMoney(c.price)}</span>
+              ${hasCert ? `<small style="font-size:11px; color:#d97706; font-weight:600;">🎖️ Có cấp chứng chỉ</small>` : ''}
+            </div>
+          ` : `
+            <span class="badge" style="background:rgba(16,185,129,0.12); color:#059669; font-weight:800;">🎁 Miễn phí 100%</span>
+          `}
         </td>
         <td><span style="color:${cat ? cat.color : '#000'}; font-weight: 700;">${cat ? cat.name : '—'}</span></td>
         <td><span class="course-level-badge" style="position:static; background:${LEVEL_COLORS[c.level]}; color:white;">${c.level}</span></td>
@@ -698,13 +716,24 @@ function renderCoursesRows(courses) {
   }).join('');
 }
 
-window.filterCoursesList = function(query) {
-  const q = query.toLowerCase();
-  const filtered = CourseDB.getAll().filter(c =>
-    c.title.toLowerCase().includes(q) || c.instructor.toLowerCase().includes(q)
-  );
+window.filterAdminCourseType = function(type) {
+  const q = (document.getElementById('adminCourseSearchInput')?.value || '').toLowerCase();
+  let courses = CourseDB.getAll();
+  if (type === 'free') {
+    courses = courses.filter(c => c.priceType === 'free' || (!c.priceType && (!c.price || c.price === 0)));
+  } else if (type === 'paid') {
+    courses = courses.filter(c => c.priceType === 'paid' || c.hasCertificate || (c.price && c.price > 0));
+  }
+  if (q) {
+    courses = courses.filter(c => c.title.toLowerCase().includes(q) || c.instructor.toLowerCase().includes(q));
+  }
   const body = document.getElementById('coursesBody');
-  if (body) body.innerHTML = renderCoursesRows(filtered);
+  if (body) body.innerHTML = renderCoursesRows(courses);
+};
+
+window.filterCoursesList = function(query) {
+  const type = document.getElementById('adminCourseTypeFilter')?.value || 'all';
+  window.filterAdminCourseType(type);
 };
 
 window.toggleCourseStatus = function(id) {
@@ -724,7 +753,7 @@ function courseModalHTML(categories) {
         <h3 class="modal-title" id="courseModalTitle">Thêm Khóa Học Mới</h3>
         <button class="modal-close" onclick="closeModal('courseModal')">✕</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="max-height:76vh; overflow-y:auto;">
         <input type="hidden" id="cmId">
         <div class="form-group">
           <label class="form-label">Tên khóa học <span class="required">*</span></label>
@@ -734,11 +763,40 @@ function courseModalHTML(categories) {
           <label class="form-label">Mô tả tổng quan khóa học</label>
           <textarea class="form-control" id="cmDesc" rows="3" placeholder="Nội dung tổng quan, mục tiêu khóa học..."></textarea>
         </div>
+
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Danh mục đào tạo <span class="required">*</span></label>
+            <label class="form-label">Loại khóa học <span class="required">*</span></label>
+            <select class="form-control" id="cmPriceType" onchange="onAdminPriceTypeChange(this.value)">
+              <option value="free">🎁 Khóa học Miễn phí</option>
+              <option value="paid">🎓 Khóa học Trả phí Cấp chứng chỉ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Danh mục chuyên môn <span class="required">*</span></label>
             <select class="form-control" id="cmCat">
               ${categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Học phí ưu đãi (VNĐ - Nhập 0 nếu miễn phí)</label>
+            <input type="number" class="form-control" id="cmPrice" placeholder="Ví dụ: 890000" min="0" step="10000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Học phí gốc niêm yết (VNĐ - Gạch ngang)</label>
+            <input type="number" class="form-control" id="cmOriginalPrice" placeholder="Ví dụ: 1800000" min="0" step="10000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Cấp chứng chỉ tốt nghiệp</label>
+            <select class="form-control" id="cmHasCert">
+              <option value="0">❌ Không cấp chứng chỉ</option>
+              <option value="1">🎓 Có cấp chứng chỉ tốt nghiệp</option>
             </select>
           </div>
           <div class="form-group">
@@ -746,10 +804,17 @@ function courseModalHTML(categories) {
             <input type="text" class="form-control" id="cmInstructor" placeholder="Alex Đặng – Giám đốc Sáng tạo">
           </div>
         </div>
+
+        <div class="form-group" id="cmCertTitleGroup">
+          <label class="form-label">Tên chứng chỉ cấp phát (In trên bằng)</label>
+          <input type="text" class="form-control" id="cmCertTitle" placeholder="Ví dụ: Chứng Chỉ Chuyên Gia Thiết Kế Hình Ảnh AI">
+        </div>
+
         <div class="form-group">
           <label class="form-label">Ảnh đại diện / Thumbnail URL (Link ảnh banner)</label>
           <input type="text" class="form-control" id="cmThumbnail" placeholder="https://i.ytimg.com/vi/G2KI_UpLvj4/hqdefault.jpg">
         </div>
+
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Thời lượng ước tính</label>
@@ -777,6 +842,18 @@ function courseModalHTML(categories) {
   </div>`;
 }
 
+window.onAdminPriceTypeChange = function(type) {
+  const priceInput = document.getElementById('cmPrice');
+  const hasCertSelect = document.getElementById('cmHasCert');
+  if (type === 'free') {
+    if (priceInput) priceInput.value = 0;
+    if (hasCertSelect) hasCertSelect.value = '0';
+  } else if (type === 'paid') {
+    if (priceInput && (!priceInput.value || parseInt(priceInput.value) === 0)) priceInput.value = 890000;
+    if (hasCertSelect) hasCertSelect.value = '1';
+  }
+};
+
 window.openCourseModal = function(id) {
   const title = document.getElementById('courseModalTitle');
   const idEl = document.getElementById('cmId');
@@ -788,6 +865,11 @@ window.openCourseModal = function(id) {
     document.getElementById('cmTitle').value = c.title;
     document.getElementById('cmDesc').value = c.description;
     document.getElementById('cmCat').value = c.categoryId;
+    document.getElementById('cmPriceType').value = c.priceType || (c.price > 0 ? 'paid' : 'free');
+    document.getElementById('cmPrice').value = c.price !== undefined ? c.price : 0;
+    document.getElementById('cmOriginalPrice').value = c.originalPrice !== undefined ? c.originalPrice : 0;
+    document.getElementById('cmHasCert').value = c.hasCertificate ? '1' : '0';
+    document.getElementById('cmCertTitle').value = c.certificateTitle || '';
     document.getElementById('cmInstructor').value = c.instructor;
     document.getElementById('cmThumbnail').value = c.thumbnail || '';
     document.getElementById('cmDuration').value = c.duration;
@@ -798,6 +880,11 @@ window.openCourseModal = function(id) {
     idEl.value = '';
     document.getElementById('cmTitle').value = '';
     document.getElementById('cmDesc').value = '';
+    document.getElementById('cmPriceType').value = 'free';
+    document.getElementById('cmPrice').value = 0;
+    document.getElementById('cmOriginalPrice').value = 0;
+    document.getElementById('cmHasCert').value = '0';
+    document.getElementById('cmCertTitle').value = '';
     document.getElementById('cmInstructor').value = '';
     document.getElementById('cmThumbnail').value = '';
     document.getElementById('cmDuration').value = '5 giờ';
@@ -812,6 +899,11 @@ window.saveCourse = function() {
   const title = document.getElementById('cmTitle').value.trim();
   const description = document.getElementById('cmDesc').value.trim();
   const categoryId = parseInt(document.getElementById('cmCat').value);
+  const priceType = document.getElementById('cmPriceType').value;
+  const price = parseInt(document.getElementById('cmPrice').value) || 0;
+  const originalPrice = parseInt(document.getElementById('cmOriginalPrice').value) || 0;
+  const hasCertificate = document.getElementById('cmHasCert').value === '1';
+  const certificateTitle = document.getElementById('cmCertTitle').value.trim();
   const instructor = document.getElementById('cmInstructor').value.trim();
   const thumbnail = document.getElementById('cmThumbnail').value.trim();
   const duration = document.getElementById('cmDuration').value.trim();
@@ -824,7 +916,7 @@ window.saveCourse = function() {
   }
 
   if (id) {
-    CourseDB.update(id, { title, description, categoryId, instructor, thumbnail, duration, level, tags });
+    CourseDB.update(id, { title, description, categoryId, instructor, thumbnail, duration, level, tags, priceType, price, originalPrice, hasCertificate, certificateTitle });
     showToast('Đã cập nhật khóa học thành công!', 'success');
   } else {
     CourseDB.create({
@@ -836,6 +928,11 @@ window.saveCourse = function() {
       duration,
       level,
       tags,
+      priceType,
+      price,
+      originalPrice,
+      hasCertificate,
+      certificateTitle,
       totalLessons: 0,
       allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
       status: 'active'

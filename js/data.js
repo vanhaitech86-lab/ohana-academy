@@ -14,7 +14,7 @@ const DB_KEYS = {
   session:     'ohana_session',
   settings:    'ohana_settings',
 };
-const DB_VERSION = '2.1';
+const DB_VERSION = '2.2';
 
 // ─── Default Users ─────────────────────────────────────────────
 const DEFAULT_USERS = [
@@ -75,6 +75,7 @@ const DEFAULT_CATEGORIES = [
     name: 'Tạo hình ảnh bằng AI',
     icon: '🎨',
     color: '#8b5cf6',
+    slug: 'ai-image',
     description: 'Làm chủ Midjourney, Stable Diffusion, DALL-E 3, Leonardo AI để thiết kế hình ảnh chuyên nghiệp'
   },
   {
@@ -82,6 +83,7 @@ const DEFAULT_CATEGORIES = [
     name: 'Tạo video bằng AI',
     icon: '🎬',
     color: '#ec4899',
+    slug: 'ai-video',
     description: 'Sản xuất video marketing, video viral với Runway Gen-3, Kling AI, Pika, HeyGen & CapCut AI'
   },
   {
@@ -89,6 +91,7 @@ const DEFAULT_CATEGORIES = [
     name: 'Khóa học về AI Agent',
     icon: '🤖',
     color: '#06b6d4',
+    slug: 'ai-agent',
     description: 'Xây dựng trợ lý ảo thông minh, Multi-agent workflows và tự động hóa quy trình nghiệp vụ'
   },
   {
@@ -96,6 +99,7 @@ const DEFAULT_CATEGORIES = [
     name: 'Kỹ năng bán hàng',
     icon: '💼',
     color: '#f97316',
+    slug: 'sales',
     description: 'Nghệ thuật tư vấn giải pháp, tâm lý hành vi khách hàng, xử lý từ chối và chốt sale đỉnh cao'
   },
   {
@@ -103,6 +107,7 @@ const DEFAULT_CATEGORIES = [
     name: 'Kỹ năng giao tiếp',
     icon: '💬',
     color: '#10b981',
+    slug: 'communication',
     description: 'Nghệ thuật giao tiếp thấu cảm, thuyết phục đối tác, lắng nghe chủ động và giải quyết mâu thuẫn'
   },
   {
@@ -110,7 +115,24 @@ const DEFAULT_CATEGORIES = [
     name: 'Quy trình Ohana',
     icon: '🏢',
     color: '#ea580c',
+    slug: 'ohana-sop',
     description: 'Quy trình vận hành chuẩn SOP, tiêu chuẩn dịch vụ 5 sao và văn hóa cốt lõi gia đình Ohana'
+  },
+  {
+    id: 7,
+    name: 'Khóa học miễn phí',
+    icon: '🎁',
+    color: '#10b981',
+    slug: 'free',
+    description: 'Bộ sưu tập các khóa học kỹ năng cơ bản, chia sẻ cộng đồng và quy trình Ohana hoàn toàn miễn phí 100%'
+  },
+  {
+    id: 8,
+    name: 'Khóa học trả phí cấp chứng chỉ',
+    icon: '🎓',
+    color: '#d97706',
+    slug: 'paid-cert',
+    description: 'Các chương trình đào tạo chuyên sâu thực chiến, làm bài thi tốt nghiệp và nhận Chứng chỉ chính thức từ OHANA Academy'
   }
 ];
 
@@ -122,6 +144,11 @@ const DEFAULT_COURSES = [
     title: 'Mastering Midjourney & Generative AI Design Thực Chiến',
     description: 'Khóa học hướng dẫn từ số 0 cách tạo hình ảnh siêu thực, thiết kế đồ họa quảng cáo, banner marketing, bộ nhận diện thương hiệu với Midjourney V6, Leonardo AI và Photoshop Generative Fill.',
     categoryId: 1,
+    priceType: 'paid',
+    price: 890000,
+    originalPrice: 1800000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Chỉ Chuyên Gia Thiết Kế Hình Ảnh AI & Generative Art',
     instructor: 'Alex Đặng – Giám đốc Sáng tạo AI Creative',
     thumbnail: '',
     duration: '6 giờ',
@@ -143,6 +170,11 @@ const DEFAULT_COURSES = [
     title: 'Sản Xuất Video Viral & Quảng Cáo Triệu View Bằng AI',
     description: 'Nắm trọn quy trình sáng tạo video chuyên nghiệp: viết kịch bản với ChatGPT, tạo hình nhân vật đồng nhất, tạo chuyển động cinematic với Runway Gen-3/Kling AI, lồng tiếng AI và hậu kỳ CapCut.',
     categoryId: 2,
+    priceType: 'paid',
+    price: 990000,
+    originalPrice: 2200000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Chỉ Chuyên Gia Sản Xuất Video Viral & Quảng Cáo Bằng AI',
     instructor: 'Vũ Hải Long – Film Director & AI Video Specialist',
     thumbnail: '',
     duration: '7 giờ',
@@ -164,6 +196,11 @@ const DEFAULT_COURSES = [
     title: 'Xây Dựng AI Agent & Tự Động Hóa Vận Hành Doanh Nghiệp',
     description: 'Khóa học chuyên sâu hướng dẫn xây dựng trợ lý AI độc lập (AI Agents), kết nối hệ thống Multi-agent với Make.com, n8n, CrewAI, OpenAI Assistants API giúp tự động hóa chăm sóc khách hàng và xử lý công việc.',
     categoryId: 3,
+    priceType: 'paid',
+    price: 1490000,
+    originalPrice: 3000000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Chỉ Kiến Trúc Sư AI Agent & Tự Động Hóa Doanh Nghiệp',
     instructor: 'Dr. Minh Hoàng – Chuyên gia Kiến trúc AI Agent',
     thumbnail: '',
     duration: '8 giờ',
@@ -185,6 +222,11 @@ const DEFAULT_COURSES = [
     title: 'Kỹ Năng Bán Hàng Tư Vấn Đỉnh Cao & Nghệ Thuật Chốt Sale',
     description: 'Phương pháp bán hàng theo giải pháp giá trị: thấu hiểu insight tâm lý khách hàng, nghệ thuật đặt câu hỏi SPIN, kỹ năng bẻ gãy mọi lý do từ chối và chốt đơn tự nhiên không gượng ép.',
     categoryId: 4,
+    priceType: 'paid',
+    price: 790000,
+    originalPrice: 1500000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Nhận Chuyên Viên Tư Vấn Bán Hàng Giải Pháp Ohana',
     instructor: 'Lê Thu Trang – Trưởng ban Đào tạo Bán hàng Ohana',
     thumbnail: '',
     duration: '6 giờ',
@@ -206,6 +248,11 @@ const DEFAULT_COURSES = [
     title: 'Giao Tiếp Thấu Cảm, Lắng Nghe Chủ Động & Thuyết Phục',
     description: 'Rèn luyện phong thái tự tin, kỹ năng giao tiếp tinh tế trong môi trường công sở và với khách hàng; giải quyết mâu thuẫn, kiểm soát cảm xúc và thuyết phục đối phương bằng tư duy Win-Win.',
     categoryId: 5,
+    priceType: 'free',
+    price: 0,
+    originalPrice: 600000,
+    hasCertificate: false,
+    certificateTitle: '',
     instructor: 'Ngô Thanh Sơn – Master Trainer Giao Tiếp Ứng Xử',
     thumbnail: '',
     duration: '5 giờ',
@@ -227,6 +274,11 @@ const DEFAULT_COURSES = [
     title: 'Quy Trình Chuẩn Vận Hành & Văn Hóa Doanh Nghiệp Ohana Astronixa',
     description: 'Chương trình đào tạo video chính thức từ Kênh Ohana Astronixa VN: Triết lý văn hóa đại gia đình Ohana và trọn bộ video hướng dẫn thao tác đăng ký, KYC, nạp tiền ví, mua gói sản phẩm, rút tiền an toàn.',
     categoryId: 6,
+    priceType: 'free',
+    price: 0,
+    originalPrice: 800000,
+    hasCertificate: false,
+    certificateTitle: '',
     instructor: 'Ban Đào Tạo & Truyền Thông Ohana Astronixa VN',
     thumbnail: 'https://i.ytimg.com/vi/G2KI_UpLvj4/hqdefault.jpg',
     duration: '22 phút',
@@ -1025,9 +1077,41 @@ function initDB() {
 
   // Khởi tạo các bảng dữ liệu nếu chưa có hoặc khi cập nhật phiên bản DB
   if (!localStorage.getItem(DB_KEYS.users))       setDB(DB_KEYS.users, DEFAULT_USERS);
-  if (!localStorage.getItem(DB_KEYS.categories))  setDB(DB_KEYS.categories, DEFAULT_CATEGORIES);
+  if (!localStorage.getItem(DB_KEYS.categories) || storedVer !== DB_VERSION) {
+    setDB(DB_KEYS.categories, DEFAULT_CATEGORIES);
+  }
   if (!localStorage.getItem(DB_KEYS.courses) || storedVer !== DB_VERSION) {
-    setDB(DB_KEYS.courses, DEFAULT_COURSES);
+    const existing = getDB(DB_KEYS.courses) || [];
+    if (!existing.length) {
+      setDB(DB_KEYS.courses, DEFAULT_COURSES);
+    } else {
+      const updated = existing.map(ec => {
+        const def = DEFAULT_COURSES.find(dc => dc.id === ec.id);
+        if (def) {
+          return {
+            ...def,
+            ...ec,
+            priceType: ec.priceType || def.priceType,
+            price: ec.price !== undefined ? ec.price : def.price,
+            originalPrice: ec.originalPrice !== undefined ? ec.originalPrice : def.originalPrice,
+            hasCertificate: ec.hasCertificate !== undefined ? ec.hasCertificate : def.hasCertificate,
+            certificateTitle: ec.certificateTitle || def.certificateTitle
+          };
+        }
+        return {
+          priceType: 'free',
+          price: 0,
+          originalPrice: 0,
+          hasCertificate: false,
+          certificateTitle: '',
+          ...ec
+        };
+      });
+      DEFAULT_COURSES.forEach(dc => {
+        if (!updated.some(u => u.id === dc.id)) updated.push(dc);
+      });
+      setDB(DB_KEYS.courses, updated);
+    }
   }
   if (!localStorage.getItem(DB_KEYS.lessons) || storedVer !== DB_VERSION) {
     setDB(DB_KEYS.lessons, DEFAULT_LESSONS);
@@ -1344,6 +1428,71 @@ function showToast(msg, type = 'info') {
   }, 3500);
 }
 
+function formatMoney(amount) {
+  if (amount === undefined || amount === null || amount === 0 || amount === '0') return 'Miễn phí';
+  const num = typeof amount === 'number' ? amount : parseInt(amount, 10);
+  if (isNaN(num) || num <= 0) return 'Miễn phí';
+  return num.toLocaleString('vi-VN') + ' đ';
+}
+
+function buildCertificateHtml(opts) {
+  opts = opts || {};
+  const student = opts.studentName || 'HỌC VIÊN XUẤT SẮC';
+  const courseName = opts.courseTitle || 'Khóa học Đào tạo Thực chiến Ohana';
+  const certName = opts.certTitle || 'CHỨNG NHẬN HOÀN THÀNH KHÓA HỌC';
+  const instructor = opts.instructor || 'Ban Đào Tạo Ohana Academy';
+  const score = opts.score !== undefined ? `${opts.score}%` : 'Xuất sắc';
+  const dateStr = opts.date || formatDate(new Date().toISOString());
+  const certId = opts.certId || ('OHANA-' + Math.random().toString(36).substring(2, 9).toUpperCase());
+
+  return `
+    <div class="certificate-frame">
+      <div class="certificate-watermark">🌺</div>
+      <div class="cert-header">
+        <div class="cert-logo">🌺 OHANA <span>ACADEMY</span></div>
+        <div class="cert-subheading">HỆ THỐNG ĐÀO TẠO TRỰC TUYẾN CHÍNH THỨC · OHANA GROUP</div>
+        <div class="cert-main-title">${certName}</div>
+        <div class="cert-award-to">Chứng nhận này được trân trọng trao tặng cho:</div>
+        <div class="cert-student-name">${student}</div>
+        <div class="cert-reason">
+          Đã hoàn thành xuất sắc toàn bộ chương trình đào tạo & bài thi đánh giá năng lực thực chiến:
+        </div>
+        <div class="cert-course-name">${courseName}</div>
+      </div>
+
+      <div class="cert-meta-grid">
+        <div class="cert-meta-item">Kết quả bài thi: <strong>${score}</strong></div>
+        <div class="cert-meta-item">Ngày cấp bằng: <strong>${dateStr}</strong></div>
+        <div class="cert-meta-item">Mã định danh: <strong>${certId}</strong></div>
+      </div>
+
+      <div class="cert-footer-signatures">
+        <div class="cert-sign-col">
+          <div class="cert-sign-space">${instructor.split('–')[0].replace('👨‍🏫', '').trim() || 'Alex Đặng'}</div>
+          <div class="cert-sign-title">${instructor}</div>
+          <div class="cert-sign-desc">Chuyên gia / Giảng viên đào tạo</div>
+        </div>
+
+        <div class="cert-seal-badge">
+          <span>🌺</span>
+          OHANA GROUP<br>ĐÃ XÁC THỰC
+        </div>
+
+        <div class="cert-sign-col">
+          <div class="cert-sign-space">Nguyễn Vũ Hải</div>
+          <div class="cert-sign-title">Ban Lãnh Đạo Ohana</div>
+          <div class="cert-sign-desc">Giám đốc Học viện Đào tạo</div>
+        </div>
+      </div>
+
+      <div class="cert-bottom-bar">
+        <span>Tra cứu tính hợp lệ tại: https://ohana-academy.vercel.app</span>
+        <span>Bản chứng nhận điện tử có giá trị lưu hành toàn hệ thống OHANA</span>
+      </div>
+    </div>
+  `;
+}
+
 // Khởi chạy khởi tạo ban đầu
 initDB();
 
@@ -1362,6 +1511,8 @@ window.ROLE_LABELS = ROLE_LABELS;
 window.ROLE_COLORS = ROLE_COLORS;
 window.LEVEL_COLORS = LEVEL_COLORS;
 window.formatDate = formatDate;
+window.formatMoney = formatMoney;
+window.buildCertificateHtml = buildCertificateHtml;
 window.generateStars = generateStars;
 window.showToast = showToast;
 window.OFFICIAL_YOUTUBE_VIDEOS = OFFICIAL_YOUTUBE_VIDEOS;

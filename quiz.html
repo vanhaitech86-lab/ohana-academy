@@ -381,7 +381,20 @@
             </div>
           </div>
 
-          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          ${passed ? `
+            <div style="margin: 24px 0; padding: 22px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 2px solid #fde68a; border-radius: var(--radius-lg); text-align: center; box-shadow: 0 4px 20px rgba(217,119,6,0.12);">
+              <div style="font-size: 38px; margin-bottom: 6px;">🎓</div>
+              <h3 style="font-size: 19px; font-weight: 900; color: #92400e; margin-bottom: 6px;">CHỨNG NHẬN ĐẠT CHUẨN TỐT NGHIỆP OHANA ACADEMY</h3>
+              <p style="font-size: 13.5px; color: #78350f; max-width: 540px; margin: 0 auto 16px; line-height: 1.6;">
+                Chúc mừng bạn <strong>${user.name}</strong> đã hoàn thành xuất sắc bài kiểm tra với số điểm <strong>${score}%</strong>. Bạn đã chính thức được cấp Giấy chứng nhận hoàn thành khóa học từ OHANA Group!
+              </p>
+              <button class="btn btn-primary" onclick="openQuizCertModal(${score})" style="background:linear-gradient(135deg, #d97706, #b45309); font-weight:800; font-size:15px; padding:12px 24px; box-shadow:0 4px 15px rgba(217,119,6,0.35);">
+                📜 Xem & In Chứng Chỉ Tốt Nghiệp Của Bạn
+              </button>
+            </div>
+          ` : ''}
+
+          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
             <a href="course-detail.html?id=${courseId}" class="btn btn-secondary">← Xem lại khóa học</a>
             ${!fromSave ? `<button class="btn btn-primary" onclick="window.location.reload()">🔄 Làm lại bài thi</button>` : ''}
             <a href="courses.html" class="btn btn-outline" style="color:var(--gray-800); border-color:var(--gray-300);">📚 Danh sách khóa học</a>
@@ -389,6 +402,31 @@
         </div>
       </div>`;
   }
+
+  window.openQuizCertModal = function(finalScore) {
+    const modal = document.getElementById('quizCertModal');
+    const sheet = document.getElementById('quizCertSheet');
+    if (!modal || !sheet) return;
+    sheet.innerHTML = buildCertificateHtml({
+      studentName: user.name.toUpperCase(),
+      courseTitle: course.title,
+      certTitle: course.certificateTitle || 'CHỨNG NHẬN HOÀN THÀNH KHÓA HỌC',
+      instructor: course.instructor,
+      score: finalScore || 100,
+      date: formatDate(new Date().toISOString()),
+      certId: 'OHANA-CERT-' + user.id + '-' + course.id + '-' + Math.random().toString(36).substring(2, 6).toUpperCase()
+    });
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeQuizCertModal = function() {
+    const modal = document.getElementById('quizCertModal');
+    if (modal) {
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  };
 
   function startTimer() {
     clearInterval(timerInterval);
@@ -413,5 +451,19 @@
   renderQuiz();
 })();
 </script>
+
+<!-- ─── Quiz Certificate Modal ────────────────────────────── -->
+<div class="cert-modal-overlay" id="quizCertModal">
+  <div class="cert-modal-dialog">
+    <div class="cert-modal-topbar">
+      <h4>🎓 Giấy Chứng Nhận Tốt Nghiệp Chính Thức – OHANA Academy</h4>
+      <div class="cert-modal-actions">
+        <button class="cert-print-btn" onclick="window.print()">🖨️ In / Lưu PDF</button>
+        <button class="cert-close-btn" onclick="closeQuizCertModal()">✕</button>
+      </div>
+    </div>
+    <div class="certificate-sheet" id="quizCertSheet"></div>
+  </div>
+</div>
 </body>
 </html>

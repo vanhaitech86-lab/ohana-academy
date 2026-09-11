@@ -122,9 +122,10 @@
 <!-- ─── Course Header ──────────────────────────────────────── -->
 <div class="cd-header">
   <div class="container">
-    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap;">
       <span class="hero-badge" id="courseCategory" style="margin-bottom:0;">Khóa học</span>
       <span class="course-level-badge" id="courseLevel" style="position:static; padding:4px 12px;">Cơ bản</span>
+      <span id="courseTypeBadge" style="display:none; font-size:12px; font-weight:800; padding:4px 12px; border-radius:var(--radius-full);"></span>
     </div>
     <h1 id="courseTitle" style="font-size: 32px; font-weight: 800; color: white; margin-bottom: 14px; line-height: 1.3;">
       Đang tải thông tin khóa học...
@@ -180,6 +181,10 @@
     <div>
       <div class="cd-sidebar-card">
         <div id="courseThumbnailWrap" style="margin-bottom: 18px; border-radius: var(--radius); overflow: hidden; position: relative; display: none;"></div>
+        
+        <!-- Pricing Banner Box -->
+        <div id="coursePricingBox" style="margin-bottom: 16px;"></div>
+
         <div style="margin-bottom: 18px;" id="courseProgressCont">
           <!-- Progress bar if enrolled -->
         </div>
@@ -187,6 +192,9 @@
         <button id="enrollBtn" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 16px; margin-bottom: 16px;">
           Đăng ký khóa học ngay
         </button>
+
+        <!-- Certificate Guarantee Box if course has certificate -->
+        <div id="courseCertCard" style="margin-bottom: 16px; display:none;"></div>
 
         <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-100);">
           <div style="font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px;">
@@ -217,6 +225,20 @@
   </div>
 </div>
 
+<!-- ─── Certificate Preview Modal ────────────────────────────── -->
+<div class="cert-modal-overlay" id="certPreviewModal">
+  <div class="cert-modal-dialog">
+    <div class="cert-modal-topbar">
+      <h4>🎓 Mẫu Chứng Chỉ Tốt Nghiệp Chuẩn Hóa – OHANA Academy</h4>
+      <div class="cert-modal-actions">
+        <button class="cert-print-btn" onclick="window.print()">🖨️ In mẫu</button>
+        <button class="cert-close-btn" onclick="closeCertPreviewModal()">✕</button>
+      </div>
+    </div>
+    <div class="certificate-sheet" id="certSheetPreview"></div>
+  </div>
+</div>
+
 <script src="js/data.js"></script>
 <script src="js/auth.js"></script>
 <script>
@@ -236,6 +258,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const lessons = LessonDB.getByCourse(courseId);
   const quiz = QuizDB.getByCourse(courseId);
   const existingResult = user ? ResultDB.getUserCourseResult(user.id, courseId) : null;
+
+  const isPaid = course.priceType === 'paid' || (course.price && course.price > 0);
+  const hasCert = !!course.hasCertificate;
 
   document.title = `${course.title} – OHANA Academy`;
 
@@ -257,6 +282,63 @@ document.addEventListener('DOMContentLoaded', () => {
   if (levelEl) {
     levelEl.textContent = course.level;
     levelEl.style.background = LEVEL_COLORS[course.level] || '#10b981';
+  }
+
+  // Type Badge in Header
+  const typeBadgeEl = document.getElementById('courseTypeBadge');
+  if (typeBadgeEl) {
+    typeBadgeEl.style.display = 'inline-block';
+    if (isPaid || hasCert) {
+      typeBadgeEl.style.background = 'linear-gradient(135deg, #d97706, #b45309)';
+      typeBadgeEl.style.color = '#fff';
+      typeBadgeEl.innerHTML = '🎓 Khóa học Trả phí · Cấp chứng chỉ';
+    } else {
+      typeBadgeEl.style.background = '#10b981';
+      typeBadgeEl.style.color = '#fff';
+      typeBadgeEl.innerHTML = '🎁 Khóa học Miễn phí';
+    }
+  }
+
+  // Pricing Box in Sidebar
+  const pricingBox = document.getElementById('coursePricingBox');
+  if (pricingBox) {
+    if (isPaid) {
+      pricingBox.innerHTML = `
+        <div style="padding: 14px; background: rgba(245,158,11,0.08); border-radius: var(--radius); border: 1.5px solid rgba(245,158,11,0.3); text-align: center;">
+          <div style="font-size: 11.5px; color: var(--gray-500); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Học phí & Quyền lợi cấp bằng</div>
+          <div style="display:flex; align-items:baseline; justify-content:center; gap:8px; margin: 6px 0 2px;">
+            <span style="font-size: 26px; font-weight: 900; color: #ea580c;">${formatMoney(course.price)}</span>
+            ${course.originalPrice ? `<span style="font-size: 14px; color: var(--gray-400); text-decoration: line-through;">${formatMoney(course.originalPrice)}</span>` : ''}
+          </div>
+          <div style="font-size: 12px; color: #b45309; font-weight: 700;">🎓 Bao gồm Bằng chứng nhận tốt nghiệp chính thức</div>
+        </div>`;
+    } else {
+      pricingBox.innerHTML = `
+        <div style="padding: 14px; background: rgba(16,185,129,0.08); border-radius: var(--radius); border: 1.5px solid rgba(16,185,129,0.25); text-align: center;">
+          <div style="font-size: 11.5px; color: var(--gray-500); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Học phí khóa học</div>
+          <div style="font-size: 24px; font-weight: 900; color: #059669; margin: 4px 0 2px;">🎁 MIỄN PHÍ 100%</div>
+          <div style="font-size: 12px; color: var(--gray-500);">Chương trình đào tạo mở tại OHANA Academy</div>
+        </div>`;
+    }
+  }
+
+  // Certificate Box in Sidebar
+  const certCard = document.getElementById('courseCertCard');
+  if (certCard && hasCert) {
+    certCard.style.display = 'block';
+    certCard.innerHTML = `
+      <div class="cert-guarantee-card">
+        <div class="cert-guarantee-icon">🎓</div>
+        <div class="cert-guarantee-info">
+          <div class="cert-guarantee-title">Chứng chỉ tốt nghiệp chính thức</div>
+          <div class="cert-guarantee-desc">
+            Hoàn thành bài thi trắc nghiệm đạt từ ${quiz ? quiz.passingScore : 70}% để được cấp chứng nhận điện tử chuẩn hóa OHANA Academy.
+          </div>
+          <button type="button" class="btn-cert-preview" onclick="openCertPreviewModal()">
+            👁️ Xem mẫu chứng chỉ
+          </button>
+        </div>
+      </div>`;
   }
 
   // Thumbnail Preview in Sidebar
@@ -315,12 +397,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (first) window.location.href = `lesson.html?course=${courseId}&lesson=${first.id}`;
     };
   } else {
-    enrollBtn.textContent = '✅ Đăng ký khóa học ngay';
-    enrollBtn.onclick = () => {
-      EnrollmentDB.enroll(user.id, courseId);
-      showToast('Đăng ký khóa học thành công!', 'success');
-      setTimeout(() => window.location.reload(), 600);
-    };
+    if (isPaid) {
+      enrollBtn.textContent = `💳 Đăng ký khóa học (${formatMoney(course.price)})`;
+      enrollBtn.onclick = () => {
+        EnrollmentDB.enroll(user.id, courseId);
+        showToast('Đăng ký khóa học thành công! Chúc bạn học tập hiệu quả!', 'success');
+        setTimeout(() => window.location.reload(), 600);
+      };
+    } else {
+      enrollBtn.textContent = '🎁 Đăng ký học Miễn phí ngay';
+      enrollBtn.onclick = () => {
+        EnrollmentDB.enroll(user.id, courseId);
+        showToast('Đăng ký khóa học miễn phí thành công!', 'success');
+        setTimeout(() => window.location.reload(), 600);
+      };
+    }
   }
 
   // Quiz Button
@@ -357,6 +448,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
   }
 });
+
+// Modal Preview Certificate
+window.openCertPreviewModal = function() {
+  const modal = document.getElementById('certPreviewModal');
+  const sheet = document.getElementById('certSheetPreview');
+  if (!modal || !sheet) return;
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('id');
+  const c = CourseDB.getById(courseId);
+  const u = Auth.getCurrentUser();
+  sheet.innerHTML = buildCertificateHtml({
+    studentName: u ? u.name.toUpperCase() : 'NGUYỄN VĂN NAM',
+    courseTitle: c ? c.title : 'Khóa học Đào tạo Thực chiến Ohana',
+    certTitle: c && c.certificateTitle ? c.certificateTitle : 'CHỨNG NHẬN HOÀN THÀNH KHÓA HỌC',
+    instructor: c ? c.instructor : 'Alex Đặng – Giám đốc Đào tạo',
+    score: 95,
+    date: formatDate(new Date().toISOString()),
+    certId: 'OHANA-PREVIEW-2026'
+  });
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCertPreviewModal = function() {
+  const modal = document.getElementById('certPreviewModal');
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+};
 </script>
 </body>
 </html>
