@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>OHANA Academy – Nền tảng Đào tạo Trực tuyến AI & Nghiệp vụ Chuyên nghiệp</title>
+  <meta name="description" content="OHANA Academy – Hệ sinh thái đào tạo trực tuyến thực chiến: Tạo ảnh AI, Tạo video AI, AI Agent, Kỹ năng bán hàng, Kỹ năng giao tiếp và Quy trình Ohana.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body data-page="home">
+
+<!-- ─── QR Login Modal ────────────────────────────────────── -->
+<div class="qr-modal-overlay" id="qrLoginModal">
+  <div class="qr-modal-box">
+    <button class="qr-close" onclick="closeQR()">✕</button>
+    <div class="qr-title">📱 Quét mã QR để đăng nhập</div>
+    <div class="qr-sub">Mở camera điện thoại quét mã QR hoặc chọn tài khoản demo để đăng nhập tức thì</div>
+    
+    <div class="qr-code-wrap">
+      <div class="qr-corner qr-corner-tl"></div>
+      <div class="qr-corner qr-corner-tr"></div>
+      <div class="qr-corner qr-corner-bl"></div>
+      <div class="qr-corner qr-corner-br"></div>
+      <div class="qr-scanning-line"></div>
+      <svg width="160" height="160" viewBox="0 0 160 160" style="display:block;">
+        <rect width="160" height="160" fill="white"/>
+        <!-- Top-left finder -->
+        <rect x="8" y="8" width="44" height="44" rx="4" fill="#0f172a"/>
+        <rect x="14" y="14" width="32" height="32" rx="2" fill="white"/>
+        <rect x="20" y="20" width="20" height="20" rx="1" fill="#f97316"/>
+        <!-- Top-right finder -->
+        <rect x="108" y="8" width="44" height="44" rx="4" fill="#0f172a"/>
+        <rect x="114" y="14" width="32" height="32" rx="2" fill="white"/>
+        <rect x="120" y="20" width="20" height="20" rx="1" fill="#f97316"/>
+        <!-- Bottom-left finder -->
+        <rect x="8" y="108" width="44" height="44" rx="4" fill="#0f172a"/>
+        <rect x="14" y="114" width="32" height="32" rx="2" fill="white"/>
+        <rect x="20" y="120" width="20" height="20" rx="1" fill="#f97316"/>
+        <!-- Data modules -->
+        <rect x="60" y="8" width="8" height="8" fill="#0f172a"/><rect x="72" y="8" width="8" height="8" fill="#0f172a"/>
+        <rect x="60" y="20" width="8" height="8" fill="#0f172a"/><rect x="84" y="20" width="8" height="8" fill="#f97316"/>
+        <rect x="72" y="32" width="8" height="8" fill="#0f172a"/><rect x="60" y="44" width="8" height="8" fill="#0f172a"/>
+        <rect x="84" y="44" width="8" height="8" fill="#0f172a"/><rect x="60" y="60" width="8" height="8" fill="#f97316"/>
+        <rect x="72" y="60" width="8" height="8" fill="#0f172a"/><rect x="84" y="60" width="8" height="8" fill="#0f172a"/>
+        <rect x="96" y="60" width="8" height="8" fill="#0f172a"/><rect x="108" y="60" width="8" height="8" fill="#0f172a"/>
+        <rect x="8" y="60" width="8" height="8" fill="#0f172a"/><rect x="20" y="60" width="8" height="8" fill="#0f172a"/>
+        <rect x="44" y="60" width="8" height="8" fill="#0f172a"/><rect x="8" y="72" width="8" height="8" fill="#0f172a"/>
+        <rect x="32" y="72" width="8" height="8" fill="#f97316"/><rect x="60" y="72" width="8" height="8" fill="#0f172a"/>
+        <rect x="84" y="72" width="8" height="8" fill="#0f172a"/><rect x="108" y="72" width="8" height="8" fill="#0f172a"/>
+        <rect x="132" y="72" width="8" height="8" fill="#0f172a"/><rect x="144" y="72" width="8" height="8" fill="#0f172a"/>
+        <rect x="8" y="84" width="8" height="8" fill="#0f172a"/><rect x="20" y="84" width="8" height="8" fill="#0f172a"/>
+        <rect x="44" y="84" width="8" height="8" fill="#f97316"/><rect x="60" y="84" width="8" height="8" fill="#0f172a"/>
+        <rect x="72" y="84" width="8" height="8" fill="#0f172a"/><rect x="96" y="84" width="8" height="8" fill="#0f172a"/>
+        <rect x="120" y="84" width="8" height="8" fill="#0f172a"/><rect x="144" y="84" width="8" height="8" fill="#f97316"/>
+        <rect x="8" y="96" width="8" height="8" fill="#0f172a"/><rect x="32" y="96" width="8" height="8" fill="#0f172a"/>
+        <rect x="60" y="96" width="8" height="8" fill="#0f172a"/><rect x="84" y="96" width="8" height="8" fill="#0f172a"/>
+        <rect x="108" y="96" width="8" height="8" fill="#f97316"/><rect x="132" y="96" width="8" height="8" fill="#0f172a"/>
+        <rect x="60" y="108" width="8" height="8" fill="#0f172a"/><rect x="72" y="108" width="8" height="8" fill="#0f172a"/>
+        <rect x="96" y="108" width="8" height="8" fill="#0f172a"/><rect x="120" y="108" width="8" height="8" fill="#0f172a"/>
+        <rect x="144" y="108" width="8" height="8" fill="#0f172a"/><rect x="60" y="120" width="8" height="8" fill="#f97316"/>
+        <rect x="84" y="120" width="8" height="8" fill="#0f172a"/><rect x="108" y="120" width="8" height="8" fill="#0f172a"/>
+        <rect x="132" y="120" width="8" height="8" fill="#0f172a"/><rect x="60" y="132" width="8" height="8" fill="#0f172a"/>
+        <rect x="72" y="132" width="8" height="8" fill="#0f172a"/><rect x="96" y="132" width="8" height="8" fill="#0f172a"/>
+        <rect x="120" y="132" width="8" height="8" fill="#f97316"/><rect x="144" y="132" width="8" height="8" fill="#0f172a"/>
+        <rect x="60" y="144" width="8" height="8" fill="#0f172a"/><rect x="84" y="144" width="8" height="8" fill="#0f172a"/>
+        <rect x="108" y="144" width="8" height="8" fill="#0f172a"/>
+      </svg>
+    </div>
+
+    <div style="font-size:12.5px;color:var(--gray-500);margin-bottom:12px;">Hoặc chọn tài khoản đăng nhập nhanh:</div>
+    <div class="qr-demo-accounts">
+      <div class="qr-demo-item" onclick="qrLogin('admin@ohana.vn','admin123')">
+        <span class="qr-demo-icon">👑</span>
+        <div class="qr-demo-info">
+          <div class="name">Admin Ohana</div>
+          <div class="role">Quản trị viên</div>
+        </div>
+      </div>
+      <div class="qr-demo-item" onclick="qrLogin('nhanvien.moi@ohana.vn','123456')">
+        <span class="qr-demo-icon">🆕</span>
+        <div class="qr-demo-info">
+          <div class="name">Nhân viên mới</div>
+          <div class="role">Onboarding</div>
+        </div>
+      </div>
+      <div class="qr-demo-item" onclick="qrLogin('nhanvien@ohana.vn','123456')">
+        <span class="qr-demo-icon">👨‍💼</span>
+        <div class="qr-demo-info">
+          <div class="name">Nhân viên Ohana</div>
+          <div class="role">Thành viên chính thức</div>
+        </div>
+      </div>
+      <div class="qr-demo-item" onclick="qrLogin('hocvien@ohana.vn','123456')">
+        <span class="qr-demo-icon">🎓</span>
+        <div class="qr-demo-info">
+          <div class="name">Học viên Ngoài</div>
+          <div class="role">Khách hàng / Đối tác</div>
+        </div>
+      </div>
+    </div>
+    <button class="qr-login-btn" onclick="window.location.href='auth.html'">🔐 Đăng nhập bằng Email & Mật khẩu</button>
+  </div>
+</div>
+
+<!-- ─── Mobile Nav Overlay & Drawer ───────────────────────── -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
+<div class="mobile-nav-panel" id="mobileNavPanel">
+  <div style="padding: 10px 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-icon" style="width:36px;height:36px;font-size:18px;">🌺</div>
+      <div class="logo-text">
+        <strong style="font-size:16px;">OHANA <span>ACADEMY</span></strong>
+        <small style="font-size:9.5px;">E-Learning Platform</small>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="nav-link active"><span class="nav-icon">🏠</span> Trang chủ</a>
+  <a href="courses.html" class="nav-link"><span class="nav-icon">📚</span> Danh mục khóa học</a>
+  <a href="#" class="nav-link" id="mobileAdminLink" style="display:none;"><span class="nav-icon">⚙️</span> Quản trị hệ thống</a>
+  
+  <div style="padding:16px 24px;border-top:1px solid rgba(255,255,255,0.08);margin-top:12px;">
+    <button onclick="openQR()" style="width:100%;padding:12px;background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:8px;justify-content:center;">
+      📷 Quét mã QR đăng nhập
+    </button>
+  </div>
+  
+  <a href="auth.html" class="btn btn-primary" id="mobileLoginBtn" style="margin:0 24px 10px;">🔐 Đăng nhập tài khoản</a>
+  <a href="auth.html?tab=register" class="btn-register" id="mobileRegisterBtn">📝 Đăng ký tài khoản mới</a>
+  
+  <div id="mobileUserInfo" style="display:none;padding:16px 24px;">
+    <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:6px;">Đang đăng nhập:</div>
+    <div style="color:white;font-weight:800;font-size:15px;" id="mobileUserName"></div>
+    <div style="color:var(--ohana-orange);font-size:12px;margin-bottom:14px;" id="mobileUserRole"></div>
+    <button onclick="Auth.logout()" style="width:100%;padding:10px;background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;">
+      🚪 Đăng xuất
+    </button>
+  </div>
+</div>
+
+<!-- ─── Site Header ─────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌺</div>
+      <div class="logo-text">
+        <strong>OHANA <span>ACADEMY</span></strong>
+        <small>E-Learning Platform</small>
+      </div>
+    </a>
+
+    <form class="header-search" id="globalSearchForm">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearchInput" placeholder="Tìm khóa học AI, Bán hàng, Giao tiếp, Ohana...">
+    </form>
+
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link active"><span>🏠</span> Trang chủ</a>
+      <a href="courses.html" class="nav-link"><span>📚</span> Khóa học</a>
+      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+      <button onclick="openQR()" class="nav-link" style="background:none;border:none;cursor:pointer;" title="Quét QR đăng nhập">
+        <span>📷</span> QR Login
+      </button>
+      <a href="auth.html?tab=register" class="nav-link" id="registerNavBtn"><span>📝</span> Đăng ký</a>
+      <a href="auth.html" class="btn btn-login" id="loginBtn">
+        <span>🔐 Đăng nhập</span>
+      </a>
+
+      <!-- User Logged In Menu -->
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn">
+          <span id="userAvatar">O</span>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header">
+            <div class="name" id="userName">User</div>
+            <div class="role" id="userRoleBadge">Thành viên</div>
+          </div>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> Khóa học của tôi</a>
+          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> Trang Quản trị</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ─── Hero Slider ────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-slider" id="heroSlider">
+    
+    <!-- Slide 1: Khóa học AI -->
+    <div class="hero-slide active">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-badge">🚀 Bứt phá Kỷ nguyên AI cùng Ohana</div>
+          <h1 class="hero-title">
+            Làm chủ <span>Trí Tuệ Nhân Tạo</span><br>
+            Nhân bản <span class="tech-span">Hiệu Suất Vượt Trội</span>
+          </h1>
+          <p class="hero-desc">
+            Trang bị kỹ năng AI thực chiến hàng đầu: Tạo hình ảnh chuyên nghiệp với Midjourney, sản xuất video viral triệu view với Runway Gen-3/Kling và thiết lập AI Agent tự động hóa công việc.
+          </p>
+          <div class="hero-actions">
+            <a href="courses.html?cat=1" class="btn btn-primary btn-lg">🎨 Khám phá Khóa học AI</a>
+            <button onclick="openQR()" class="btn btn-outline btn-lg">📷 Đăng nhập nhanh</button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="number" id="statCourses">6</div><div class="label">Khóa đào tạo chuyên sâu</div></div>
+            <div class="hero-stat"><div class="number" id="statUsers">4</div><div class="label">Học viên tham gia</div></div>
+            <div class="hero-stat"><div class="number" id="statResults">0</div><div class="label">Bài thi hoàn thành</div></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card-float">
+            <div class="card-title">
+              <span>🌟 Khóa học AI Tiêu Biểu</span>
+              <span class="badge" style="background:rgba(249,115,22,0.2);color:#f97316;">Hot 2026</span>
+            </div>
+            
+            <div class="course-mini" onclick="window.location='course-detail.html?id=1'">
+              <div class="course-mini-icon" style="background:rgba(139,92,246,0.2);color:#a78bfa;">🎨</div>
+              <div class="course-mini-info">
+                <div class="title">Tạo hình ảnh bằng AI & Midjourney</div>
+                <div class="meta">6 giờ · 4 bài học chuyên sâu</div>
+              </div>
+              <span class="course-mini-badge" style="background:rgba(16,185,129,0.2);color:#10b981;">New</span>
+            </div>
+
+            <div class="course-mini" onclick="window.location='course-detail.html?id=2'">
+              <div class="course-mini-icon" style="background:rgba(236,72,153,0.2);color:#f472b6;">🎬</div>
+              <div class="course-mini-info">
+                <div class="title">Sản xuất Video Viral với AI</div>
+                <div class="meta">7 giờ · Runway Gen-3 & Kling AI</div>
+              </div>
+              <span class="course-mini-badge" style="background:rgba(249,115,22,0.2);color:#f97316;">Hot</span>
+            </div>
+
+            <div class="course-mini" onclick="window.location='course-detail.html?id=3'">
+              <div class="course-mini-icon" style="background:rgba(6,182,212,0.2);color:#22d3ee;">🤖</div>
+              <div class="course-mini-info">
+                <div class="title">AI Agent & Tự động hóa Doanh nghiệp</div>
+                <div class="meta">8 giờ · CrewAI & n8n</div>
+              </div>
+              <span class="course-mini-badge" style="background:rgba(14,165,233,0.2);color:#38bdf8;">Pro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Kỹ năng Bán hàng & Giao tiếp -->
+    <div class="hero-slide">
+      <div class="hero-bg" style="background:radial-gradient(circle at 80% 20%, rgba(16,185,129,0.2) 0%, transparent 60%), linear-gradient(135deg, #091224 0%, #064e3b 60%, #022c22 100%);"></div>
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-badge" style="background:rgba(16,185,129,0.2);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">💼 Kỹ Năng Mềm Thực Chiến</div>
+          <h1 class="hero-title">
+            Bán Hàng <span>Tư Vấn Đỉnh Cao</span><br>
+            Giao Tiếp <span>Thấu Cảm & Chinh Phục</span>
+          </h1>
+          <p class="hero-desc">
+            Nắm vững nghệ thuật thấu hiểu tâm lý khách hàng, công thức đặt câu hỏi SPIN, kỹ năng bẻ gãy mọi lời từ chối, lắng nghe chủ động và phong thái giao tiếp tự tin, cuốn hút.
+          </p>
+          <div class="hero-actions">
+            <a href="courses.html?cat=4" class="btn btn-primary btn-lg" style="background:linear-gradient(135deg,#10b981,#059669);">💼 Học Kỹ Năng Bán Hàng</a>
+            <a href="courses.html?cat=5" class="btn btn-outline btn-lg">💬 Kỹ Năng Giao Tiếp</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card-float">
+            <div class="card-title"><span>🎯 Lộ Trình Phát Triển Toàn Diện</span></div>
+            <div class="course-mini" onclick="window.location='course-detail.html?id=4'">
+              <div class="course-mini-icon" style="background:rgba(249,115,22,0.2);color:#f97316;">💼</div>
+              <div class="course-mini-info"><div class="title">Bán Hàng Tư Vấn & Chốt Sale</div><div class="meta">6 giờ · 4 bài học thực tế</div></div>
+              <span class="course-mini-badge" style="background:rgba(245,158,11,0.2);color:#f59e0b;">★ 4.9</span>
+            </div>
+            <div class="course-mini" onclick="window.location='course-detail.html?id=5'">
+              <div class="course-mini-icon" style="background:rgba(16,185,129,0.2);color:#10b981;">💬</div>
+              <div class="course-mini-info"><div class="title">Giao Tiếp Tinh Tế & Lắng Nghe</div><div class="meta">5 giờ · Nghệ thuật thấu hiểu</div></div>
+              <span class="course-mini-badge" style="background:rgba(16,185,129,0.2);color:#10b981;">★ 4.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Quy trình Ohana -->
+    <div class="hero-slide">
+      <div class="hero-bg" style="background:radial-gradient(circle at 80% 20%, rgba(234,88,12,0.25) 0%, transparent 60%), linear-gradient(135deg, #091224 0%, #7c2d12 60%, #431407 100%);"></div>
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-badge" style="background:rgba(234,88,12,0.25);border-color:rgba(234,88,12,0.5);color:#fdba74;">🌺 Gia Đình & Văn Hóa Ohana</div>
+          <h1 class="hero-title">
+            Quy Trình <span>Chuẩn Vận Hành</span><br>
+            Văn Hóa <span>Ohana Gắn Kết</span>
+          </h1>
+          <p class="hero-desc">
+            "Ohana có nghĩa là Gia đình - Không ai bị bỏ lại phía sau". Nắm vững quy trình phối hợp làm việc nhóm, tiêu chuẩn dịch vụ khách hàng 5 sao và giá trị cốt lõi bền vững.
+          </p>
+          <div class="hero-actions">
+            <a href="courses.html?cat=6" class="btn btn-primary btn-lg" style="background:var(--gradient-ohana);">🌺 Học Quy Trình Ohana</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card-float">
+            <div class="card-title"><span>📋 Khóa Học Bắt Buộc CBNV</span></div>
+            <div class="course-mini" onclick="window.location='course-detail.html?id=6'">
+              <div class="course-mini-icon" style="background:rgba(234,88,12,0.2);color:#ea580c;">🏢</div>
+              <div class="course-mini-info"><div class="title">Quy Trình & Văn Hóa Doanh Nghiệp Ohana</div><div class="meta">4 giờ · Dịch vụ 5 sao</div></div>
+              <span class="course-mini-badge" style="background:rgba(234,88,12,0.2);color:#ea580c;">Bắt buộc</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-controls">
+    <button class="hero-dot active" data-idx="0"></button>
+    <button class="hero-dot" data-idx="1"></button>
+    <button class="hero-dot" data-idx="2"></button>
+  </div>
+  <button class="hero-prev" id="sliderPrev">‹</button>
+  <button class="hero-next" id="sliderNext">›</button>
+</section>
+
+<!-- ─── Category Bar ───────────────────────────────────────── -->
+<div class="category-bar">
+  <div class="category-bar-inner" id="categoryBar">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<!-- ─── Courses Grid Section ───────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Khóa học <span>dành cho bạn</span></h2>
+        <p class="section-desc">Chương trình đào tạo thực chiến được thiết kế riêng cho học viên và nhân sự Ohana</p>
+      </div>
+      <a href="courses.html" class="see-all">Xem tất cả khóa học →</a>
+    </div>
+    <div class="courses-grid" id="coursesGrid">
+      <!-- Dynamic rendering by app.js -->
+    </div>
+  </div>
+</section>
+
+<!-- ─── Core Values & Why Choose Ohana ─────────────────────── -->
+<section class="section" style="background:var(--white);border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);">
+  <div class="container">
+    <div class="section-header" style="text-align:center;flex-direction:column;align-items:center;">
+      <h2 class="section-title">Tại sao chọn <span>OHANA Academy?</span></h2>
+      <p class="section-desc" style="max-width:600px;">Nền tảng đào tạo toàn diện kết hợp công nghệ AI tiên tiến và văn hóa gắn kết gia đình</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-in-up stagger-1">
+        <div class="feature-icon">🤖</div>
+        <h3 class="feature-title">Đón đầu Kỷ nguyên AI</h3>
+        <p class="feature-desc">Cập nhật liên tục các công nghệ tạo hình ảnh, video và xây dựng AI Agent hiện đại nhất.</p>
+      </div>
+      <div class="feature-card fade-in-up stagger-2">
+        <div class="feature-icon">🎯</div>
+        <h3 class="feature-title">Thực chiến 100%</h3>
+        <p class="feature-desc">Giáo trình đúc kết từ kinh nghiệm thực tế, áp dụng ngay vào công việc để tạo ra kết quả doanh số đột phá.</p>
+      </div>
+      <div class="feature-card fade-in-up stagger-3">
+        <div class="feature-icon">📝</div>
+        <h3 class="feature-title">Đánh giá & Cấp Chứng chỉ</h3>
+        <p class="feature-desc">Hệ thống bài trắc nghiệm thông minh, câu hỏi tương tác giữa video giúp ghi nhớ và đo lường năng lực chuẩn xác.</p>
+      </div>
+      <div class="feature-card fade-in-up stagger-4">
+        <div class="feature-icon">🌺</div>
+        <h3 class="feature-title">Văn hóa Gia đình Ohana</h3>
+        <p class="feature-desc">Môi trường học tập đồng hành, chia sẻ và hỗ trợ tận tâm: Không ai bị bỏ lại phía sau trên hành trình phát triển.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ─────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-icon">🌺</div>
+          <div class="logo-text">
+            <strong style="color:white;font-size:18px;">OHANA <span style="color:var(--ohana-orange);">ACADEMY</span></strong>
+            <small style="color:var(--gray-400);">E-Learning Platform</small>
+          </div>
+        </div>
+        <p>Hệ thống đào tạo trực tuyến chính thức của OHANA. Đào tạo chuyên sâu AI (Ảnh, Video, AI Agent), Kỹ năng bán hàng, Kỹ năng giao tiếp và Quy trình nội bộ Ohana.</p>
+        
+        <div class="footer-social">
+          <a href="#" id="fbLink" class="social-btn" title="Facebook" target="_blank">f</a>
+          <a href="#" id="ytLink" class="social-btn" title="YouTube" target="_blank">▶</a>
+          <a href="#" id="zaloLink" class="social-btn" title="Zalo" target="_blank">Z</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Danh Mục Đào Tạo</h4>
+        <div class="footer-links">
+          <a href="courses.html?cat=1">🎨 Tạo hình ảnh bằng AI</a>
+          <a href="courses.html?cat=2">🎬 Tạo video bằng AI</a>
+          <a href="courses.html?cat=3">🤖 Khóa học về AI Agent</a>
+          <a href="courses.html?cat=4">💼 Kỹ năng bán hàng</a>
+          <a href="courses.html?cat=5">💬 Kỹ năng giao tiếp</a>
+          <a href="courses.html?cat=6">🏢 Quy trình Ohana</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Hệ Thống</h4>
+        <div class="footer-links">
+          <a href="index.html">Trang chủ</a>
+          <a href="courses.html">Tất cả khóa học</a>
+          <a href="auth.html">Đăng nhập tài khoản</a>
+          <a href="auth.html?tab=register">Đăng ký thành viên</a>
+          <a href="admin.html">Trang Quản trị</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Thông Tin Liên Hệ</h4>
+        <div class="footer-links">
+          <a href="tel:0988739896">📞 Hotline: 0988 739 896</a>
+          <a href="mailto:contact@ohana.vn">📧 contact@ohana.vn</a>
+          <a href="https://ohana.vn" target="_blank">🌐 ohana.vn</a>
+          <a href="#">📍 Hà Nội & TP. Hồ Chí Minh</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 <strong>OHANA Academy</strong>. Bản quyền thuộc về <strong>OHANA Group</strong>.</p>
+      <p style="font-size:12px;color:var(--gray-500);">Phiên bản 2.0.0 – AI E-Learning Platform</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Mobile Bottom Navigation ──────────────────────────── -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav">
+  <a href="index.html" class="bn-item active">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">Trang chủ</span>
+  </a>
+  <a href="courses.html" class="bn-item">
+    <span class="bn-icon">📚</span>
+    <span class="bn-label">Khóa học</span>
+  </a>
+  <a href="#" onclick="openQR();return false;" class="bn-item bn-qr">
+    <span class="bn-icon">📷</span>
+    <span class="bn-label">QR Login</span>
+  </a>
+  <a href="auth.html" class="bn-item" id="bnLogin">
+    <span class="bn-icon">🔐</span>
+    <span class="bn-label">Đăng nhập</span>
+  </a>
+  <a href="admin.html" class="bn-item" id="bnAdmin" style="display:none;">
+    <span class="bn-icon">⚙️</span>
+    <span class="bn-label">Quản trị</span>
+  </a>
+</nav>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

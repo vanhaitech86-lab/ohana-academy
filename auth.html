@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Đăng Nhập & Đăng Ký – OHANA Academy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+                  linear-gradient(135deg, #091224 0%, #0f172a 60%, #1e293b 100%);
+    }
+    .auth-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--gray-200);
+      margin-bottom: 24px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-500);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+    .auth-tab.active {
+      color: var(--ohana-orange);
+      border-bottom-color: var(--ohana-orange);
+    }
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .demo-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .demo-item {
+      padding: 8px 10px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      text-align: left;
+    }
+    .demo-item:hover {
+      border-color: var(--ohana-orange);
+      background: rgba(249,115,22,0.05);
+    }
+    .demo-item .role { font-size: 11.5px; font-weight: 700; }
+    .demo-item .email { font-size: 11px; color: var(--gray-500); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .err-msg {
+      color: var(--danger);
+      font-size: 12.5px;
+      margin-top: 4px;
+      display: none;
+    }
+    .err-msg.show { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-card fade-in-up">
+    
+    <!-- Logo -->
+    <div style="display:flex; flex-direction:column; align-items:center; margin-bottom: 24px;">
+      <a href="index.html" class="logo" style="margin-bottom: 8px;">
+        <div class="logo-icon">🌺</div>
+        <div class="logo-text">
+          <strong style="color:var(--gray-900); font-size:20px;">OHANA <span style="color:var(--ohana-orange);">ACADEMY</span></strong>
+          <small style="color:var(--gray-500);">E-Learning Platform</small>
+        </div>
+      </a>
+      <span style="font-size: 13px; color: var(--gray-500);">Nền tảng đào tạo trực tuyến chính thức Ohana</span>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">🔐 Đăng nhập</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">📝 Đăng ký mới</div>
+    </div>
+
+    <!-- ─── LOGIN PANEL ────────────────────────────────────── -->
+    <div class="auth-panel active" id="panelLogin">
+      
+      <!-- Demo Accounts -->
+      <div class="demo-box">
+        <div style="font-size: 12px; font-weight: 700; color: var(--gray-700);">
+          🔑 Tài khoản demo (click để tự động điền):
+        </div>
+        <div class="demo-grid">
+          <div class="demo-item" onclick="fillDemo('admin@ohana.vn', 'admin123')">
+            <div class="role" style="color:#dc2626;">👑 Admin Ohana</div>
+            <div class="email">admin@ohana.vn</div>
+          </div>
+          <div class="demo-item" onclick="fillDemo('nhanvien.moi@ohana.vn', '123456')">
+            <div class="role" style="color:#0284c7;">🆕 Nhân viên mới</div>
+            <div class="email">nhanvien.moi@ohana.vn</div>
+          </div>
+          <div class="demo-item" onclick="fillDemo('nhanvien@ohana.vn', '123456')">
+            <div class="role" style="color:#ea580c;">👨‍💼 Nhân viên Ohana</div>
+            <div class="email">nhanvien@ohana.vn</div>
+          </div>
+          <div class="demo-item" onclick="fillDemo('hocvien@ohana.vn', '123456')">
+            <div class="role" style="color:#16a34a;">🎓 Học viên ngoài</div>
+            <div class="email">hocvien@ohana.vn</div>
+          </div>
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email đăng nhập <span class="required">*</span></label>
+          <input type="email" id="loginEmail" class="form-control" placeholder="Nhập địa chỉ email của bạn" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mật khẩu <span class="required">*</span></label>
+          <div style="position:relative;">
+            <input type="password" id="loginPass" class="form-control" placeholder="Nhập mật khẩu" required style="padding-right:44px;">
+            <button type="button" onclick="togglePass('loginPass', this)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:16px;">👁️</button>
+          </div>
+        </div>
+        <div id="loginErr" class="err-msg" style="margin-bottom:14px; padding:10px; background:#fef2f2; border-radius:var(--radius-sm); border:1px solid #fee2e2;"></div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+          🔐 Đăng nhập ngay
+        </button>
+      </form>
+
+      <div style="text-align:center; margin-top: 18px; font-size: 13.5px; color: var(--gray-500);">
+        Chưa có tài khoản? <a href="#" onclick="switchTab('register')" style="color:var(--ohana-orange); font-weight:700;">Đăng ký miễn phí →</a>
+      </div>
+    </div>
+
+    <!-- ─── REGISTER PANEL ─────────────────────────────────── -->
+    <div class="auth-panel" id="panelRegister">
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Họ và tên của bạn <span class="required">*</span></label>
+          <input type="text" id="regName" class="form-control" placeholder="Nguyễn Văn A" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Địa chỉ Email <span class="required">*</span></label>
+          <input type="email" id="regEmail" class="form-control" placeholder="email@ohana.vn" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Số điện thoại</label>
+            <input type="tel" id="regPhone" class="form-control" placeholder="0901234567">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phòng ban / Đơn vị</label>
+            <input type="text" id="regDept" class="form-control" placeholder="Phòng Kinh doanh">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mật khẩu (tối thiểu 6 ký tự) <span class="required">*</span></label>
+          <div style="position:relative;">
+            <input type="password" id="regPass" class="form-control" placeholder="Tạo mật khẩu" minlength="6" required style="padding-right:44px;">
+            <button type="button" onclick="togglePass('regPass', this)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:16px;">👁️</button>
+          </div>
+        </div>
+        <div id="regErr" class="err-msg" style="margin-bottom:14px; padding:10px; background:#fef2f2; border-radius:var(--radius-sm); border:1px solid #fee2e2;"></div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+          📝 Hoàn tất Đăng ký
+        </button>
+      </form>
+
+      <div style="text-align:center; margin-top: 18px; font-size: 13.5px; color: var(--gray-500);">
+        Đã có tài khoản? <a href="#" onclick="switchTab('login')" style="color:var(--ohana-orange); font-weight:700;">← Quay lại Đăng nhập</a>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--gray-100);">
+      <a href="index.html" style="font-size: 13px; color: var(--gray-400);">← Quay về trang chủ Ohana</a>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tab') === 'register') {
+    switchTab('register');
+  }
+  // If already logged in, redirect home
+  if (Auth.isLoggedIn()) {
+    window.location.href = 'index.html';
+  }
+});
+
+function switchTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+  document.getElementById('panelLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('panelRegister').classList.toggle('active', tab === 'register');
+}
+
+function fillDemo(email, pass) {
+  document.getElementById('loginEmail').value = email;
+  document.getElementById('loginPass').value = pass;
+  document.getElementById('loginErr').classList.remove('show');
+}
+
+function togglePass(id, btn) {
+  const el = document.getElementById(id);
+  if (el.type === 'password') {
+    el.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    el.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const errEl = document.getElementById('loginErr');
+
+  const res = Auth.login(email, pass);
+  if (res.success) {
+    showToast(`Đăng nhập thành công! Chào ${res.user.name}`, 'success');
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect') || (res.user.role === 'admin' ? 'admin.html' : 'index.html');
+    setTimeout(() => window.location.href = redirect, 500);
+  } else {
+    errEl.textContent = res.message;
+    errEl.classList.add('show');
+  }
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const department = document.getElementById('regDept').value.trim();
+  const pass = document.getElementById('regPass').value.trim();
+  const errEl = document.getElementById('regErr');
+
+  const res = Auth.register({ name, email, phone, department, password: pass, role: 'customer' });
+  if (res.success) {
+    showToast('Đăng ký tài khoản thành công! Đang chuyển hướng...', 'success');
+    setTimeout(() => window.location.href = 'index.html', 700);
+  } else {
+    errEl.textContent = res.message;
+    errEl.classList.add('show');
+  }
+}
+</script>
+</body>
+</html>

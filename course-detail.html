@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Chi Tiết Khóa Học – OHANA Academy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <style>
+    .cd-header {
+      background: linear-gradient(135deg, #091224 0%, #0f172a 60%, #1e293b 100%);
+      color: white;
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .cd-grid {
+      display: grid;
+      grid-template-columns: 1.9fr 1.1fr;
+      gap: 36px;
+      margin-top: 36px;
+      margin-bottom: 60px;
+    }
+    @media (max-width: 900px) {
+      .cd-grid { grid-template-columns: 1fr; }
+    }
+    .syllabus-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+    }
+    .syllabus-header {
+      padding: 18px 24px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-100);
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+    .lesson-item:hover { background: var(--gray-50); }
+    .lesson-item.completed { background: rgba(16, 185, 129, 0.04); }
+    .lesson-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .lesson-item.completed .lesson-num {
+      background: var(--success);
+      color: white;
+    }
+    .lesson-info { flex: 1; }
+    .lesson-name { font-size: 14.5px; font-weight: 700; color: var(--gray-800); }
+    .lesson-dur { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+
+    /* Sticky Sidebar Card */
+    .cd-sidebar-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 90px;
+    }
+  </style>
+</head>
+<body data-page="course-detail">
+
+<!-- ─── Site Header ─────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌺</div>
+      <div class="logo-text">
+        <strong>OHANA <span>ACADEMY</span></strong>
+        <small>E-Learning Platform</small>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link"><span>🏠</span> Trang chủ</a>
+      <a href="courses.html" class="nav-link"><span>📚</span> Khóa học</a>
+      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+      <a href="auth.html" class="btn btn-login" id="loginBtn"><span>🔐 Đăng nhập</span></a>
+
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">O</span></button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header">
+            <div class="name" id="userName">User</div>
+            <div class="role" id="userRoleBadge">Thành viên</div>
+          </div>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> Khóa học của tôi</a>
+          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─── Course Header ──────────────────────────────────────── -->
+<div class="cd-header">
+  <div class="container">
+    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+      <span class="hero-badge" id="courseCategory" style="margin-bottom:0;">Khóa học</span>
+      <span class="course-level-badge" id="courseLevel" style="position:static; padding:4px 12px;">Cơ bản</span>
+    </div>
+    <h1 id="courseTitle" style="font-size: 32px; font-weight: 800; color: white; margin-bottom: 14px; line-height: 1.3;">
+      Đang tải thông tin khóa học...
+    </h1>
+    <p id="courseDesc" style="color: var(--gray-300); font-size: 16px; line-height: 1.7; max-width: 820px; margin-bottom: 20px;">
+      ...
+    </p>
+    <div style="display:flex; flex-wrap:wrap; gap: 20px; font-size: 13.5px; color: var(--gray-300);">
+      <span id="courseInstructor">👨‍🏫 Giảng viên</span>
+      <span id="courseDuration">⏱ 6 giờ</span>
+      <span id="courseLessons">📚 4 bài học</span>
+      <span id="courseRating">⭐ 4.9/5</span>
+      <span id="courseEnrollCount">👥 100+ học viên</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Main Content ───────────────────────────────────────── -->
+<div class="container">
+  <div class="cd-grid">
+    <!-- Left Column: Syllabus & Content -->
+    <div>
+      <div class="syllabus-card">
+        <div class="syllabus-header">
+          <strong style="font-size: 16px; color: var(--gray-900);">📋 Đề Cương & Bài Học</strong>
+          <span id="syllabusCount" style="font-size: 13px; color: var(--gray-500);">4 bài giảng</span>
+        </div>
+        <div id="lessonList">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Quiz Action Card -->
+      <div class="syllabus-card" style="border-left: 4px solid var(--ohana-orange); padding: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:22px;">📝</span>
+              <strong style="font-size: 17px; color: var(--gray-900);" id="quizTitle">Bài kiểm tra đánh giá năng lực</strong>
+            </div>
+            <p style="font-size: 13.5px; color: var(--gray-500); margin-top: 4px;" id="quizInfo">
+              Đạt tối thiểu 70% để hoàn thành khóa học và ghi nhận kết quả.
+            </p>
+          </div>
+          <button id="quizBtn" class="btn btn-primary" style="display:none;">
+            📝 Làm bài kiểm tra
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Enroll Box -->
+    <div>
+      <div class="cd-sidebar-card">
+        <div style="margin-bottom: 18px;" id="courseProgressCont">
+          <!-- Progress bar if enrolled -->
+        </div>
+
+        <button id="enrollBtn" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 16px; margin-bottom: 16px;">
+          Đăng ký khóa học ngay
+        </button>
+
+        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-100);">
+          <div style="font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px;">
+            Quyền truy cập dành cho:
+          </div>
+          <div id="courseRoles" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-100);">
+          <div style="font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px;">
+            Từ khóa chủ đề:
+          </div>
+          <div id="courseTags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: var(--gray-50); border-radius: var(--radius); border: 1px solid var(--gray-200);">
+          <div style="font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px;">
+            🌺 Cam kết từ OHANA Academy
+          </div>
+          <ul style="font-size: 12.5px; color: var(--gray-600); line-height: 1.7; padding-left: 14px; list-style: disc;">
+            <li>Học tập mọi lúc mọi nơi trên mọi thiết bị</li>
+            <li>Giáo trình thực chiến cập nhật liên tục</li>
+            <li>Được hỗ trợ trực tiếp từ đội ngũ chuyên gia</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('id');
+  if (!courseId) { window.location.href = 'courses.html'; return; }
+
+  const course = CourseDB.getById(courseId);
+  if (!course) { window.location.href = 'courses.html'; return; }
+
+  const user = Auth.getCurrentUser();
+  const canAccess = user ? Auth.canAccessCourse(course) : false;
+  const enrolled = user ? EnrollmentDB.isEnrolled(user.id, courseId) : false;
+  const progress = user ? ProgressDB.get(user.id, courseId) : { completedLessons: [] };
+  const category = CategoryDB.getById(course.categoryId);
+  const lessons = LessonDB.getByCourse(courseId);
+  const quiz = QuizDB.getByCourse(courseId);
+  const existingResult = user ? ResultDB.getUserCourseResult(user.id, courseId) : null;
+
+  document.title = `${course.title} – OHANA Academy`;
+
+  document.getElementById('courseTitle').textContent = course.title;
+  document.getElementById('courseDesc').textContent = course.description;
+  document.getElementById('courseInstructor').textContent = `👨‍🏫 ${course.instructor}`;
+  document.getElementById('courseDuration').textContent = `⏱ ${course.duration}`;
+  document.getElementById('courseLessons').textContent = `📚 ${lessons.length} bài học`;
+  document.getElementById('courseRating').textContent = `⭐ ${course.rating}/5`;
+  document.getElementById('courseEnrollCount').textContent = `👥 ${course.enrollCount || 0} học viên`;
+  
+  const catEl = document.getElementById('courseCategory');
+  if (catEl && category) {
+    catEl.textContent = `${category.icon} ${category.name}`;
+    catEl.style.color = category.color;
+  }
+
+  const levelEl = document.getElementById('courseLevel');
+  if (levelEl) {
+    levelEl.textContent = course.level;
+    levelEl.style.background = LEVEL_COLORS[course.level] || '#10b981';
+  }
+
+  // Tags
+  const tagsEl = document.getElementById('courseTags');
+  if (tagsEl && course.tags) {
+    tagsEl.innerHTML = course.tags.map(t => `<span class="badge" style="background:var(--gray-100);color:var(--gray-700);">#${t}</span>`).join('');
+  }
+
+  // Roles
+  const rolesEl = document.getElementById('courseRoles');
+  if (rolesEl && course.allowedRoles) {
+    rolesEl.innerHTML = course.allowedRoles.map(r => `<span class="badge badge-${r}">${ROLE_LABELS[r]}</span>`).join('');
+  }
+
+  // Progress Bar in Sidebar
+  const progCont = document.getElementById('courseProgressCont');
+  if (enrolled && progCont) {
+    const pct = Math.round((progress.completedLessons.length / Math.max(lessons.length, 1)) * 100);
+    progCont.innerHTML = `
+      <div style="font-size:13px; font-weight:700; color:var(--gray-700); display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span>Tiến độ hoàn thành:</span>
+        <span style="color:var(--ohana-orange);">${pct}%</span>
+      </div>
+      <div class="progress-bar" style="height:8px;">
+        <div class="progress-fill" style="width:${pct}%"></div>
+      </div>`;
+  }
+
+  // Enroll button
+  const enrollBtn = document.getElementById('enrollBtn');
+  if (!user) {
+    enrollBtn.textContent = '🔐 Đăng nhập để bắt đầu học';
+    enrollBtn.onclick = () => window.location.href = `auth.html?redirect=${encodeURIComponent(window.location.href)}`;
+  } else if (!canAccess) {
+    enrollBtn.textContent = '🔒 Tài khoản không có quyền học khóa này';
+    enrollBtn.disabled = true;
+    enrollBtn.style.background = 'var(--gray-400)';
+  } else if (enrolled) {
+    enrollBtn.textContent = '▶ Tiếp tục học bài giảng';
+    enrollBtn.style.background = 'var(--gradient-ohana)';
+    enrollBtn.onclick = () => {
+      const first = lessons[0];
+      if (first) window.location.href = `lesson.html?course=${courseId}&lesson=${first.id}`;
+    };
+  } else {
+    enrollBtn.textContent = '✅ Đăng ký khóa học ngay';
+    enrollBtn.onclick = () => {
+      EnrollmentDB.enroll(user.id, courseId);
+      showToast('Đăng ký khóa học thành công!', 'success');
+      setTimeout(() => window.location.reload(), 600);
+    };
+  }
+
+  // Quiz Button
+  const quizBtn = document.getElementById('quizBtn');
+  if (quiz && user && enrolled && canAccess) {
+    quizBtn.style.display = 'inline-flex';
+    if (existingResult) {
+      quizBtn.innerHTML = `📊 Xem kết quả (${existingResult.score}%)`;
+      quizBtn.onclick = () => window.location.href = `quiz.html?course=${courseId}&review=1`;
+    } else {
+      quizBtn.innerHTML = `📝 Làm bài kiểm tra`;
+      quizBtn.onclick = () => window.location.href = `quiz.html?course=${courseId}`;
+    }
+  }
+
+  // Render Lesson Syllabus
+  const lessonList = document.getElementById('lessonList');
+  if (lessonList) {
+    document.getElementById('syllabusCount').textContent = `${lessons.length} bài học`;
+    lessonList.innerHTML = lessons.map((l, i) => {
+      const done = progress.completedLessons.includes(l.id);
+      const canOpen = user && canAccess && enrolled;
+      return `
+        <div class="lesson-item ${done ? 'completed' : ''}" onclick="${canOpen ? `window.location='lesson.html?course=${courseId}&lesson=${l.id}'` : ''}">
+          <div class="lesson-num">${done ? '✓' : i + 1}</div>
+          <div class="lesson-info">
+            <div class="lesson-name">${l.title}</div>
+            <div class="lesson-dur">⏱ ${l.duration} ${l.docName ? '· 📄 Có tài liệu' : ''}</div>
+          </div>
+          <div>
+            ${done ? '✅' : (canOpen ? '▶' : '🔒')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+});
+</script>
+</body>
+</html>

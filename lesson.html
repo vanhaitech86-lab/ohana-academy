@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Bài Học – OHANA Academy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <style>
+    body { user-select: none; -webkit-user-select: none; }
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      min-height: calc(100vh - 70px);
+    }
+    .lesson-main {
+      padding: 24px 32px;
+      overflow-y: auto;
+      background: var(--gray-50);
+    }
+    .lesson-sidebar {
+      background: white;
+      border-left: 1px solid var(--gray-200);
+      overflow-y: auto;
+      height: calc(100vh - 70px);
+      position: sticky;
+      top: 70px;
+    }
+    @media (max-width: 900px) {
+      .lesson-layout { grid-template-columns: 1fr; }
+      .lesson-sidebar { display: none; }
+      .lesson-main { padding: 16px; }
+    }
+
+    /* Video Player Wrapper */
+    .video-container {
+      position: relative;
+      background: #000;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .video-aspect {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #091224;
+    }
+    .video-aspect iframe, .video-aspect video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* Video Progress Bar & Anti-skip info */
+    .video-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      background: var(--primary-dark);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+    .video-bar .v-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .video-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .video-track-fill {
+      height: 100%;
+      background: var(--gradient-ohana);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .video-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ohana-orange);
+      min-width: 44px;
+      text-align: right;
+    }
+
+    /* Lesson Navigation Bar */
+    .lesson-nav-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Document Reader View */
+    .doc-box {
+      margin-top: 24px;
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .doc-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--primary-dark);
+      color: white;
+    }
+    .doc-box-body {
+      padding: 24px;
+      line-height: 1.8;
+      font-size: 14.5px;
+      color: var(--gray-700);
+    }
+
+    /* Interactive Question Modal */
+    #iqModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(6px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    #iqModal.show { display: flex; }
+    .iq-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      max-width: 520px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      animation: modalScale 0.25s ease;
+    }
+    .iq-header {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .iq-body { padding: 24px; }
+    .iq-qtext { font-size: 16px; font-weight: 800; color: var(--gray-900); margin-bottom: 18px; line-height: 1.5; }
+    .iq-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-700);
+      transition: var(--transition-fast);
+    }
+    .iq-opt:hover { border-color: var(--ohana-orange); background: rgba(249,115,22,0.05); }
+    .iq-opt.correct { border-color: var(--success); background: #ecfdf5; color: var(--success); }
+    .iq-opt.wrong { border-color: var(--danger); background: #fef2f2; color: var(--danger); }
+  </style>
+</head>
+<body data-page="lesson">
+
+<!-- ─── Site Header ─────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌺</div>
+      <div class="logo-text">
+        <strong>OHANA <span>ACADEMY</span></strong>
+        <small id="headerCourseTitle">Lớp Học Trực Tuyến</small>
+      </div>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#" id="backToCourseBtn" class="btn btn-login btn-sm">← Quay lại khóa học</a>
+      <div class="user-menu" id="userMenu" style="display:flex;">
+        <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">O</span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─── Main Lesson Layout ──────────────────────────────────── -->
+<div class="lesson-layout">
+  <!-- Left Column: Video & Material -->
+  <div class="lesson-main">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; flex-wrap:wrap; gap:10px;">
+      <div>
+        <span class="hero-badge" id="lessonCategoryBadge">Bài học Ohana</span>
+        <h1 id="lessonTitle" style="font-size: 22px; font-weight: 800; color: var(--gray-900); margin-top: 6px;">
+          Đang tải bài giảng...
+        </h1>
+      </div>
+      <button id="markCompleteBtn" class="btn btn-primary btn-sm">
+        ✅ Đánh dấu hoàn thành
+      </button>
+    </div>
+
+    <!-- Video Player -->
+    <div class="video-container">
+      <div class="video-aspect">
+        <iframe id="videoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-bar">
+        <span class="v-label">Tiến trình theo dõi</span>
+        <div class="video-track">
+          <div class="video-track-fill" id="vTrackFill"></div>
+        </div>
+        <span class="video-time" id="vTrackTime">100%</span>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="lesson-nav-actions">
+      <button id="prevBtn" class="btn btn-secondary">
+        ‹ Bài học trước
+      </button>
+      <span id="lessonPos" style="font-size: 13.5px; font-weight: 700; color: var(--gray-500);">
+        Bài 1 / 4
+      </span>
+      <button id="nextBtn" class="btn btn-primary">
+        Bài học tiếp theo ›
+      </button>
+    </div>
+
+    <!-- Document Section -->
+    <div class="doc-box" id="docBox">
+      <div class="doc-box-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span>📄</span>
+          <strong id="docTitle">Tài liệu học tập & Ghi chú kiến thức</strong>
+        </div>
+        <span class="badge" style="background:rgba(255,255,255,0.15); color:white;">🔒 Bản quyền Ohana</span>
+      </div>
+      <div class="doc-box-body" id="docContent">
+        <p id="lessonDesc" style="margin-bottom:14px; font-weight:500;">
+          ...
+        </p>
+        <div style="background:var(--gray-50); padding:16px; border-radius:var(--radius); border-left:4px solid var(--ohana-orange);">
+          <strong>💡 Lời khuyên học tập:</strong> Hãy thực hành ngay sau mỗi bài học để ghi nhớ câu lệnh Prompt, kịch bản bán hàng và áp dụng chuẩn quy trình Ohana vào công việc thực tế!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Syllabus Sidebar -->
+  <div class="lesson-sidebar">
+    <div style="padding: 16px 20px; background: var(--primary-dark); color: white; font-weight: 800; font-size: 14px;">
+      📚 Đề cương khóa học
+    </div>
+    <div id="sidebarLessonList">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ─── Interactive Question Modal ─────────────────────────── -->
+<div id="iqModal">
+  <div class="iq-card">
+    <div class="iq-header">
+      <span style="font-size:13px; font-weight:700; color:var(--ohana-orange);">⚡ CÂU HỎI TƯƠNG TÁC NHANH</span>
+      <button onclick="closeIq()" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
+    </div>
+    <div class="iq-body">
+      <div class="iq-qtext" id="iqText">Câu hỏi tương tác đang tải...</div>
+      <div id="iqOptions"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+let currentCourse = null;
+let currentLesson = null;
+let currentLessons = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!Auth.requireLogin()) return;
+
+  const user = Auth.getCurrentUser();
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('course');
+  const lessonId = params.get('lesson');
+
+  if (!courseId) { window.location.href = 'courses.html'; return; }
+
+  currentCourse = CourseDB.getById(courseId);
+  if (!currentCourse) { window.location.href = 'courses.html'; return; }
+
+  // Auto enroll
+  EnrollmentDB.enroll(user.id, courseId);
+
+  currentLessons = LessonDB.getByCourse(courseId);
+  if (!currentLessons.length) {
+    alert('Khóa học này hiện chưa có bài giảng!');
+    window.location.href = `course-detail.html?id=${courseId}`;
+    return;
+  }
+
+  currentLesson = lessonId
+    ? currentLessons.find(l => l.id === parseInt(lessonId)) || currentLessons[0]
+    : currentLessons[0];
+
+  loadLessonContent(currentLesson);
+});
+
+function loadLessonContent(lesson) {
+  const user = Auth.getCurrentUser();
+  const courseId = currentCourse.id;
+  const progress = ProgressDB.get(user.id, courseId);
+
+  document.title = `${lesson.title} – OHANA Academy`;
+  document.getElementById('headerCourseTitle').textContent = currentCourse.title;
+  document.getElementById('lessonTitle').textContent = lesson.title;
+  document.getElementById('lessonDesc').textContent = lesson.description || 'Chưa có tóm tắt bài học.';
+  document.getElementById('backToCourseBtn').href = `course-detail.html?id=${courseId}`;
+
+  // Video embed
+  const iframe = document.getElementById('videoIframe');
+  iframe.src = lesson.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+
+  // Track simulate
+  const isDone = progress.completedLessons.includes(lesson.id);
+  document.getElementById('vTrackFill').style.width = isDone ? '100%' : '60%';
+  document.getElementById('vTrackTime').textContent = isDone ? '100%' : '60%';
+
+  // Mark complete button
+  const markBtn = document.getElementById('markCompleteBtn');
+  if (isDone) {
+    markBtn.textContent = '✅ Đã hoàn thành';
+    markBtn.style.background = 'var(--success)';
+  } else {
+    markBtn.textContent = 'Đánh dấu hoàn thành';
+    markBtn.style.background = 'var(--gradient-ohana)';
+    markBtn.onclick = () => {
+      ProgressDB.markComplete(user.id, courseId, lesson.id);
+      showToast('Chúc mừng! Bạn đã hoàn thành bài học này.', 'success');
+      loadLessonContent(lesson);
+    };
+  }
+
+  // Prev / Next Navigation
+  const idx = currentLessons.findIndex(l => l.id === lesson.id);
+  const prevLesson = idx > 0 ? currentLessons[idx - 1] : null;
+  const nextLesson = idx < currentLessons.length - 1 ? currentLessons[idx + 1] : null;
+
+  document.getElementById('lessonPos').textContent = `Bài ${idx + 1} / ${currentLessons.length}`;
+
+  const prevBtn = document.getElementById('prevBtn');
+  if (prevLesson) {
+    prevBtn.disabled = false;
+    prevBtn.style.opacity = '1';
+    prevBtn.onclick = () => window.location.href = `lesson.html?course=${courseId}&lesson=${prevLesson.id}`;
+  } else {
+    prevBtn.disabled = true;
+    prevBtn.style.opacity = '0.4';
+  }
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextLesson) {
+    nextBtn.textContent = 'Bài học tiếp theo ›';
+    nextBtn.onclick = () => window.location.href = `lesson.html?course=${courseId}&lesson=${nextLesson.id}`;
+  } else {
+    nextBtn.textContent = '📝 Làm bài kiểm tra kết thúc ›';
+    nextBtn.onclick = () => window.location.href = `quiz.html?course=${courseId}`;
+  }
+
+  // Sidebar list
+  const sidebar = document.getElementById('sidebarLessonList');
+  if (sidebar) {
+    const quiz = QuizDB.getByCourse(courseId);
+    sidebar.innerHTML = currentLessons.map((l, i) => {
+      const done = progress.completedLessons.includes(l.id);
+      const active = l.id === lesson.id;
+      return `
+        <div class="lesson-item ${done ? 'completed' : ''}" style="${active ? 'background:rgba(249,115,22,0.1); border-left:4px solid var(--ohana-orange);' : ''}"
+          onclick="window.location='lesson.html?course=${courseId}&lesson=${l.id}'">
+          <div class="lesson-num" style="${active ? 'background:var(--ohana-orange); color:white;' : ''}">
+            ${done ? '✓' : i + 1}
+          </div>
+          <div class="lesson-info">
+            <div class="lesson-name" style="${active ? 'color:var(--ohana-orange); font-weight:800;' : ''}">${l.title}</div>
+            <div class="lesson-dur">⏱ ${l.duration}</div>
+          </div>
+          <div>${done ? '✅' : (active ? '▶' : '')}</div>
+        </div>`;
+    }).join('') + (quiz ? `
+      <div class="lesson-item" style="background:rgba(249,115,22,0.06); border-top:1px solid var(--gray-200);"
+        onclick="window.location='quiz.html?course=${courseId}'">
+        <div class="lesson-num" style="background:var(--gradient-ohana); color:white;">📝</div>
+        <div class="lesson-info">
+          <div class="lesson-name">Bài kiểm tra cuối khóa</div>
+          <div class="lesson-dur">⏱ ${quiz.timeLimit} phút · ${quiz.questions.length} câu</div>
+        </div>
+        <span>›</span>
+      </div>` : '');
+  }
+
+  // Trigger interactive question if exists and not yet answered
+  if (lesson.interactiveQs && lesson.interactiveQs.length > 0) {
+    setTimeout(() => {
+      showInteractiveQuestion(lesson.interactiveQs[0]);
+    }, 2500);
+  }
+}
+
+function showInteractiveQuestion(q) {
+  const modal = document.getElementById('iqModal');
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('iqText').textContent = q.text;
+  document.getElementById('iqOptions').innerHTML = q.options.map((opt, i) => `
+    <div class="iq-opt" id="iqOpt${i}" onclick="checkIqAnswer(${i}, ${q.correct})">
+      <span style="width:26px; height:26px; border-radius:50%; background:var(--primary-dark); color:white; display:flex; align-items:center; justify-content:center; font-size:12px;">${letters[i]}</span>
+      <span>${opt}</span>
+    </div>
+  `).join('');
+  modal.classList.add('show');
+}
+
+window.checkIqAnswer = function(chosen, correct) {
+  const opts = document.querySelectorAll('.iq-opt');
+  opts.forEach(o => o.onclick = null);
+  if (chosen === correct) {
+    document.getElementById(`iqOpt${chosen}`).classList.add('correct');
+    showToast('Chính xác! Bạn đã ghi nhớ bài học rất tốt.', 'success');
+    setTimeout(() => closeIq(), 1800);
+  } else {
+    document.getElementById(`iqOpt${chosen}`).classList.add('wrong');
+    document.getElementById(`iqOpt${correct}`).classList.add('correct');
+    showToast('Chưa chính xác! Hãy xem đáp án đúng màu xanh nhé.', 'error');
+    setTimeout(() => closeIq(), 2500);
+  }
+};
+
+window.closeIq = function() {
+  document.getElementById('iqModal').classList.remove('show');
+};
+</script>
+</body>
+</html>

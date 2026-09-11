@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Danh Sách Khóa Học – OHANA Academy</title>
+  <meta name="description" content="Thư viện khóa học chuyên sâu: Tạo hình ảnh AI, Tạo video AI, AI Agent, Kỹ năng bán hàng, Giao tiếp và Quy trình Ohana.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <style>
+    .courses-page-header {
+      background: linear-gradient(135deg, #091224 0%, #0f172a 60%, #1e293b 100%);
+      color: white;
+      padding: 50px 0 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .filter-bar {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+      margin-top: -30px;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 36px;
+    }
+    .filter-form {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .filter-form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="courses">
+
+<!-- ─── Site Header ─────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌺</div>
+      <div class="logo-text">
+        <strong>OHANA <span>ACADEMY</span></strong>
+        <small>E-Learning Platform</small>
+      </div>
+    </a>
+
+    <form class="header-search" id="globalSearchForm">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearchInput" placeholder="Tìm kiếm khóa học, chủ đề...">
+    </form>
+
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link"><span>🏠</span> Trang chủ</a>
+      <a href="courses.html" class="nav-link active"><span>📚</span> Khóa học</a>
+      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+      <a href="auth.html?tab=register" class="nav-link" id="registerNavBtn"><span>📝</span> Đăng ký</a>
+      <a href="auth.html" class="btn btn-login" id="loginBtn">
+        <span>🔐 Đăng nhập</span>
+      </a>
+
+      <!-- User Menu -->
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn">
+          <span id="userAvatar">O</span>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header">
+            <div class="name" id="userName">User</div>
+            <div class="role" id="userRoleBadge">Thành viên</div>
+          </div>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> Khóa học của tôi</a>
+          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> Trang Quản trị</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─── Page Title Header ──────────────────────────────────── -->
+<div class="courses-page-header">
+  <div class="container">
+    <div style="max-width: 680px;">
+      <span class="hero-badge">📚 Thư viện đào tạo</span>
+      <h1 style="font-size: 34px; font-weight: 800; margin-bottom: 10px; color: white;">
+        Tất Cả <span style="color:var(--ohana-orange);">Khóa Học</span>
+      </h1>
+      <p style="color: var(--gray-300); font-size: 15.5px;">
+        Chương trình đào tạo thực chiến từ cơ bản đến nâng cao: Khóa học AI, Kỹ năng bán hàng, Giao tiếp và Quy trình văn hóa Ohana.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Filter Section ─────────────────────────────────────── -->
+<div class="container">
+  <div class="filter-bar">
+    <div class="filter-form">
+      <div>
+        <input type="text" id="courseSearch" class="form-control" placeholder="🔍 Nhập từ khóa, tên khóa học, giảng viên...">
+      </div>
+      <div>
+        <select id="catFilter" class="form-control">
+          <option value="">Tất cả danh mục</option>
+        </select>
+      </div>
+      <div>
+        <select id="levelFilter" class="form-control">
+          <option value="">Tất cả cấp độ</option>
+          <option value="Cơ bản">Cơ bản</option>
+          <option value="Trung cấp">Trung cấp</option>
+          <option value="Nâng cao">Nâng cao</option>
+        </select>
+      </div>
+      <div>
+        <button id="searchBtn" class="btn btn-primary" style="width:100%;">
+          Lọc kết quả
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Count Header -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+    <span id="filterCount" style="font-size: 14.5px; font-weight: 700; color: var(--gray-600);">
+      Đang tải danh sách...
+    </span>
+    <button onclick="window.location='courses.html'" class="btn btn-secondary btn-sm">
+      🔄 Đặt lại bộ lọc
+    </button>
+  </div>
+
+  <!-- Courses Grid -->
+  <div class="courses-grid" id="coursesGrid" style="margin-bottom: 60px;">
+    <!-- Rendered by app.js -->
+  </div>
+</div>
+
+<!-- ─── Footer ─────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-icon">🌺</div>
+          <div class="logo-text">
+            <strong style="color:white;font-size:18px;">OHANA <span style="color:var(--ohana-orange);">ACADEMY</span></strong>
+            <small style="color:var(--gray-400);">E-Learning Platform</small>
+          </div>
+        </div>
+        <p>Hệ sinh thái đào tạo trực tuyến chính thức của OHANA Group. Đồng hành cùng sự phát triển năng lực và thành công bền vững của bạn.</p>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Danh Mục Đào Tạo</h4>
+        <div class="footer-links">
+          <a href="courses.html?cat=1">🎨 Tạo hình ảnh bằng AI</a>
+          <a href="courses.html?cat=2">🎬 Tạo video bằng AI</a>
+          <a href="courses.html?cat=3">🤖 Khóa học về AI Agent</a>
+          <a href="courses.html?cat=4">💼 Kỹ năng bán hàng</a>
+          <a href="courses.html?cat=5">💬 Kỹ năng giao tiếp</a>
+          <a href="courses.html?cat=6">🏢 Quy trình Ohana</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Liên Kết Nhanh</h4>
+        <div class="footer-links">
+          <a href="index.html">Trang chủ</a>
+          <a href="courses.html">Thư viện khóa học</a>
+          <a href="auth.html">Đăng nhập tài khoản</a>
+          <a href="admin.html">Trang Quản trị</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Hỗ Trợ Học Viên</h4>
+        <div class="footer-links">
+          <a href="tel:0988739896">📞 Hotline: 0988 739 896</a>
+          <a href="mailto:contact@ohana.vn">📧 contact@ohana.vn</a>
+          <a href="#">📍 Hà Nội & TP. Hồ Chí Minh</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>OHANA Academy</strong>. Bản quyền thuộc về <strong>OHANA Group</strong>.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Mobile Bottom Navigation ──────────────────────────── -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav">
+  <a href="index.html" class="bn-item">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">Trang chủ</span>
+  </a>
+  <a href="courses.html" class="bn-item active">
+    <span class="bn-icon">📚</span>
+    <span class="bn-label">Khóa học</span>
+  </a>
+  <a href="index.html" class="bn-item bn-qr">
+    <span class="bn-icon">📷</span>
+    <span class="bn-label">QR Login</span>
+  </a>
+  <a href="auth.html" class="bn-item" id="bnLogin">
+    <span class="bn-icon">🔐</span>
+    <span class="bn-label">Đăng nhập</span>
+  </a>
+  <a href="admin.html" class="bn-item" id="bnAdmin" style="display:none;">
+    <span class="bn-icon">⚙️</span>
+    <span class="bn-label">Quản trị</span>
+  </a>
+</nav>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

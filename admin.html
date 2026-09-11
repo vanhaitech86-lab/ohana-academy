@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Bảng Quản Trị Hệ Thống – OHANA Academy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body data-page="admin">
+
+<!-- ─── Admin Header ───────────────────────────────────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🌺</div>
+      <div class="logo-text">
+        <strong>OHANA <span>ACADEMY</span></strong>
+        <small style="color:var(--ohana-orange);">Bảng Quản Trị (Admin)</small>
+      </div>
+    </a>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <a href="index.html" class="btn btn-outline btn-sm">🌐 Xem trang chủ</a>
+      <div class="user-menu" style="display:flex;">
+        <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">A</span></button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-header">
+            <div class="name" id="userName">Admin</div>
+            <div class="role" id="userRoleBadge">Quản trị viên</div>
+          </div>
+          <a href="index.html" class="dropdown-item"><span>🏠</span> Về trang người học</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── Admin Layout ───────────────────────────────────────── -->
+<div class="admin-layout">
+  
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <div class="admin-brand-title">HỆ THỐNG ĐÀO TẠO</div>
+      <div class="admin-brand-sub">OHANA E-LEARNING SYSTEM</div>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-item active" data-tab="dashboard">
+        <span class="admin-nav-icon">📊</span>
+        <span>Bảng điều khiển</span>
+      </div>
+      <div class="admin-nav-item" data-tab="courses">
+        <span class="admin-nav-icon">📚</span>
+        <span>Quản lý Khóa học</span>
+      </div>
+      <div class="admin-nav-item" data-tab="lessons">
+        <span class="admin-nav-icon">🎥</span>
+        <span>Quản lý Bài giảng</span>
+      </div>
+      <div class="admin-nav-item" data-tab="quizzes">
+        <span class="admin-nav-icon">📝</span>
+        <span>Đề thi & Đánh giá</span>
+      </div>
+      <div class="admin-nav-item" data-tab="users">
+        <span class="admin-nav-icon">👥</span>
+        <span>Học viên & Nhân sự</span>
+      </div>
+      <div class="admin-nav-item" data-tab="results">
+        <span class="admin-nav-icon">🏆</span>
+        <span>Kết quả học tập</span>
+      </div>
+      <div class="admin-nav-item" data-tab="settings">
+        <span class="admin-nav-icon">⚙️</span>
+        <span>Cài đặt & Sao lưu</span>
+      </div>
+    </nav>
+
+    <div style="padding: 16px 20px; border-top: 1px solid var(--gray-200); font-size: 11.5px; color: var(--gray-400);">
+      Phiên bản v2.0.0<br>
+      © 2026 OHANA Group
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1 class="admin-title" id="adminPageTitle">Bảng Điều Khiển Tổng Quan</h1>
+    </div>
+
+    <div id="adminContent">
+      <!-- Injected by js/admin.js -->
+    </div>
+  </main>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
