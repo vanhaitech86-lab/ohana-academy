@@ -1,33 +1,60 @@
-# OHANA Academy – Nền tảng Đào tạo Trực tuyến AI & Nghiệp vụ Chuyên nghiệp
+# 🌺 OHANA Academy – Nền Tảng Đào Tạo Trực Tuyến AI & Nghiệp Vụ Chuyên Nghiệp
 
-Hệ thống e-learning hiện đại được phát triển cho **OHANA Group**, cung cấp chương trình đào tạo thực chiến về Trí Tuệ Nhân Tạo (AI), Kỹ năng bán hàng, Kỹ năng giao tiếp và Quy trình văn hóa Ohana.
+[![Production Website](https://img.shields.io/badge/Production-ohana--academy.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://ohana-academy.vercel.app)
+[![Admin Portal](https://img.shields.io/badge/Admin%20Portal-admin.html-orange?style=for-the-badge)](https://ohana-academy.vercel.app/admin.html)
+[![YouTube Channel](https://img.shields.io/badge/YouTube-Ohana%20Astronixa%20VN-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/@OhanaAstronixaVN)
 
----
-
-## 🌟 Các Danh Mục Đào Tạo
-
-1. **🎨 Tạo hình ảnh bằng AI**: Làm chủ Midjourney V6, DALL-E 3, Leonardo AI, thiết kế ảnh thương mại và đồ họa quảng cáo.
-2. **🎬 Tạo video bằng AI**: Sản xuất video viral triệu view với Runway Gen-3, Kling AI, HeyGen MC ảo và CapCut AI.
-3. **🤖 Khóa học về AI Agent**: Xây dựng trợ lý AI độc lập, Multi-agent workflows với CrewAI, Make.com và n8n.
-4. **💼 Kỹ năng bán hàng**: Bán hàng tư vấn giải pháp, bộ câu hỏi SPIN Selling, xử lý từ chối và chốt sale đỉnh cao.
-5. **💬 Kỹ năng giao tiếp**: Nghệ thuật lắng nghe chủ động, giao tiếp thấu cảm NVC, thuyết trình tự tin và Storytelling.
-6. **🏢 Quy trình Ohana**: Quy trình chuẩn vận hành SOP, tiêu chuẩn dịch vụ khách hàng 5 sao và giá trị cốt lõi gia đình Ohana.
+Hệ thống e-learning toàn diện được phát triển cho **OHANA Group**, cung cấp chương trình đào tạo thực chiến về **Trí Tuệ Nhân Tạo (AI)**, **Kỹ Năng Bán Hàng**, **Kỹ Năng Giao Tiếp** và **Quy Trình Chuẩn Vận Hành SOP Ohana Astronixa**.
 
 ---
 
-## 🚀 Tính Năng Chính
+## 🌐 Đường Dẫn & Tài Khoản Hệ Thống
 
-- **Giao diện người học hiện đại**: Hero slider, bộ lọc danh mục và cấp độ linh hoạt, tìm kiếm theo thời gian thực.
-- **Trình phát bài giảng tương tác**: Phát video, câu hỏi trắc nghiệm tương tác xuất hiện giữa video, tài liệu đính kèm chống sao chép.
-- **Hệ thống thi & kiểm tra**: Đề trắc nghiệm có đồng hồ đếm ngược, chấm điểm tự động, lưu lịch sử và đánh giá đạt/chưa đạt.
-- **Bảng quản trị Admin**: Thống kê dashboard, quản lý khóa học, bài học, đề thi, học viên, sao lưu và khôi phục dữ liệu JSON.
-- **Tài khoản Demo**: Tích hợp sẵn 4 tài khoản thử nghiệm nhanh (Admin, Nhân viên mới, Nhân viên Ohana, Học viên ngoài).
+- **Website Trực Tuyến (Production)**: [https://ohana-academy.vercel.app](https://ohana-academy.vercel.app)
+- **Bảng Quản Trị Admin**: [https://ohana-academy.vercel.app/admin.html](https://ohana-academy.vercel.app/admin.html)
+- **Tài khoản Quản trị mặc định**: `admin@ohana.vn` / Mật khẩu: `admin123`
+- **Tài khoản Học viên thử nghiệm**: `nhanvien.moi@ohana.vn` / Mật khẩu: `123456`
 
 ---
 
-## 📦 Công Nghệ Sử Dụng
+## 🌟 Danh Mục Đào Tạo & Khóa Học Trọng Tâm
 
-- HTML5, CSS3, JavaScript ES6+
-- LocalStorage Data Engine v2.0 (Client-side LMS)
-- Responsive Design (Desktop, Tablet, Mobile App-like Bottom Navigation)
-- Triển khai tối ưu trên Vercel
+Hệ thống hỗ trợ 8 danh mục đào tạo linh hoạt:
+1. **🎨 Tạo hình ảnh bằng AI**: Làm chủ Midjourney V6, DALL-E 3, Leonardo AI.
+2. **🎬 Tạo video bằng AI**: Sản xuất video viral triệu view với Runway Gen-3, Kling AI, HeyGen & CapCut AI.
+3. **🤖 Khóa học về AI Agent**: Trợ lý AI độc lập, Multi-agent workflows với CrewAI, Make.com, n8n.
+4. **💼 Kỹ năng bán hàng**: Bán hàng tư vấn giải pháp, bộ câu hỏi SPIN Selling, chốt sale đỉnh cao.
+5. **💬 Kỹ năng giao tiếp**: Lắng nghe chủ động, giao tiếp thấu cảm NVC, thuyết trình tự tin.
+6. **🏢 Quy trình Ohana**: Quy trình chuẩn vận hành SOP, tiêu chuẩn dịch vụ 5 sao gia đình Ohana.
+7. **🎁 Khóa học Miễn phí**: Toàn bộ chương trình nhập môn, kỹ năng cơ bản và quy trình nội bộ 100% miễn phí.
+8. **🎓 Khóa học Trả phí Cấp chứng chỉ**: Chương trình chuyên sâu thực chiến, làm bài thi tốt nghiệp và nhận Giấy chứng nhận điện tử chuẩn hóa từ OHANA Academy.
+
+---
+
+## 📺 7 Video SOP Chính Thức Từ Kênh YouTube Ohana Astronixa VN
+
+Hệ thống đã tích hợp trọn bộ 7 video chuẩn SOP từ kênh [Ohana Astronixa VN](https://www.youtube.com/@OhanaAstronixaVN):
+1. **OHANA - NGÔI NHÀ CHUNG CỦA NHỮNG ƯỚC MƠ VÀ YÊU THƯƠNG** (`G2KI_UpLvj4` - 3:45)
+2. **BÀI HÁT TRUYỀN THỐNG OHANA** (`Y477V88-jfc` - 4:12)
+3. **HƯỚNG DẪN ĐĂNG KÝ TÀI KHOẢN ASTRONIXA** (`Z8r9hT3b45I` - 2:15)
+4. **HƯỚNG DẪN ĐỊNH DANH TÀI KHOẢN (KYC) VÀ BẢO MẬT 2 LỚP (2FA)** (`mQ5t5Lp01-Y` - 3:20)
+5. **HƯỚNG DẪN NẠP TIỀN VÀO VÍ ASTRONIXA** (`rU8nK2p9w4Q` - 2:48)
+6. **HƯỚNG DẪN MUA GÓI SẢN PHẨM TRÊN ASTRONIXA** (`sPvb7_qvIWs` - 1:39)
+7. **HƯỚNG DẪN RÚT TIỀN VỀ VÍ ASTRONIXA** (`l9vAc7C8Zz4` - 2:32)
+
+---
+
+## 🚀 Các Tính Năng Nổi Bật
+
+- **Admin Auth Gate**: Truy cập trang admin thông minh, tích hợp nút đăng nhập nhanh 1 chạm.
+- **Trình Cấp Chứng Chỉ Điện Tử**: Khi học viên đạt từ 70% bài thi trắc nghiệm, hệ thống cấp Giấy chứng nhận tốt nghiệp chuẩn hoàng gia (kèm dấu đỏ Ohana Group, chữ ký Giám đốc và hỗ trợ in/lưu PDF).
+- **Trình Soạn Đề Thi Trắc Nghiệm (Quiz Question Editor)**: Thêm, sửa, xóa câu hỏi, cấu hình đáp án đúng trực quan trong Admin.
+- **Xem Thử Video SOP YouTube Trong Admin**: Xem trực tiếp video trong cửa sổ pop-up modal mà không cần mở tab mới.
+- **Báo Cáo Điểm Số & Xuất CSV**: Lọc kết quả thi theo khóa học/kết quả và xuất file CSV tiếng Việt chuẩn UTF-8 BOM.
+- **Mobile Responsive Toàn Diện**: Giao diện tối ưu hoàn hảo trên điện thoại thông minh và máy tính bảng với menu drawer.
+
+---
+
+## 📄 Tài Liệu Đóng Gói Chi Tiết
+
+Xem bản tài liệu dự án hoàn chỉnh tại: [`TAI_LIEU_DU_AN_OHANA_ACADEMY.md`](TAI_LIEU_DU_AN_OHANA_ACADEMY.md)
