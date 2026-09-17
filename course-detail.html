@@ -112,10 +112,27 @@
       </div>
     </a>
     <nav class="header-nav">
-      <a href="index.html" class="nav-link"><span>🏠</span> Trang chủ</a>
-      <a href="courses.html" class="nav-link"><span>📚</span> Khóa học</a>
-      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> Quản trị</a>
-      <a href="auth.html" class="btn btn-login" id="loginBtn"><span>🔐 Đăng nhập</span></a>
+      <a href="index.html" class="nav-link"><span>🏠</span> <span data-i18n="nav_home">Trang chủ</span></a>
+      <a href="courses.html" class="nav-link"><span>📚</span> <span data-i18n="nav_courses">Khóa học</span></a>
+      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> <span data-i18n="nav_admin">Quản trị</span></a>
+
+      <!-- Language Selector -->
+      <div class="lang-selector" id="langSelector">
+        <button type="button" class="lang-selector-btn" id="langSelectorBtn" onclick="I18n.toggleDropdown(event)" aria-label="Select Language">
+          <span class="lang-flag" id="langFlag">🇻🇳</span>
+          <span class="lang-text" id="langText">VI</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button type="button" class="lang-item active" data-lang="vi" onclick="I18n.setLanguage('vi')"><span class="flag">🇻🇳</span> <span class="name">Tiếng Việt</span></button>
+          <button type="button" class="lang-item" data-lang="en" onclick="I18n.setLanguage('en')"><span class="flag">🇬🇧</span> <span class="name">English</span></button>
+          <button type="button" class="lang-item" data-lang="fr" onclick="I18n.setLanguage('fr')"><span class="flag">🇫🇷</span> <span class="name">Français</span></button>
+          <button type="button" class="lang-item" data-lang="zh" onclick="I18n.setLanguage('zh')"><span class="flag">🇨🇳</span> <span class="name">中文</span></button>
+          <button type="button" class="lang-item" data-lang="ja" onclick="I18n.setLanguage('ja')"><span class="flag">🇯🇵</span> <span class="name">日本語</span></button>
+        </div>
+      </div>
+
+      <a href="auth.html" class="btn btn-login" id="loginBtn"><span>🔐 <span data-i18n="nav_login">Đăng nhập</span></span></a>
 
       <div class="user-menu" id="userMenu">
         <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">A</span></button>
@@ -124,10 +141,10 @@
             <div class="name" id="userName">User</div>
             <div class="role" id="userRoleBadge">Thành viên</div>
           </div>
-          <a href="courses.html" class="dropdown-item"><span>📚</span> Khóa học của tôi</a>
-          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> <span data-i18n="nav_my_courses">Khóa học của tôi</span></a>
+          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> <span data-i18n="nav_admin_panel">Trang Quản trị</span></a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> <span data-i18n="nav_logout">Đăng xuất</span></a>
         </div>
       </div>
     </nav>
@@ -255,6 +272,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {

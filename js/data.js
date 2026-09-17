@@ -14,12 +14,24 @@ const DB_KEYS = {
   session:     'ohana_session',
   settings:    'ohana_settings',
 };
-const DB_VERSION = '2.2';
+const DB_VERSION = '2.3';
 
 // ─── Default Users ─────────────────────────────────────────────
 const DEFAULT_USERS = [
   {
     id: 1,
+    name: 'Quản trị viên Vũ Hải',
+    email: 'vanhaitech.86@gmail.com',
+    password: 'Admin123456a@',
+    role: 'admin',
+    phone: '0988739896',
+    department: 'Ban Quản Trị Cấp Cao ASTRONIXA',
+    avatar: '',
+    status: 'active',
+    createdAt: '2026-01-01'
+  },
+  {
+    id: 10,
     name: 'Quản trị viên Ohana',
     email: 'admin@ohana.vn',
     password: 'admin123',
@@ -1076,7 +1088,32 @@ function initDB() {
   const storedVer = localStorage.getItem('ohana_db_version');
 
   // Khởi tạo các bảng dữ liệu nếu chưa có hoặc khi cập nhật phiên bản DB
-  if (!localStorage.getItem(DB_KEYS.users))       setDB(DB_KEYS.users, DEFAULT_USERS);
+  if (!localStorage.getItem(DB_KEYS.users)) {
+    setDB(DB_KEYS.users, DEFAULT_USERS);
+  } else {
+    // Đảm bảo tài khoản Admin vanhaitech.86@gmail.com luôn tồn tại và cập nhật mật khẩu mới nhất
+    const currentUsers = getDB(DB_KEYS.users) || [];
+    const mainAdmin = currentUsers.find(u => u.email.toLowerCase() === 'vanhaitech.86@gmail.com');
+    if (mainAdmin) {
+      mainAdmin.password = 'Admin123456a@';
+      mainAdmin.role = 'admin';
+      mainAdmin.status = 'active';
+    } else {
+      currentUsers.unshift({
+        id: 1,
+        name: 'Quản trị viên Vũ Hải',
+        email: 'vanhaitech.86@gmail.com',
+        password: 'Admin123456a@',
+        role: 'admin',
+        phone: '0988739896',
+        department: 'Ban Quản Trị Cấp Cao ASTRONIXA',
+        avatar: '',
+        status: 'active',
+        createdAt: '2026-01-01'
+      });
+    }
+    setDB(DB_KEYS.users, currentUsers);
+  }
   if (!localStorage.getItem(DB_KEYS.categories) || storedVer !== DB_VERSION) {
     setDB(DB_KEYS.categories, DEFAULT_CATEGORIES);
   }

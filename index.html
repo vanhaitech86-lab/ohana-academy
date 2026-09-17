@@ -73,11 +73,11 @@
 
     <div style="font-size:12.5px;color:var(--gray-500);margin-bottom:12px;">Hoặc chọn tài khoản đăng nhập nhanh:</div>
     <div class="qr-demo-accounts">
-      <div class="qr-demo-item" onclick="qrLogin('admin@ohana.vn','admin123')">
+      <div class="qr-demo-item" onclick="qrLogin('vanhaitech.86@gmail.com','Admin123456a@')">
         <span class="qr-demo-icon">👑</span>
         <div class="qr-demo-info">
-          <div class="name">Admin Ohana</div>
-          <div class="role">Quản trị viên</div>
+          <div class="name">Admin Vũ Hải</div>
+          <div class="role">Quản trị viên Cấp cao</div>
         </div>
       </div>
       <div class="qr-demo-item" onclick="qrLogin('nhanvien.moi@ohana.vn','123456')">
@@ -134,6 +134,17 @@
   <a href="courses.html" class="nav-link"><span class="nav-icon">📚</span> Danh mục khóa học</a>
   <a href="#" class="nav-link" id="mobileAdminLink" style="display:none;"><span class="nav-icon">⚙️</span> Quản trị hệ thống</a>
   
+  <div class="mobile-lang-row">
+    <span class="mobile-lang-label" data-i18n="lang_label">🌐 Ngôn ngữ / Language:</span>
+    <div class="mobile-lang-options">
+      <button type="button" class="m-lang-btn active" data-lang="vi" onclick="I18n.setLanguage('vi')">🇻🇳 VI</button>
+      <button type="button" class="m-lang-btn" data-lang="en" onclick="I18n.setLanguage('en')">🇬🇧 EN</button>
+      <button type="button" class="m-lang-btn" data-lang="fr" onclick="I18n.setLanguage('fr')">🇫🇷 FR</button>
+      <button type="button" class="m-lang-btn" data-lang="zh" onclick="I18n.setLanguage('zh')">🇨🇳 ZH</button>
+      <button type="button" class="m-lang-btn" data-lang="ja" onclick="I18n.setLanguage('ja')">🇯🇵 JA</button>
+    </div>
+  </div>
+
   <div style="padding:16px 24px;border-top:1px solid rgba(255,255,255,0.08);margin-top:12px;">
     <button onclick="openQR()" style="width:100%;padding:12px;background:rgba(139,92,246,0.15);color:white;border:1px solid rgba(0,223,216,0.4);border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:8px;justify-content:center;box-shadow:0 0 15px rgba(0,223,216,0.2);">
       📷 Quét mã QR đăng nhập
@@ -144,7 +155,7 @@
   <a href="auth.html?tab=register" class="btn-register" id="mobileRegisterBtn">📝 Đăng ký tài khoản mới</a>
   
   <div id="mobileUserInfo" style="display:none;padding:16px 24px;">
-    <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:6px;">Đang đăng nhập:</div>
+    <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:6px;" data-i18n="logged_in_as">Đang đăng nhập:</div>
     <div style="color:white;font-weight:800;font-size:15px;" id="mobileUserName"></div>
     <div style="color:#00dfd8;font-size:12px;margin-bottom:14px;" id="mobileUserRole"></div>
     <button onclick="Auth.logout()" style="width:100%;padding:10px;background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;">
@@ -181,19 +192,46 @@
 
     <form class="header-search" id="globalSearchForm">
       <span class="search-icon">🔍</span>
-      <input type="text" id="globalSearchInput" placeholder="Tìm khóa học AI, Bán hàng, Giao tiếp, Ohana...">
+      <input type="text" id="globalSearchInput" placeholder="Tìm khóa học AI, Bán hàng, Giao tiếp, Ohana..." data-i18n-placeholder="search_placeholder">
     </form>
 
     <nav class="header-nav">
-      <a href="index.html" class="nav-link active"><span>🏠</span> Trang chủ</a>
-      <a href="courses.html" class="nav-link"><span>📚</span> Khóa học</a>
-      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> Quản trị</a>
+      <a href="index.html" class="nav-link active"><span>🏠</span> <span data-i18n="nav_home">Trang chủ</span></a>
+      <a href="courses.html" class="nav-link"><span>📚</span> <span data-i18n="nav_courses">Khóa học</span></a>
+      <a href="admin.html" class="nav-link" id="adminNavLink" style="display:none;"><span>⚙️</span> <span data-i18n="nav_admin">Quản trị</span></a>
       <button onclick="openQR()" class="nav-link" style="background:none;border:none;cursor:pointer;" title="Quét QR đăng nhập">
-        <span>📷</span> QR Login
+        <span>📷</span> <span data-i18n="nav_qr">QR Login</span>
       </button>
-      <a href="auth.html?tab=register" class="nav-link" id="registerNavBtn"><span>📝</span> Đăng ký</a>
+
+      <!-- Language Selector -->
+      <div class="lang-selector" id="langSelector">
+        <button type="button" class="lang-selector-btn" id="langSelectorBtn" onclick="I18n.toggleDropdown(event)" aria-label="Select Language">
+          <span class="lang-flag" id="langFlag">🇻🇳</span>
+          <span class="lang-text" id="langText">VI</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button type="button" class="lang-item active" data-lang="vi" onclick="I18n.setLanguage('vi')">
+            <span class="flag">🇻🇳</span> <span class="name">Tiếng Việt</span>
+          </button>
+          <button type="button" class="lang-item" data-lang="en" onclick="I18n.setLanguage('en')">
+            <span class="flag">🇬🇧</span> <span class="name">English</span>
+          </button>
+          <button type="button" class="lang-item" data-lang="fr" onclick="I18n.setLanguage('fr')">
+            <span class="flag">🇫🇷</span> <span class="name">Français</span>
+          </button>
+          <button type="button" class="lang-item" data-lang="zh" onclick="I18n.setLanguage('zh')">
+            <span class="flag">🇨🇳</span> <span class="name">中文</span>
+          </button>
+          <button type="button" class="lang-item" data-lang="ja" onclick="I18n.setLanguage('ja')">
+            <span class="flag">🇯🇵</span> <span class="name">日本語</span>
+          </button>
+        </div>
+      </div>
+
+      <a href="auth.html?tab=register" class="nav-link" id="registerNavBtn"><span>📝</span> <span data-i18n="nav_register">Đăng ký</span></a>
       <a href="auth.html" class="btn btn-login" id="loginBtn">
-        <span>🔐 Đăng nhập</span>
+        <span>🔐 <span data-i18n="nav_login">Đăng nhập</span></span>
       </a>
 
       <!-- User Logged In Menu -->
@@ -206,10 +244,10 @@
             <div class="name" id="userName">User</div>
             <div class="role" id="userRoleBadge">Thành viên</div>
           </div>
-          <a href="courses.html" class="dropdown-item"><span>📚</span> Khóa học của tôi</a>
-          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> Trang Quản trị</a>
+          <a href="courses.html" class="dropdown-item"><span>📚</span> <span data-i18n="nav_my_courses">Khóa học của tôi</span></a>
+          <a href="admin.html" class="dropdown-item" id="dropdownAdminLink" style="display:none;"><span>⚙️</span> <span data-i18n="nav_admin_panel">Trang Quản trị</span></a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> Đăng xuất</a>
+          <a href="#" class="dropdown-item logout" data-action="logout"><span>🚪</span> <span data-i18n="nav_logout">Đăng xuất</span></a>
         </div>
       </div>
     </nav>
@@ -231,24 +269,24 @@
       <div class="hero-content">
         <div class="hero-left">
           <div class="astronixa-pill">
-            <span class="pill-dot"></span> DECENTRALIZED INTELLIGENCE
+            <span class="pill-dot"></span> <span data-i18n="hero_badge">DECENTRALIZED INTELLIGENCE</span>
           </div>
           <h1 class="astronixa-hero-title">
-            <span class="gradient-text">The Unified Universe</span><br>
-            <span class="white-text">of Value & Digital Prosperity</span>
+            <span class="gradient-text" data-i18n="hero_title_1">The Unified Universe</span><br>
+            <span class="white-text" data-i18n="hero_title_grad">of Value & Digital Prosperity</span>
           </h1>
-          <p class="astronixa-hero-desc">
+          <p class="astronixa-hero-desc" data-i18n="hero_desc">
             A groundbreaking convergence of decentralized ecosystems, AI-driven education, and digital prosperity. Empowering creators, professionals, and visionaries across the cosmos.
           </p>
           <div class="astronixa-hero-actions">
             <a href="courses.html" class="btn btn-astronixa-primary">
-              <span>🚀 Launch Ohana App</span>
+              <span>🚀 <span data-i18n="hero_btn_app">Launch Ohana App</span></span>
             </a>
             <a href="#ecosystem" class="btn btn-astronixa-glass">
-              <span>🌌 Explore Astronixa Universe</span>
+              <span>🌌 <span data-i18n="hero_btn_universe">Explore Astronixa Universe</span></span>
             </a>
             <button onclick="openQR()" class="btn btn-outline" style="border-radius: var(--radius-full); padding: 13px 20px;">
-              <span>📷 QR Login</span>
+              <span>📷 <span data-i18n="nav_qr">QR Login</span></span>
             </button>
           </div>
           <div class="hero-stats">
@@ -387,23 +425,23 @@
   <div class="astronixa-pillars-grid">
     <div class="astronixa-pillar-card">
       <div class="pillar-badge">● PILLAR 01</div>
-      <div class="pillar-title">UNIFIED ECOSYSTEM</div>
-      <div class="pillar-desc">Seamlessly connecting creators, learners, and decentralized applications into one unified digital prosperity platform.</div>
+      <div class="pillar-title" data-i18n="pillar_1_title">UNIFIED ECOSYSTEM</div>
+      <div class="pillar-desc" data-i18n="pillar_1_desc">Seamlessly connecting creators, learners, and decentralized applications into one unified digital prosperity platform.</div>
     </div>
     <div class="astronixa-pillar-card">
       <div class="pillar-badge">● PILLAR 02</div>
-      <div class="pillar-title">AI + WEB3 POWERED</div>
-      <div class="pillar-desc">Autonomous AI agents, automated workflow orchestration, and generative intelligence revolutionizing business efficiency.</div>
+      <div class="pillar-title" data-i18n="pillar_2_title">AI + WEB3 POWERED</div>
+      <div class="pillar-desc" data-i18n="pillar_2_desc">Autonomous AI agents, automated workflow orchestration, and generative intelligence revolutionizing business efficiency.</div>
     </div>
     <div class="astronixa-pillar-card">
       <div class="pillar-badge">● PILLAR 03</div>
-      <div class="pillar-title">DECENTRALIZED</div>
-      <div class="pillar-desc">Empowering the global community with transparent governance, decentralized verification, and tamper-proof security.</div>
+      <div class="pillar-title" data-i18n="pillar_3_title">DECENTRALIZED</div>
+      <div class="pillar-desc" data-i18n="pillar_3_desc">Empowering the global community with transparent governance, decentralized verification, and tamper-proof security.</div>
     </div>
     <div class="astronixa-pillar-card">
       <div class="pillar-badge">● PILLAR 04</div>
-      <div class="pillar-title">ONE UNIVERSE</div>
-      <div class="pillar-desc">One Family. One Vision. Boundless digital opportunities, financial freedom, and lifelong education for all members.</div>
+      <div class="pillar-title" data-i18n="pillar_4_title">ONE UNIVERSE</div>
+      <div class="pillar-desc" data-i18n="pillar_4_desc">One Family. One Vision. Boundless digital opportunities, financial freedom, and lifelong education for all members.</div>
     </div>
   </div>
 </div>
@@ -416,14 +454,14 @@
 </div>
 
 <!-- ─── Courses Grid Section ───────────────────────────────── -->
-<section class="section">
+<section class="section" id="featuredCourses">
   <div class="container">
     <div class="section-header">
       <div>
-        <h2 class="section-title">Khóa học <span>dành cho bạn</span></h2>
-        <p class="section-desc">Chương trình đào tạo thực chiến được thiết kế riêng cho học viên và nhân sự Ohana</p>
+        <h2 class="section-title"><span data-i18n="sec_featured_title">Khóa học</span> <span data-i18n="sec_featured_title_grad">dành cho bạn</span></h2>
+        <p class="section-desc" data-i18n="sec_featured_desc">Chương trình đào tạo thực chiến được thiết kế riêng cho học viên và nhân sự Ohana</p>
       </div>
-      <a href="courses.html" class="see-all">Xem tất cả khóa học →</a>
+      <a href="courses.html" class="see-all" data-i18n="sec_see_all">Xem tất cả khóa học →</a>
     </div>
     <div class="courses-grid" id="coursesGrid">
       <!-- Dynamic rendering by app.js -->
@@ -437,12 +475,12 @@
     <div class="section-header">
       <div>
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid rgba(239,68,68,0.25);margin-bottom:8px;">
-          <span>▶</span> KÊNH YOUTUBE CHÍNH THỨC · @OhanaAstronixaVN
+          <span>▶</span> <span data-i18n="sec_yt_badge">KÊNH YOUTUBE CHÍNH THỨC · @OhanaAstronixaVN</span>
         </div>
-        <h2 class="section-title">Video Đào Tạo <span>Ohana Astronixa VN</span></h2>
-        <p class="section-desc">Trọn bộ video văn hóa mái nhà Ohana và hướng dẫn thao tác đăng ký, KYC, nạp rút tiền ví Astronixa</p>
+        <h2 class="section-title"><span data-i18n="sec_yt_title">Video Đào Tạo</span> <span data-i18n="sec_yt_title_grad">Ohana Astronixa VN</span></h2>
+        <p class="section-desc" data-i18n="sec_yt_desc">Trọn bộ video văn hóa mái nhà Ohana và hướng dẫn thao tác đăng ký, KYC, nạp rút tiền ví Astronixa</p>
       </div>
-      <a href="https://www.youtube.com/@OhanaAstronixaVN" target="_blank" rel="noopener noreferrer" class="see-all" style="color:#ef4444;border-color:rgba(239,68,68,0.35);">
+      <a href="https://www.youtube.com/@OhanaAstronixaVN" target="_blank" rel="noopener noreferrer" class="see-all" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" data-i18n="sec_yt_all">
         Xem tất cả trên YouTube ↗
       </a>
     </div>
@@ -456,30 +494,30 @@
 <section class="section" style="background:var(--white);border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);">
   <div class="container">
     <div class="section-header" style="text-align:center;flex-direction:column;align-items:center;">
-      <h2 class="section-title">Tại sao chọn <span>OHANA Academy?</span></h2>
-      <p class="section-desc" style="max-width:600px;">Nền tảng đào tạo toàn diện kết hợp công nghệ AI tiên tiến và văn hóa gắn kết gia đình</p>
+      <h2 class="section-title"><span data-i18n="sec_why_title">Tại sao chọn</span> <span data-i18n="sec_why_title_grad">OHANA Academy?</span></h2>
+      <p class="section-desc" style="max-width:600px;" data-i18n="sec_why_desc">Nền tảng đào tạo toàn diện kết hợp công nghệ AI tiên tiến và văn hóa gắn kết gia đình</p>
     </div>
 
     <div class="features-grid">
       <div class="feature-card fade-in-up stagger-1">
         <div class="feature-icon">🤖</div>
-        <h3 class="feature-title">Đón đầu Kỷ nguyên AI</h3>
-        <p class="feature-desc">Cập nhật liên tục các công nghệ tạo hình ảnh, video và xây dựng AI Agent hiện đại nhất.</p>
+        <h3 class="feature-title" data-i18n="val_ai_title">Đón đầu Kỷ nguyên AI</h3>
+        <p class="feature-desc" data-i18n="val_ai_desc">Cập nhật liên tục các công nghệ tạo hình ảnh, video và xây dựng AI Agent hiện đại nhất.</p>
       </div>
       <div class="feature-card fade-in-up stagger-2">
         <div class="feature-icon">🎯</div>
-        <h3 class="feature-title">Thực chiến 100%</h3>
-        <p class="feature-desc">Giáo trình đúc kết từ kinh nghiệm thực tế, áp dụng ngay vào công việc để tạo ra kết quả doanh số đột phá.</p>
+        <h3 class="feature-title" data-i18n="val_practical_title">Thực chiến 100%</h3>
+        <p class="feature-desc" data-i18n="val_practical_desc">Giáo trình đúc kết từ kinh nghiệm thực tế, áp dụng ngay vào công việc để tạo ra kết quả doanh số đột phá.</p>
       </div>
       <div class="feature-card fade-in-up stagger-3">
         <div class="feature-icon">📝</div>
-        <h3 class="feature-title">Đánh giá & Cấp Chứng chỉ</h3>
-        <p class="feature-desc">Hệ thống bài trắc nghiệm thông minh, câu hỏi tương tác giữa video giúp ghi nhớ và đo lường năng lực chuẩn xác.</p>
+        <h3 class="feature-title" data-i18n="val_cert_title">Đánh giá & Cấp Chứng chỉ</h3>
+        <p class="feature-desc" data-i18n="val_cert_desc">Hệ thống bài trắc nghiệm thông minh, câu hỏi tương tác giữa video giúp ghi nhớ và đo lường năng lực chuẩn xác.</p>
       </div>
       <div class="feature-card fade-in-up stagger-4">
         <div class="feature-icon">🌺</div>
-        <h3 class="feature-title">Văn hóa Gia đình Ohana</h3>
-        <p class="feature-desc">Môi trường học tập đồng hành, chia sẻ và hỗ trợ tận tâm: Không ai bị bỏ lại phía sau trên hành trình phát triển.</p>
+        <h3 class="feature-title" data-i18n="val_family_title">Văn hóa Gia đình Ohana</h3>
+        <p class="feature-desc" data-i18n="val_family_desc">Môi trường học tập đồng hành, chia sẻ và hỗ trợ tận tâm: Không ai bị bỏ lại phía sau trên hành trình phát triển.</p>
       </div>
     </div>
   </div>
@@ -508,7 +546,7 @@
             <small style="color:#00dfd8;letter-spacing:1px;">One Universe. One Family.</small>
           </div>
         </div>
-        <p>Hệ thống đào tạo trực tuyến chính thức của Astronixa & Ohana. Đào tạo chuyên sâu AI (Ảnh, Video, AI Agent), Kỹ năng bán hàng, Giao tiếp và Quy trình vận hành chuẩn.</p>
+        <p data-i18n="footer_slogan">Hệ thống đào tạo trực tuyến chính thức của Astronixa & Ohana. Đào tạo chuyên sâu AI (Ảnh, Video, AI Agent), Kỹ năng bán hàng, Giao tiếp và Quy trình vận hành chuẩn.</p>
         
         <div class="footer-social">
           <a href="#" id="fbLink" class="social-btn" title="Facebook" target="_blank">f</a>
@@ -518,30 +556,30 @@
       </div>
 
       <div>
-        <h4 class="footer-col-title">Danh Mục Đào Tạo</h4>
+        <h4 class="footer-col-title" data-i18n="cat_all">Danh Mục Đào Tạo</h4>
         <div class="footer-links">
-          <a href="courses.html?cat=1">🎨 Tạo hình ảnh bằng AI</a>
-          <a href="courses.html?cat=2">🎬 Tạo video bằng AI</a>
-          <a href="courses.html?cat=3">🤖 Khóa học về AI Agent</a>
-          <a href="courses.html?cat=4">💼 Kỹ năng bán hàng</a>
-          <a href="courses.html?cat=5">💬 Kỹ năng giao tiếp</a>
-          <a href="courses.html?cat=6">🏢 Quy trình Ohana</a>
+          <a href="courses.html?cat=1" data-i18n="cat_ai_img">🎨 Tạo hình ảnh bằng AI</a>
+          <a href="courses.html?cat=2" data-i18n="cat_ai_video">🎬 Tạo video bằng AI</a>
+          <a href="courses.html?cat=3" data-i18n="cat_ai_agent">🤖 Khóa học về AI Agent</a>
+          <a href="courses.html?cat=4" data-i18n="cat_sales">💼 Kỹ năng bán hàng</a>
+          <a href="courses.html?cat=5" data-i18n="cat_comm">💬 Kỹ năng giao tiếp</a>
+          <a href="courses.html?cat=6" data-i18n="cat_sop">🏢 Quy trình Ohana</a>
         </div>
       </div>
 
       <div>
-        <h4 class="footer-col-title">Hệ Thống</h4>
+        <h4 class="footer-col-title" data-i18n="footer_quick_links">Liên Kết Nhanh</h4>
         <div class="footer-links">
-          <a href="index.html">Trang chủ</a>
-          <a href="courses.html">Tất cả khóa học</a>
-          <a href="auth.html">Đăng nhập tài khoản</a>
-          <a href="auth.html?tab=register">Đăng ký thành viên</a>
-          <a href="admin.html">Trang Quản trị</a>
+          <a href="index.html" data-i18n="nav_home">Trang chủ</a>
+          <a href="courses.html" data-i18n="nav_courses">Tất cả khóa học</a>
+          <a href="auth.html" data-i18n="nav_login">Đăng nhập tài khoản</a>
+          <a href="auth.html?tab=register" data-i18n="nav_register">Đăng ký thành viên</a>
+          <a href="admin.html" data-i18n="nav_admin">Trang Quản trị</a>
         </div>
       </div>
 
       <div>
-        <h4 class="footer-col-title">Thông Tin Liên Hệ</h4>
+        <h4 class="footer-col-title" data-i18n="footer_contact">Thông Tin Liên Hệ</h4>
         <div class="footer-links">
           <a href="tel:0988739896">📞 Hotline: 0988 739 896</a>
           <a href="mailto:contact@ohana.vn">📧 contact@ohana.vn</a>
@@ -552,8 +590,8 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© 2026 <strong>OHANA Academy</strong>. Bản quyền thuộc về <strong>OHANA Group</strong>.</p>
-      <p style="font-size:12px;color:var(--gray-500);">Phiên bản 2.0.0 – AI E-Learning Platform</p>
+      <p data-i18n="footer_rights">© 2026 ASTRONIXA Academy. Bản quyền thuộc về ASTRONIXA Group.</p>
+      <p style="font-size:12px;color:var(--gray-500);" data-i18n="footer_version">Phiên bản 2.3.0 – AI E-Learning Platform</p>
     </div>
   </div>
 </footer>
@@ -562,11 +600,11 @@
 <nav class="mobile-bottom-nav" id="mobileBottomNav">
   <a href="index.html" class="bn-item active">
     <span class="bn-icon">🏠</span>
-    <span class="bn-label">Trang chủ</span>
+    <span class="bn-label" data-i18n="nav_home">Trang chủ</span>
   </a>
   <a href="courses.html" class="bn-item">
     <span class="bn-icon">📚</span>
-    <span class="bn-label">Khóa học</span>
+    <span class="bn-label" data-i18n="nav_courses">Khóa học</span>
   </a>
   <a href="#" onclick="openQR();return false;" class="bn-item bn-qr">
     <span class="bn-icon">📷</span>
@@ -574,15 +612,16 @@
   </a>
   <a href="auth.html" class="bn-item" id="bnLogin">
     <span class="bn-icon">🔐</span>
-    <span class="bn-label">Đăng nhập</span>
+    <span class="bn-label" data-i18n="nav_login">Đăng nhập</span>
   </a>
   <a href="admin.html" class="bn-item" id="bnAdmin" style="display:none;">
     <span class="bn-icon">⚙️</span>
-    <span class="bn-label">Quản trị</span>
+    <span class="bn-label" data-i18n="nav_admin">Quản trị</span>
   </a>
 </nav>
 
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/app.js"></script>
 </body>

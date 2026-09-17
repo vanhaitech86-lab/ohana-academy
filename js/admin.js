@@ -61,7 +61,7 @@ function renderAdminAuthGate() {
         </p>
 
         <button class="admin-quick-login-btn" onclick="quickAdminLogin()">
-          <span>⚡</span> Đăng nhập nhanh bằng Admin (admin@ohana.vn)
+          <span>⚡</span> Đăng nhập nhanh bằng Admin (vanhaitech.86@gmail.com)
         </button>
 
         <div style="display:flex; align-items:center; gap:12px; margin: 16px 0;">
@@ -73,11 +73,11 @@ function renderAdminAuthGate() {
         <form onsubmit="handleManualAdminLogin(event)" style="text-align:left;">
           <div class="form-group">
             <label class="form-label">Email Quản trị viên</label>
-            <input type="email" id="gateEmail" class="form-control" placeholder="admin@ohana.vn" value="admin@ohana.vn" required>
+            <input type="email" id="gateEmail" class="form-control" placeholder="vanhaitech.86@gmail.com" value="vanhaitech.86@gmail.com" required>
           </div>
           <div class="form-group">
             <label class="form-label">Mật khẩu</label>
-            <input type="password" id="gatePass" class="form-control" placeholder="admin123" value="admin123" required>
+            <input type="password" id="gatePass" class="form-control" placeholder="Admin123456a@" value="Admin123456a@" required>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-weight:700;">
             🔑 Đăng Nhập Quản Trị
@@ -95,7 +95,7 @@ function renderAdminAuthGate() {
 }
 
 window.quickAdminLogin = function() {
-  const res = Auth.login('admin@ohana.vn', 'admin123');
+  const res = Auth.login('vanhaitech.86@gmail.com', 'Admin123456a@');
   if (res.success) {
     showToast('Đăng nhập Quản trị viên thành công!', 'success');
     setTimeout(() => {

@@ -12,8 +12,9 @@ Hệ thống e-learning toàn diện được phát triển cho **OHANA Group**,
 
 - **Website Trực Tuyến (Production)**: [https://ohana-academy.vercel.app](https://ohana-academy.vercel.app)
 - **Bảng Quản Trị Admin**: [https://ohana-academy.vercel.app/admin.html](https://ohana-academy.vercel.app/admin.html)
-- **Tài khoản Quản trị mặc định**: `admin@ohana.vn` / Mật khẩu: `admin123`
+- **Tài khoản Quản trị Cấp cao (Admin)**: `vanhaitech.86@gmail.com` / Mật khẩu: `Admin123456a@`
 - **Tài khoản Học viên thử nghiệm**: `nhanvien.moi@ohana.vn` / Mật khẩu: `123456`
+- **Hỗ trợ 5 Ngôn ngữ Toàn cầu**: Tiếng Việt 🇻🇳, English 🇬🇧, Français 🇫🇷, 中文 🇨🇳, 日本語 🇯🇵
 
 ---
 

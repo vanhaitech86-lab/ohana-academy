@@ -57,7 +57,7 @@ function initSlider() {
 // ─── Course Card Builder ───────────────────────────────────────
 function buildCourseCard(course, currentUser) {
   const category = CategoryDB.getById(course.categoryId);
-  const catName = category ? category.name : 'Khóa học';
+  const catName = window.I18n ? window.I18n.getCategoryName(category) : (category ? category.name : 'Khóa học');
   const catColor = category ? category.color : '#1e3a8a';
   const catIcon = category ? category.icon : '📚';
 
@@ -65,9 +65,19 @@ function buildCourseCard(course, currentUser) {
   const progress = currentUser ? ProgressDB.get(currentUser.id, course.id) : { completedLessons: [] };
   const pct = Math.round((progress.completedLessons.length / Math.max(course.totalLessons, 1)) * 100);
   const levelColor = LEVEL_COLORS[course.level] || '#10b981';
+  const levelText = window.I18n ? window.I18n.getLevelLabel(course.level) : course.level;
 
   const isPaid = course.priceType === 'paid' || (course.price && course.price > 0);
   const hasCert = !!course.hasCertificate;
+
+  const badgeCertText = window.I18n ? window.I18n.t('badge_cert') : '🎓 Cấp chứng chỉ';
+  const badgeFreeText = window.I18n ? window.I18n.t('badge_free') : '🎁 Miễn phí';
+  const badgeWithCertText = window.I18n ? window.I18n.t('badge_with_cert') : '🎖️ Kèm Chứng chỉ tốt nghiệp';
+  const priceFreeText = window.I18n ? window.I18n.t('price_free') : '🎁 Miễn phí 100%';
+  const lessonsCountText = window.I18n ? window.I18n.t('lessons_count') : 'bài giảng';
+  const studentsCountText = window.I18n ? window.I18n.t('students_count') : 'học viên';
+  const ctaText = enrolled ? (window.I18n ? window.I18n.t('btn_continue') : '▶ Tiếp tục học') : (window.I18n ? window.I18n.t('btn_details') : 'Chi tiết khóa học');
+  const progressText = window.I18n ? window.I18n.t('progress_label') : 'Tiến độ học tập';
 
   return `
     <div class="course-card fade-in-up" onclick="window.location='course-detail.html?id=${course.id}'">
@@ -84,11 +94,11 @@ function buildCourseCard(course, currentUser) {
         
         <!-- Badges on Thumbnail -->
         ${isPaid || hasCert ? `
-          <span class="course-type-badge cert">🎓 Cấp chứng chỉ</span>
+          <span class="course-type-badge cert">${badgeCertText}</span>
         ` : `
-          <span class="course-type-badge free">🎁 Miễn phí</span>
+          <span class="course-type-badge free">${badgeFreeText}</span>
         `}
-        <span class="course-level-badge" style="background:${levelColor};color:white;">${course.level}</span>
+        <span class="course-level-badge" style="background:${levelColor};color:white;">${levelText}</span>
       </div>
       <div class="course-body">
         <div class="course-category" style="color:${catColor}">${catName}</div>
@@ -96,21 +106,21 @@ function buildCourseCard(course, currentUser) {
         <div class="course-instructor">👨‍🏫 ${course.instructor}</div>
 
         <!-- Pricing & Certificate Badges -->
-        ${hasCert ? `<div class="course-cert-pill">🎖️ Kèm Chứng chỉ tốt nghiệp</div>` : ''}
+        ${hasCert ? `<div class="course-cert-pill">${badgeWithCertText}</div>` : ''}
 
         <div class="course-pricing-row">
           ${isPaid ? `
             <span class="course-price-val">${window.formatMoney ? window.formatMoney(course.price) : course.price + ' đ'}</span>
             ${course.originalPrice ? `<span class="course-price-orig">${window.formatMoney ? window.formatMoney(course.originalPrice) : ''}</span>` : ''}
           ` : `
-            <span class="course-price-val free">🎁 Miễn phí 100%</span>
+            <span class="course-price-val free">${priceFreeText}</span>
             ${course.originalPrice ? `<span class="course-price-orig">${window.formatMoney ? window.formatMoney(course.originalPrice) : ''}</span>` : ''}
           `}
         </div>
 
         <div class="course-meta">
           <div class="course-meta-item"><span>⏱</span> ${course.duration}</div>
-          <div class="course-meta-item"><span>📚</span> ${course.totalLessons} bài giảng</div>
+          <div class="course-meta-item"><span>📚</span> ${course.totalLessons} ${lessonsCountText}</div>
         </div>
         <div class="course-rating">
           <span class="stars">${generateStars(course.rating)}</span>
@@ -120,7 +130,7 @@ function buildCourseCard(course, currentUser) {
         ${enrolled && pct > 0 ? `
           <div style="margin-top:10px;margin-bottom:6px;">
             <div style="font-size:11px;color:var(--gray-500);display:flex;justify-content:space-between;margin-bottom:4px;">
-              <span>Tiến độ học tập</span>
+              <span>${progressText}</span>
               <strong style="color:var(--ohana-orange);">${pct}%</strong>
             </div>
             <div class="progress-bar">
@@ -130,9 +140,9 @@ function buildCourseCard(course, currentUser) {
         ` : ''}
 
         <div class="course-footer">
-          <span class="course-enroll-count">👥 ${course.enrollCount || 0} học viên</span>
+          <span class="course-enroll-count">👥 ${course.enrollCount || 0} ${studentsCountText}</span>
           <span class="course-cta ${enrolled ? 'enrolled' : ''}">
-            ${enrolled ? '▶ Tiếp tục học' : 'Chi tiết khóa học'}
+            ${ctaText}
           </span>
         </div>
       </div>
@@ -145,11 +155,13 @@ function renderCourseGrid(courses, user) {
   if (!grid) return;
 
   if (!courses.length) {
+    const emptyTitle = window.I18n ? window.I18n.t('empty_courses_title') : 'Chưa có khóa học phù hợp';
+    const emptyDesc = window.I18n ? window.I18n.t('empty_courses_desc') : 'Không tìm thấy khóa học nào trong danh mục hoặc tiêu chí tìm kiếm này.';
     grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
         <div class="empty-icon">📂</div>
-        <div class="empty-title">Chưa có khóa học phù hợp</div>
-        <div class="empty-desc">Không tìm thấy khóa học nào trong danh mục hoặc tiêu chí tìm kiếm này.</div>
+        <div class="empty-title">${emptyTitle}</div>
+        <div class="empty-desc">${emptyDesc}</div>
       </div>`;
     return;
   }
@@ -194,12 +206,12 @@ function loadHomepage() {
     catBar.innerHTML = `
       <div class="cat-item active" data-cat="all" onclick="filterCourses('all', this)">
         <span class="cat-icon">🌟</span>
-        <span class="cat-label">Tất cả khóa học</span>
+        <span class="cat-label">${window.I18n ? window.I18n.t('cat_all') : 'Tất cả khóa học'}</span>
       </div>
       ${orderedCats.map(c => `
         <div class="cat-item" data-cat="${c.id}" onclick="filterCourses('${c.id}', this)">
           <span class="cat-icon">${c.icon}</span>
-          <span class="cat-label">${c.name}</span>
+          <span class="cat-label">${window.I18n ? window.I18n.getCategoryName(c) : c.name}</span>
         </div>
       `).join('')}`;
   }
@@ -295,14 +307,23 @@ function loadCoursesPage() {
   // Populate Category Filter Dropdown
   const catSelect = document.getElementById('catFilter');
   if (catSelect) {
-    catSelect.innerHTML = `<option value="">Tất cả danh mục</option>` +
-      categories.map(c => `<option value="${c.id}" ${c.id == catFilter ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+    const allCatText = window.I18n ? window.I18n.t('filter_all_cats') : 'Tất cả danh mục';
+    catSelect.innerHTML = `<option value="">${allCatText}</option>` +
+      categories.map(c => `<option value="${c.id}" ${c.id == catFilter ? 'selected' : ''}>${c.icon} ${window.I18n ? window.I18n.getCategoryName(c) : c.name}</option>`).join('');
     catSelect.addEventListener('change', applyFilters);
   }
 
   // Populate Type Filter Dropdown if exists
   const typeSelect = document.getElementById('typeFilter');
   if (typeSelect) {
+    const allTypeText = window.I18n ? window.I18n.t('filter_all_types') : 'Tất cả học phí / Phân loại';
+    const freeText = window.I18n ? window.I18n.t('filter_type_free') : '🎁 Khóa học Miễn phí';
+    const paidText = window.I18n ? window.I18n.t('filter_type_paid') : '🎓 Trả phí · Cấp chứng chỉ';
+    typeSelect.innerHTML = `
+      <option value="">${allTypeText}</option>
+      <option value="free" ${typeFilter === 'free' ? 'selected' : ''}>${freeText}</option>
+      <option value="paid" ${typeFilter === 'paid' ? 'selected' : ''}>${paidText}</option>
+    `;
     typeSelect.value = typeFilter;
     typeSelect.addEventListener('change', applyFilters);
   }
@@ -310,6 +331,16 @@ function loadCoursesPage() {
   // Populate Level Filter
   const levelSelect = document.getElementById('levelFilter');
   if (levelSelect) {
+    const allLevelText = window.I18n ? window.I18n.t('filter_all_levels') : 'Tất cả trình độ';
+    const basicText = window.I18n ? window.I18n.t('level_basic') : 'Cơ bản';
+    const interText = window.I18n ? window.I18n.t('level_intermediate') : 'Trung cấp';
+    const advText = window.I18n ? window.I18n.t('level_advanced') : 'Nâng cao';
+    levelSelect.innerHTML = `
+      <option value="">${allLevelText}</option>
+      <option value="Cơ bản" ${levelFilter === 'Cơ bản' ? 'selected' : ''}>${basicText}</option>
+      <option value="Trung cấp" ${levelFilter === 'Trung cấp' ? 'selected' : ''}>${interText}</option>
+      <option value="Nâng cao" ${levelFilter === 'Nâng cao' ? 'selected' : ''}>${advText}</option>
+    `;
     levelSelect.value = levelFilter;
     levelSelect.addEventListener('change', applyFilters);
   }
@@ -318,6 +349,7 @@ function loadCoursesPage() {
   const searchInput = document.getElementById('courseSearch');
   if (searchInput) {
     searchInput.value = params.get('q') || '';
+    if (window.I18n) searchInput.placeholder = window.I18n.t('filter_search_ph');
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') applyFilters();
     });
@@ -326,7 +358,11 @@ function loadCoursesPage() {
   }
 
   const countEl = document.getElementById('filterCount');
-  if (countEl) countEl.textContent = `Tìm thấy ${filtered.length} khóa học`;
+  if (countEl) {
+    const prefix = window.I18n ? window.I18n.t('filter_found_prefix') : 'Tìm thấy';
+    const suffix = window.I18n ? window.I18n.t('filter_found_suffix') : 'khóa học';
+    countEl.textContent = `${prefix} ${filtered.length} ${suffix}`.trim();
+  }
 
   renderCourseGrid(filtered, user);
 }

@@ -459,6 +459,22 @@
     </a>
 
     <nav class="header-nav">
+      <!-- Language Selector -->
+      <div class="lang-selector" id="langSelector">
+        <button type="button" class="lang-selector-btn" id="langSelectorBtn" onclick="I18n.toggleDropdown(event)" aria-label="Select Language">
+          <span class="lang-flag" id="langFlag">🇻🇳</span>
+          <span class="lang-text" id="langText">VI</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button type="button" class="lang-item active" data-lang="vi" onclick="I18n.setLanguage('vi')"><span class="flag">🇻🇳</span> <span class="name">Tiếng Việt</span></button>
+          <button type="button" class="lang-item" data-lang="en" onclick="I18n.setLanguage('en')"><span class="flag">🇬🇧</span> <span class="name">English</span></button>
+          <button type="button" class="lang-item" data-lang="fr" onclick="I18n.setLanguage('fr')"><span class="flag">🇫🇷</span> <span class="name">Français</span></button>
+          <button type="button" class="lang-item" data-lang="zh" onclick="I18n.setLanguage('zh')"><span class="flag">🇨🇳</span> <span class="name">中文</span></button>
+          <button type="button" class="lang-item" data-lang="ja" onclick="I18n.setLanguage('ja')"><span class="flag">🇯🇵</span> <span class="name">日本語</span></button>
+        </div>
+      </div>
+
       <a href="#" id="backToCourseBtn" class="btn btn-login btn-sm">← Quay lại khóa học</a>
       <div class="user-menu" id="userMenu" style="display:flex;">
         <button class="user-avatar-btn" id="userAvatarBtn"><span id="userAvatar">A</span></button>
@@ -588,6 +604,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>

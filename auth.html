@@ -95,6 +95,27 @@
 <div class="auth-page">
   <div class="auth-card fade-in-up">
     
+    <!-- Topbar with Home Link & Language Selector -->
+    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:16px;">
+      <a href="index.html" style="font-size:13px; color:var(--astronixa-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+        <span>←</span> <span data-i18n="nav_home">Trang chủ</span>
+      </a>
+      <div class="lang-selector" id="langSelector">
+        <button type="button" class="lang-selector-btn" id="langSelectorBtn" onclick="I18n.toggleDropdown(event)">
+          <span class="lang-flag" id="langFlag">🇻🇳</span>
+          <span class="lang-text" id="langText">VI</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button type="button" class="lang-item active" data-lang="vi" onclick="I18n.setLanguage('vi')"><span class="flag">🇻🇳</span> <span class="name">Tiếng Việt</span></button>
+          <button type="button" class="lang-item" data-lang="en" onclick="I18n.setLanguage('en')"><span class="flag">🇬🇧</span> <span class="name">English</span></button>
+          <button type="button" class="lang-item" data-lang="fr" onclick="I18n.setLanguage('fr')"><span class="flag">🇫🇷</span> <span class="name">Français</span></button>
+          <button type="button" class="lang-item" data-lang="zh" onclick="I18n.setLanguage('zh')"><span class="flag">🇨🇳</span> <span class="name">中文</span></button>
+          <button type="button" class="lang-item" data-lang="ja" onclick="I18n.setLanguage('ja')"><span class="flag">🇯🇵</span> <span class="name">日本語</span></button>
+        </div>
+      </div>
+    </div>
+
     <!-- Logo -->
     <div style="display:flex; flex-direction:column; align-items:center; margin-bottom: 24px;">
       <a href="index.html" class="logo" style="margin-bottom: 12px; display:flex; align-items:center; gap:10px;">
@@ -137,9 +158,9 @@
           🔑 Tài khoản demo (click để tự động điền):
         </div>
         <div class="demo-grid">
-          <div class="demo-item" onclick="fillDemo('admin@ohana.vn', 'admin123')">
-            <div class="role" style="color:#dc2626;">👑 Admin Ohana</div>
-            <div class="email">admin@ohana.vn</div>
+          <div class="demo-item" onclick="fillDemo('vanhaitech.86@gmail.com', 'Admin123456a@')">
+            <div class="role" style="color:#dc2626;">👑 Admin Vũ Hải</div>
+            <div class="email">vanhaitech.86@gmail.com</div>
           </div>
           <div class="demo-item" onclick="fillDemo('nhanvien.moi@ohana.vn', '123456')">
             <div class="role" style="color:#0284c7;">🆕 Nhân viên mới</div>
@@ -226,6 +247,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
