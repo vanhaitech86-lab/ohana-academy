@@ -56,6 +56,8 @@ const I18n = {
       cat_sales: 'Kỹ năng bán hàng',
       cat_comm: 'Kỹ năng giao tiếp',
       cat_sop: 'Quy trình Ohana',
+      cat_leadership: 'Kỹ năng Lãnh đạo',
+      cat_train_the_trainer: 'Train the Trainer',
 
       // Course Badges & Labels
       badge_free: '🎁 Miễn phí',
@@ -212,6 +214,8 @@ const I18n = {
       cat_sales: 'Sales Skills',
       cat_comm: 'Communication Skills',
       cat_sop: 'Ohana SOP & Processes',
+      cat_leadership: 'Leadership Skills',
+      cat_train_the_trainer: 'Train the Trainer',
 
       // Course Badges & Labels
       badge_free: '🎁 Free',
@@ -368,6 +372,8 @@ const I18n = {
       cat_sales: 'Compétences de vente',
       cat_comm: 'Communication',
       cat_sop: 'Processus Ohana',
+      cat_leadership: 'Compétences de Leadership',
+      cat_train_the_trainer: 'Formation des Formateurs (Train the Trainer)',
 
       // Course Badges & Labels
       badge_free: '🎁 Gratuit',
@@ -524,6 +530,8 @@ const I18n = {
       cat_sales: '销售与成交技巧',
       cat_comm: '沟通与表达艺术',
       cat_sop: 'Ohana标准流程',
+      cat_leadership: '领导力与团队管理',
+      cat_train_the_trainer: '企业内训师培训 (Train the Trainer)',
 
       // Course Badges & Labels
       badge_free: '🎁 免费',
@@ -680,6 +688,8 @@ const I18n = {
       cat_sales: '営業・セールススキル',
       cat_comm: 'コミュニケーション術',
       cat_sop: 'Ohana標準業務プロセス',
+      cat_leadership: 'リーダーシップスキル',
+      cat_train_the_trainer: 'トレーナー育成 (Train the Trainer)',
 
       // Course Badges & Labels
       badge_free: '🎁 無料',
@@ -939,9 +949,23 @@ const I18n = {
       5: 'cat_comm',
       6: 'cat_sop',
       7: 'cat_free',
-      8: 'cat_paid_cert'
+      8: 'cat_paid_cert',
+      9: 'cat_leadership',
+      10: 'cat_train_the_trainer'
     };
-    const key = map[cat.id];
+    const slugMap = {
+      'ai-image': 'cat_ai_img',
+      'ai-video': 'cat_ai_video',
+      'ai-agent': 'cat_ai_agent',
+      'sales': 'cat_sales',
+      'communication': 'cat_comm',
+      'ohana-sop': 'cat_sop',
+      'free': 'cat_free',
+      'paid-cert': 'cat_paid_cert',
+      'leadership': 'cat_leadership',
+      'train-the-trainer': 'cat_train_the_trainer'
+    };
+    const key = map[cat.id] || (cat.slug ? slugMap[cat.slug] : null);
     return key ? this.t(key) : cat.name;
   },
 

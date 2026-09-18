@@ -307,13 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const catEl = document.getElementById('courseCategory');
   if (catEl && category) {
-    catEl.textContent = `${category.icon} ${category.name}`;
+    catEl.textContent = `${category.icon} ${window.I18n ? window.I18n.getCategoryName(category) : category.name}`;
     catEl.style.color = category.color;
   }
 
   const levelEl = document.getElementById('courseLevel');
   if (levelEl) {
-    levelEl.textContent = course.level;
+    levelEl.textContent = window.I18n ? window.I18n.getLevelLabel(course.level) : course.level;
     levelEl.style.background = LEVEL_COLORS[course.level] || '#10b981';
   }
 

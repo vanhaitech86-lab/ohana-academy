@@ -48,7 +48,7 @@
 7. **🎁 Khóa học miễn phí** (ID: 7 | Slug: `free`): Bộ sưu tập các khóa học nhập môn, chia sẻ cộng đồng và quy trình nội bộ 100% miễn phí.
 8. **🎓 Khóa học trả phí cấp chứng chỉ** (ID: 8 | Slug: `paid-cert`): Các khóa học chuyên sâu thực chiến, kèm bài kiểm tra tốt nghiệp và cấp Giấy chứng nhận điện tử chuẩn hóa OHANA Academy.
 
-### 📋 Bảng Chi Tiết 6 Khóa Học Trọng Tâm
+### 📋 Bảng Chi Tiết 8 Khóa Học Trọng Tâm
 | ID | Tên Khóa Học | Giảng Viên | Phân Loại | Học Phí | Cấp Chứng Chỉ |
 | :---: | :--- | :--- | :---: | :---: | :---: |
 | **1** | **Mastering Midjourney & Generative AI Design Thực Chiến** | Alex Đặng | 🎓 Trả phí | `890.000 đ` *(Gốc: 1.800.000 đ)* | ✅ Có (Chứng chỉ Chuyên gia Thiết kế Hình ảnh AI) |
@@ -57,6 +57,8 @@
 | **4** | **Kỹ Năng Bán Hàng Tư Vấn Đỉnh Cao & Nghệ Thuật Chốt Sale** | Lê Thu Trang | 🎓 Trả phí | `790.000 đ` *(Gốc: 1.500.000 đ)* | ✅ Có (Chứng nhận Chuyên viên Tư vấn Bán hàng Ohana) |
 | **5** | **Giao Tiếp Thấu Cảm, Lắng Nghe Chủ Động & Thuyết Phục** | Ngô Thanh Sơn | 🎁 Miễn phí | `0 đ (Miễn phí)` | ❌ Không |
 | **6** | **Quy Trình Chuẩn Vận Hành & Văn Hóa Ohana Astronixa** | Ban Đào Tạo Ohana | 🎁 Miễn phí | `0 đ (Miễn phí)` | ❌ Đào tạo SOP nội bộ |
+| **7** | **Nghệ Thuật Lãnh Đạo Đột Phá & Quản Trị Đội Ngũ Xuất Sắc** | Dr. Hoàng Minh Tuấn | 🎓 Trả phí | `1.290.000 đ` *(Gốc: 2.600.000 đ)* | ✅ Có (Chứng chỉ Năng lực Lãnh đạo & Quản trị Đội ngũ Cấp cao) |
+| **8** | **Train the Trainer: Phương Pháp Sư Phạm Hiện Đại & Kỹ Năng Đào Tạo Thực Chiến** | Master Trainer Trần Lan Anh | 🎓 Trả phí | `1.190.000 đ` *(Gốc: 2.400.000 đ)* | ✅ Có (Chứng chỉ Giảng viên Nội bộ Chuyên nghiệp) |
 
 ---
 
@@ -153,7 +155,7 @@ Hệ thống hoạt động hoàn toàn độc lập phía máy khách (Client-s
 | `ohana_progress` | Tiến độ bài học | `userId, courseId, completedLessons: []` |
 | `ohana_settings` | Cấu hình hệ thống | `siteName, hotline, email, website, address, facebook, youtube, zalo` |
 | `ohana_session` | Phiên đăng nhập | `user object` hiện tại |
-| `ohana_db_version` | Phiên bản cơ sở dữ liệu | `2.2` (Tự động di chuyển và cập nhật trường dữ liệu mới) |
+| `ohana_db_version` | Phiên bản cơ sở dữ liệu | `2.4` (Tự động di chuyển và cập nhật trường dữ liệu mới) |
 
 ---
 

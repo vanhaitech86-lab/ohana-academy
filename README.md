@@ -20,7 +20,7 @@ Hệ thống e-learning toàn diện được phát triển cho **OHANA Group**,
 
 ## 🌟 Danh Mục Đào Tạo & Khóa Học Trọng Tâm
 
-Hệ thống hỗ trợ 8 danh mục đào tạo linh hoạt:
+Hệ thống hỗ trợ 10 danh mục đào tạo linh hoạt:
 1. **🎨 Tạo hình ảnh bằng AI**: Làm chủ Midjourney V6, DALL-E 3, Leonardo AI.
 2. **🎬 Tạo video bằng AI**: Sản xuất video viral triệu view với Runway Gen-3, Kling AI, HeyGen & CapCut AI.
 3. **🤖 Khóa học về AI Agent**: Trợ lý AI độc lập, Multi-agent workflows với CrewAI, Make.com, n8n.
@@ -29,6 +29,8 @@ Hệ thống hỗ trợ 8 danh mục đào tạo linh hoạt:
 6. **🏢 Quy trình Ohana**: Quy trình chuẩn vận hành SOP, tiêu chuẩn dịch vụ 5 sao gia đình Ohana.
 7. **🎁 Khóa học Miễn phí**: Toàn bộ chương trình nhập môn, kỹ năng cơ bản và quy trình nội bộ 100% miễn phí.
 8. **🎓 Khóa học Trả phí Cấp chứng chỉ**: Chương trình chuyên sâu thực chiến, làm bài thi tốt nghiệp và nhận Giấy chứng nhận điện tử chuẩn hóa từ OHANA Academy.
+9. **👑 Kỹ năng Lãnh đạo (Leadership)**: Nghệ thuật lãnh đạo phục vụ, quản trị đội ngũ hiệu suất cao, ủy quyền thông minh, OKR/KPI và phát triển thế hệ kế thừa.
+10. **🎯 Train the Trainer**: Phương pháp sư phạm người lớn (Andragogy), quy trình ADDIE, điều phối lớp học tương tác và đo lường đào tạo 4 cấp độ Kirkpatrick.
 
 ---
 

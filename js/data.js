@@ -14,7 +14,7 @@ const DB_KEYS = {
   session:     'ohana_session',
   settings:    'ohana_settings',
 };
-const DB_VERSION = '2.3';
+const DB_VERSION = '2.4';
 
 // ─── Default Users ─────────────────────────────────────────────
 const DEFAULT_USERS = [
@@ -145,6 +145,22 @@ const DEFAULT_CATEGORIES = [
     color: '#d97706',
     slug: 'paid-cert',
     description: 'Các chương trình đào tạo chuyên sâu thực chiến, làm bài thi tốt nghiệp và nhận Chứng chỉ chính thức từ OHANA Academy'
+  },
+  {
+    id: 9,
+    name: 'Kỹ năng Lãnh đạo',
+    icon: '👑',
+    color: '#3b82f6',
+    slug: 'leadership',
+    description: 'Nghệ thuật lãnh đạo truyền cảm hứng, quản trị hiệu suất đội ngũ, tư duy chiến lược và xây dựng văn hóa đội ngũ vững mạnh'
+  },
+  {
+    id: 10,
+    name: 'Train the Trainer',
+    icon: '🎯',
+    color: '#14b8a6',
+    slug: 'train-the-trainer',
+    description: 'Phương pháp sư phạm hiện đại, thiết kế bài giảng tương tác, kỹ năng đứng lớp và phát triển đội ngũ giảng viên nội bộ thực chiến'
   }
 ];
 
@@ -304,6 +320,58 @@ const DEFAULT_COURSES = [
     status: 'active',
     createdAt: '2026-01-05',
     tags: ['Quy trình Ohana', 'Astronixa', 'Văn hóa Ohana', 'SOP', 'Onboarding', 'Hướng dẫn Astronixa']
+  },
+
+  // ── Khóa 7: Kỹ năng Lãnh đạo (Leadership) ──
+  {
+    id: 7,
+    title: 'Nghệ Thuật Lãnh Đạo Đột Phá & Quản Trị Đội Ngũ Xuất Sắc',
+    description: 'Khóa học cung cấp tư duy và công cụ quản trị hiện đại: Nghệ thuật truyền cảm hứng, giao việc ủy quyền hiệu quả, giải quyết xung đột nội bộ, xây dựng văn hóa gắn kết và phát triển thế hệ kế thừa.',
+    categoryId: 9,
+    priceType: 'paid',
+    price: 1290000,
+    originalPrice: 2600000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Chỉ Năng Lực Lãnh Đạo & Quản Trị Đội Ngũ Cấp Cao Ohana',
+    instructor: 'Dr. Hoàng Minh Tuấn – Cố vấn Chiến lược & Chuyên gia Khai vấn Lãnh đạo',
+    thumbnail: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&auto=format&fit=crop&q=60',
+    duration: '8 giờ',
+    totalLessons: 4,
+    level: 'Nâng cao',
+    allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
+    lessonIds: [28, 29, 30, 31],
+    quizId: 7,
+    rating: 4.96,
+    enrollCount: 185,
+    status: 'active',
+    createdAt: '2026-03-01',
+    tags: ['Leadership', 'Lãnh đạo', 'Quản trị đội ngũ', 'Ủy quyền', 'Tư duy chiến lược', 'Coaching']
+  },
+
+  // ── Khóa 8: Train the Trainer ──
+  {
+    id: 8,
+    title: 'Train the Trainer: Phương Pháp Sư Phạm Hiện Đại & Kỹ Năng Đào Tạo Thực Chiến',
+    description: 'Khóa học chuyển giao toàn diện năng lực đào tạo: Kỹ thuật thiết kế khung chương trình ADDIE, phương pháp dạy học tương tác (Gamification & Case Study), làm chủ sân khấu và đánh giá đo lường hiệu quả sau đào tạo.',
+    categoryId: 10,
+    priceType: 'paid',
+    price: 1190000,
+    originalPrice: 2400000,
+    hasCertificate: true,
+    certificateTitle: 'Chứng Chỉ Giảng Viên Nội Bộ Chuyên Nghiệp (Certified Internal Trainer)',
+    instructor: 'Master Trainer Trần Lan Anh – Chuyên gia Phát triển Năng lực Đào tạo Doanh nghiệp',
+    thumbnail: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=60',
+    duration: '7 giờ',
+    totalLessons: 4,
+    level: 'Trung cấp',
+    allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
+    lessonIds: [32, 33, 34, 35],
+    quizId: 8,
+    rating: 4.93,
+    enrollCount: 162,
+    status: 'active',
+    createdAt: '2026-03-05',
+    tags: ['Train the Trainer', 'Kỹ năng đào tạo', 'Sư phạm hiện đại', 'Thiết kế bài giảng', 'Facilitation', 'Giảng viên nội bộ']
   }
 ];
 
@@ -685,6 +753,122 @@ const DEFAULT_LESSONS = [
     docUrl: '',
     type: 'video',
     interactiveQs: []
+  },
+
+  // ── Khóa 7: Kỹ năng Lãnh đạo (Leadership) ──
+  {
+    id: 28, courseId: 7, order: 1,
+    title: 'Bài 1: Chân dung Nhà lãnh đạo Thời đại số & Tư duy Lãnh đạo Phục vụ (Servant Leadership)',
+    description: 'Định vị vai trò người đứng đầu: Chuyển dịch từ quản lý kiểm soát sang lãnh đạo khai phóng, tạo động lực nội tại và xây dựng lòng tin vững chắc.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '55 phút',
+    docName: 'Tu-duy-Lanh-dao-Phuc-vu.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: [
+      {
+        id: 701, timestamp: 60,
+        text: 'Điểm cốt lõi của phong cách Lãnh đạo Phục vụ (Servant Leadership) là gì?',
+        options: [
+          'Đặt quyền lợi cá nhân của người lãnh đạo lên hàng đầu',
+          'Phục vụ, thấu hiểu và trao quyền giúp nhân viên phát triển tối đa tiềm năng',
+          'Kiểm soát vi mô từng hành động của cấp dưới',
+          'Tránh né mọi xung đột trong nhóm'
+        ],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 29, courseId: 7, order: 2,
+    title: 'Bài 2: Nghệ thuật Ủy quyền Thông minh & Thiết lập Mục tiêu OKR/KPI',
+    description: 'Quy trình 5 bước giao việc không lo rủi ro, phân quyền theo ma trận năng lực và theo dõi tiến độ công việc bằng hệ thống đo lường hiệu quả.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '60 phút',
+    docName: 'Khung-Uy-quyen-Theo-Nang-luc.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 30, courseId: 7, order: 3,
+    title: 'Bài 3: Kỹ năng Khai vấn (Coaching), Phản hồi Động viên & Xử lý Xung đột',
+    description: 'Mô hình GROW trong khai vấn nhân viên, nghệ thuật phản hồi mang tính xây dựng (Constructive Feedback) và biến xung đột nội bộ thành cơ hội bứt phá.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '50 phút',
+    docName: 'Bo-Cau-hoi-Coaching-GROW.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 31, courseId: 7, order: 4,
+    title: 'Bài 4: Xây dựng Văn hóa Đội ngũ Vững mạnh & Phát triển Thế hệ Kế thừa',
+    description: 'Lan tỏa giá trị cốt lõi doanh nghiệp, duy trì năng lượng tích cực, thu hút và đào tạo những hạt giống lãnh đạo tương lai cho tổ chức.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '65 phút',
+    docName: 'Quy-trinh-Phat-trien-Ke-thua.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+
+  // ── Khóa 8: Train the Trainer ──
+  {
+    id: 32, courseId: 8, order: 1,
+    title: 'Bài 1: Tâm lý Học Người lớn (Andragogy) & Quy trình Thiết kế Đào tạo ADDIE',
+    description: 'Nắm bắt đặc điểm tâm lý tiếp thu của người đi làm: Tính thực tế, định hướng mục tiêu và kỹ thuật phân tích nhu cầu đào tạo (TNA - Training Needs Analysis).',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '50 phút',
+    docName: 'Mo-hinh-Thiet-ke-ADDIE.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: [
+      {
+        id: 801, timestamp: 45,
+        text: 'Người trưởng thành học tập hiệu quả nhất khi nào?',
+        options: [
+          'Học thuộc lòng lý thuyết trừu tượng',
+          'Khi kiến thức gắn liền với trải nghiệm thực tế và giải quyết ngay vấn đề trong công việc',
+          'Bị ép buộc tham gia mà không có mục tiêu',
+          'Chỉ nghe giảng viên độc thoại suốt buổi'
+        ],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 33, courseId: 8, order: 2,
+    title: 'Bài 2: Thiết kế Giáo án Tương tác & Trực quan hóa Slide Bài Giảng',
+    description: 'Nguyên lý 70:20:10 trong đào tạo, cấu trúc bài giảng 4P (Preparation, Presentation, Practice, Performance) và thiết kế slide đào tạo tinh gọn, bắt mắt.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '60 phút',
+    docName: 'Template-Giao-an-Chuan-4P.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 34, courseId: 8, order: 3,
+    title: 'Bài 3: Nghệ thuật Điều phối Lớp học (Facilitation), Thảo luận Nhóm & Gamification',
+    description: 'Các kỹ thuật hoạt náo mở đầu (Ice-breaker), nghệ thuật đặt câu hỏi dẫn dắt, giải quyết các tình huống khó đỡ và duy trì năng lượng đỉnh cao suốt lớp học.',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '55 phút',
+    docName: 'Ky-thuat-Dieu-phoi-Lop-hoc.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
+  },
+  {
+    id: 35, courseId: 8, order: 4,
+    title: 'Bài 4: Đánh giá Hiệu quả Đào tạo theo Mô hình Kirkpatrick 4 Cấp độ',
+    description: 'Phương pháp đo lường: Cấp 1 (Phản ứng/Hài lòng), Cấp 2 (Học tập/Kiến thức), Cấp 3 (Hành vi áp dụng) và Cấp 4 (Kết quả kinh doanh thực tế).',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    duration: '50 phút',
+    docName: 'Bang-Danh-gia-Kirkpatrick-Level4.pdf',
+    docUrl: '',
+    type: 'video',
+    interactiveQs: []
   }
 ];
 
@@ -980,6 +1164,103 @@ const DEFAULT_QUIZZES = [
         correct: 1
       }
     ]
+  },
+  {
+    id: 7, courseId: 7, title: 'Bài Kiểm Tra: Năng Lực Lãnh Đạo Đột Phá & Quản Trị Đội Ngũ',
+    timeLimit: 15, passingScore: 75,
+    questions: [
+      {
+        id: 1, text: 'Theo mô hình Lãnh đạo Tình huống (Situational Leadership), khi nhân viên có năng lực cao nhưng thiếu tự tin, lãnh đạo nên áp dụng phong cách nào?',
+        options: ['Chỉ đạo trực tiếp', 'Hỗ trợ & Đồng hành (Supporting)', 'Ủy quyền hoàn toàn', 'Kỷ luật'],
+        correct: 1
+      },
+      {
+        id: 2, text: 'Chữ O trong mô hình khai vấn GROW đại diện cho yếu tố nào?',
+        options: ['Objective', 'Options (Các lựa chọn giải pháp)', 'Organization', 'Outcome'],
+        correct: 1
+      },
+      {
+        id: 3, text: 'Nguyên tắc vàng khi đưa ra phản hồi mang tính xây dựng (Feedback) cho cấp dưới là:',
+        options: [
+          'Phê bình gay gắt trước toàn thể công ty',
+          'Tập trung vào hành vi cụ thể và kết quả thực tế, không công kích cá nhân',
+          'Nói bóng gió để nhân viên tự hiểu',
+          'Chỉ trích lỗi lầm quá khứ lặp đi lặp lại'
+        ],
+        correct: 1
+      },
+      {
+        id: 4, text: 'Bước quan trọng nhất để xây dựng văn hóa tin cậy (Trust) trong đội ngũ là gì?',
+        options: [
+          'Người lãnh đạo làm gương (Walk the talk) và minh bạch trong thông tin',
+          'Lắp đặt nhiều camera giám sát',
+          'Yêu cầu báo cáo chi tiết từng giờ',
+          'Thưởng phạt theo cảm tính'
+        ],
+        correct: 0
+      },
+      {
+        id: 5, text: 'Khi ủy quyền công việc, người lãnh đạo cần chuyển giao điều gì cùng với trách nhiệm?',
+        options: ['Không cần chuyển giao gì cả', 'Quyền hạn và nguồn lực tương ứng để nhân viên chủ động quyết định', 'Áp lực tài chính cá nhân', 'Mật khẩu bảo mật cá nhân'],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 8, courseId: 8, title: 'Bài Kiểm Tra: Phương Pháp Sư Phạm & Năng Lực Đào Tạo Giảng Viên',
+    timeLimit: 15, passingScore: 75,
+    questions: [
+      {
+        id: 1, text: 'Mô hình ADDIE trong thiết kế khóa học bao gồm những bước nào?',
+        options: [
+          'Analyze, Design, Develop, Implement, Evaluate',
+          'Ask, Do, Drive, Inspect, Exit',
+          'Action, Decision, Digital, Internet, Education',
+          'Audio, Data, Delivery, Input, Error'
+        ],
+        correct: 0
+      },
+      {
+        id: 2, text: 'Cấp độ 3 trong mô hình đánh giá đào tạo của Kirkpatrick đo lường điều gì?',
+        options: [
+          'Mức độ thỏa mãn của học viên ngay sau khóa học',
+          'Điểm số bài thi trắc nghiệm',
+          'Sự thay đổi về hành vi thực tế của học viên khi quay lại công việc',
+          'Tổng chi phí tổ chức lớp học'
+        ],
+        correct: 2
+      },
+      {
+        id: 3, text: 'Tỷ lệ vàng giữa "Giảng viên nói" và "Học viên thực hành/tương tác" trong phương pháp đào tạo hiện đại là:',
+        options: [
+          'Giảng viên 90% - Học viên 10%',
+          'Giảng viên 30% - Học viên 70% (Lấy người học làm trung tâm)',
+          'Giảng viên 100% - Học viên 0%',
+          'Tùy ý không cần phân bổ'
+        ],
+        correct: 1
+      },
+      {
+        id: 4, text: 'Khi gặp một học viên có thái độ phản đối hoặc hay làm phân tán lớp học, giảng viên nên làm gì?',
+        options: [
+          'Đuổi học viên ra khỏi lớp ngay lập tức',
+          'Lắng nghe, tôn trọng quan điểm, chuyển câu hỏi cho cả lớp thảo luận hoặc trao đổi riêng vào giờ giải lao',
+          'Tranh cãi gay gắt để chứng minh mình đúng',
+          'Phớt lờ hoàn toàn cả buổi'
+        ],
+        correct: 1
+      },
+      {
+        id: 5, text: 'Kỹ thuật "Ice-breaker" đầu buổi học nhằm mục đích chính là gì?',
+        options: [
+          'Làm học viên mệt mỏi',
+          'Phá vỡ khoảng cách, tạo không khí thoải mái và kéo sự chú ý về chủ đề buổi học',
+          'Kiểm tra kiến thức khó nhất',
+          'Chấm dứt buổi học sớm'
+        ],
+        correct: 1
+      }
+    ]
   }
 ];
 
@@ -1115,7 +1396,14 @@ function initDB() {
     setDB(DB_KEYS.users, currentUsers);
   }
   if (!localStorage.getItem(DB_KEYS.categories) || storedVer !== DB_VERSION) {
-    setDB(DB_KEYS.categories, DEFAULT_CATEGORIES);
+    const existingCats = getDB(DB_KEYS.categories) || [];
+    const mergedCats = [...DEFAULT_CATEGORIES];
+    existingCats.forEach(ec => {
+      if (!mergedCats.some(mc => mc.id === ec.id || mc.slug === ec.slug)) {
+        mergedCats.push(ec);
+      }
+    });
+    setDB(DB_KEYS.categories, mergedCats);
   }
   if (!localStorage.getItem(DB_KEYS.courses) || storedVer !== DB_VERSION) {
     const existing = getDB(DB_KEYS.courses) || [];
@@ -1151,10 +1439,24 @@ function initDB() {
     }
   }
   if (!localStorage.getItem(DB_KEYS.lessons) || storedVer !== DB_VERSION) {
-    setDB(DB_KEYS.lessons, DEFAULT_LESSONS);
+    const existingLessons = getDB(DB_KEYS.lessons) || [];
+    const mergedLessons = [...DEFAULT_LESSONS];
+    existingLessons.forEach(el => {
+      if (!mergedLessons.some(ml => ml.id === el.id)) {
+        mergedLessons.push(el);
+      }
+    });
+    setDB(DB_KEYS.lessons, mergedLessons);
   }
   if (!localStorage.getItem(DB_KEYS.quizzes) || storedVer !== DB_VERSION) {
-    setDB(DB_KEYS.quizzes, DEFAULT_QUIZZES);
+    const existingQuizzes = getDB(DB_KEYS.quizzes) || [];
+    const mergedQuizzes = [...DEFAULT_QUIZZES];
+    existingQuizzes.forEach(eq => {
+      if (!mergedQuizzes.some(mq => mq.id === eq.id)) {
+        mergedQuizzes.push(eq);
+      }
+    });
+    setDB(DB_KEYS.quizzes, mergedQuizzes);
   }
   if (!localStorage.getItem(DB_KEYS.results))     setDB(DB_KEYS.results, []);
   if (!localStorage.getItem(DB_KEYS.enrollments)) setDB(DB_KEYS.enrollments, []);
