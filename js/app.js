@@ -75,6 +75,7 @@ function buildCourseCard(course, currentUser) {
   const badgeWithCertText = window.I18n ? window.I18n.t('badge_with_cert') : '🎖️ Kèm Chứng chỉ tốt nghiệp';
   const priceFreeText = window.I18n ? window.I18n.t('price_free') : '🎁 Miễn phí 100%';
   const lessonsCountText = window.I18n ? window.I18n.t('lessons_count') : 'bài giảng';
+  const studentsCountText = window.I18n ? window.I18n.t('students_count') : 'học viên';
   const ctaText = enrolled 
     ? (window.I18n ? window.I18n.t('btn_continue') : '▶ Tiếp tục học') 
     : (currentUser ? '▶ Vào học thử' : (window.I18n ? window.I18n.t('btn_details') : 'Chi tiết khóa học'));
@@ -91,7 +92,7 @@ function buildCourseCard(course, currentUser) {
           </div>
         `}
         <div class="course-thumb-overlay"></div>
-        <div class="course-play-btn">▶</div>
+        <div class="course-play-btn" title="Xem video demo học thử" onclick="event.stopPropagation(); window.openDemoModalByCourse(${course.id})">▶</div>
         
         <!-- Badges on Thumbnail -->
         ${isPaid || hasCert ? `
@@ -145,9 +146,14 @@ function buildCourseCard(course, currentUser) {
 
         <div class="course-footer">
           <span class="course-enroll-count">👥 ${course.enrollCount || 0} ${studentsCountText}</span>
-          <span class="course-cta ${enrolled ? 'enrolled' : ''}">
-            ${ctaText}
-          </span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="course-demo-btn" onclick="event.stopPropagation(); window.openDemoModalByCourse(${course.id})" title="Xem trước video bài học demo">
+              🎬 Demo
+            </button>
+            <span class="course-cta ${enrolled ? 'enrolled' : ''}">
+              ${ctaText}
+            </span>
+          </div>
         </div>
       </div>
     </div>`;
@@ -240,32 +246,140 @@ function loadHomepage() {
   if (statR) statR.textContent = totalResults;
 }
 
-// ─── Render Official YouTube Videos ────────────────────────────
-function renderYtVideos() {
+// ─── Render Official YouTube Videos & Demo Showcase ───────────
+let currentDemoGroup = 'all';
+
+window.filterDemoVideos = function(group, el) {
+  currentDemoGroup = group;
+  document.querySelectorAll('.demo-tab-btn').forEach(btn => btn.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderYtVideos(group);
+};
+
+function renderYtVideos(group = currentDemoGroup || 'all') {
   const container = document.getElementById('ytVideosGrid');
   if (!container || !window.OFFICIAL_YOUTUBE_VIDEOS) return;
 
-  container.innerHTML = window.OFFICIAL_YOUTUBE_VIDEOS.map(v => `
-    <div class="yt-video-card fade-in-up" onclick="window.location='lesson.html?course=${v.courseId}&lesson=${v.lessonId}'">
-      <div class="yt-video-thumb-wrap">
+  const list = group === 'all'
+    ? window.OFFICIAL_YOUTUBE_VIDEOS
+    : window.OFFICIAL_YOUTUBE_VIDEOS.filter(v => v.group === group);
+
+  if (!list.length) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gray-500);">
+        <div style="font-size: 36px; margin-bottom: 8px;">🎬</div>
+        <div>Không có video nào trong danh mục này.</div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = list.map(v => `
+    <div class="yt-video-card fade-in-up">
+      <div class="yt-video-thumb-wrap" onclick="openDemoModal('${v.id}')">
         <img src="${v.thumbnail}" alt="${v.title}" class="yt-video-thumb" loading="lazy">
         <div class="yt-video-overlay">
           <div class="yt-play-icon">▶</div>
         </div>
         <span class="yt-video-duration">${v.duration}</span>
-        <span class="yt-video-badge">Ohana SOP</span>
+        <span class="yt-video-badge">${v.badge || 'Demo'}</span>
       </div>
       <div class="yt-video-info">
         <div class="yt-video-category">${v.category}</div>
-        <div class="yt-video-title" title="${v.title}">${v.title}</div>
+        <div class="yt-video-title" title="${v.title}" onclick="openDemoModal('${v.id}')">${v.title}</div>
         <div class="yt-video-footer">
-          <span class="yt-channel-tag">📺 Ohana Astronixa VN</span>
-          <span class="yt-watch-cta">Xem bài học →</span>
+          <span class="yt-channel-tag">📺 ${v.channel || 'Ohana Astronixa VN'}</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="course-demo-btn" onclick="event.stopPropagation(); openDemoModal('${v.id}')" title="Xem trước video demo">
+              🎬 Xem demo
+            </button>
+            <a href="lesson.html?course=${v.courseId}&lesson=${v.lessonId}" class="yt-watch-cta" onclick="event.stopPropagation()">
+              Học thử →
+            </a>
+          </div>
         </div>
       </div>
     </div>
   `).join('');
 }
+
+// ─── Quick Demo Video Modal Controller ─────────────────────────
+window.openDemoModal = function(videoId) {
+  const video = (window.OFFICIAL_YOUTUBE_VIDEOS || []).find(v => v.id === videoId);
+  if (!video) return;
+
+  const modal = document.getElementById('demoVideoModal');
+  const iframe = document.getElementById('demoModalIframe');
+  const title = document.getElementById('demoModalTitle');
+  const tag = document.getElementById('demoModalTag');
+  const desc = document.getElementById('demoModalDesc');
+  const dur = document.getElementById('demoModalDuration');
+  const chan = document.getElementById('demoModalChannel');
+  const fullLessonBtn = document.getElementById('demoModalFullLessonBtn');
+  const ytBtn = document.getElementById('demoModalYtBtn');
+  const watermark = document.getElementById('demoWatermarkOverlay');
+
+  if (!modal || !iframe) return;
+
+  if (title) title.textContent = video.title;
+  if (tag) tag.textContent = `🪐 ${video.category.toUpperCase()}`;
+  if (desc) desc.textContent = video.description || '';
+  if (dur) dur.textContent = `⏱ ${video.duration}`;
+  if (chan) chan.textContent = `📺 ${video.channel || 'Ohana Astronixa VN'}`;
+
+  // Student Security Watermark
+  const currentUser = Auth.getCurrentUser();
+  const wmText = currentUser ? `HỌC VIÊN: ${currentUser.name} (${currentUser.email}) · OHANA SECURE DEMO` : 'OHANA ACADEMY · SECURE DEMO VIEW';
+  if (watermark) watermark.textContent = wmText;
+
+  // Set Embed URL with autoplay=1&rel=0&modestbranding=1
+  iframe.src = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1`;
+
+  // Full lesson button
+  if (fullLessonBtn) {
+    fullLessonBtn.href = `lesson.html?course=${video.courseId}&lesson=${video.lessonId}`;
+  }
+
+  // YouTube Channel button
+  if (ytBtn) {
+    if (video.group === 'ohana') {
+      ytBtn.href = 'https://www.youtube.com/@OhanaAstronixaVN';
+      ytBtn.textContent = '▶ Kênh YouTube @OhanaAstronixaVN';
+      ytBtn.style.display = 'inline-flex';
+    } else {
+      ytBtn.href = video.watchUrl || `https://www.youtube.com/watch?v=${video.id}`;
+      ytBtn.textContent = '▶ Xem trên YouTube ↗';
+      ytBtn.style.display = 'inline-flex';
+    }
+  }
+
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeDemoModal = function(e) {
+  if (e && e.target && e.target.id !== 'demoVideoModal' && !e.target.classList.contains('demo-modal-close')) {
+    return;
+  }
+  const modal = document.getElementById('demoVideoModal');
+  const iframe = document.getElementById('demoModalIframe');
+  if (modal) modal.classList.remove('show');
+  if (iframe) iframe.src = '';
+  document.body.style.overflow = '';
+};
+
+window.openDemoModalByCourse = function(courseId) {
+  const videos = window.OFFICIAL_YOUTUBE_VIDEOS || [];
+  const found = videos.find(v => v.courseId === parseInt(courseId));
+  if (found) {
+    window.openDemoModal(found.id);
+  } else {
+    const course = CourseDB.getById(courseId);
+    const lessons = LessonDB.getByCourse(courseId);
+    if (lessons && lessons.length) {
+      window.location.href = `lesson.html?course=${courseId}&lesson=${lessons[0].id}`;
+    }
+  }
+};
 
 // ─── Load Courses Catalog Page ─────────────────────────────────
 function loadCoursesPage() {

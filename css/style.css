@@ -1702,6 +1702,220 @@ ul { list-style: none; }
   transform: translateX(3px);
 }
 
+/* ─── Demo Video Showcase Tabs & Modal ─────────────────────── */
+.demo-tabs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.demo-tab-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-700);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo-tab-btn:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-300);
+  color: var(--gray-900);
+  transform: translateY(-1px);
+}
+
+.demo-tab-btn.active {
+  background: var(--gradient-astronixa);
+  color: #0b0f19;
+  border-color: transparent;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 223, 216, 0.3);
+}
+
+.course-demo-btn {
+  background: rgba(0, 223, 216, 0.12);
+  color: #0891b2;
+  border: 1px solid rgba(0, 223, 216, 0.4);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.course-demo-btn:hover {
+  background: #00dfd8;
+  color: #0b0f19;
+  border-color: #00dfd8;
+  box-shadow: 0 2px 8px rgba(0, 223, 216, 0.3);
+  transform: scale(1.04);
+}
+
+/* Demo Video Modal */
+.demo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 25, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.demo-modal-overlay.show {
+  display: flex;
+}
+
+.demo-modal-box {
+  background: #0f172a;
+  border: 1px solid rgba(0, 223, 216, 0.35);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 840px;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 223, 216, 0.2);
+  animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.demo-modal-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111c35;
+}
+
+.demo-modal-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #00dfd8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.demo-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.35;
+}
+
+.demo-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.demo-modal-close:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+  transform: rotate(90deg);
+}
+
+.demo-modal-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+.demo-modal-video-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.demo-watermark-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 223, 216, 0.85);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 5;
+  border: 1px solid rgba(0, 223, 216, 0.3);
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+}
+
+.demo-modal-body {
+  padding: 18px 22px;
+  background: #0d1527;
+  overflow-y: auto;
+}
+
+.demo-modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.demo-security-pill {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.demo-modal-desc {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.demo-modal-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 /* ─── Course Badges & Pricing ──────────────────────────────── */
 .course-type-badge {
   position: absolute;

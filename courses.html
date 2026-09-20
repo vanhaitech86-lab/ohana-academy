@@ -294,6 +294,39 @@
   </a>
 </nav>
 
+<!-- ─── Quick Demo Video Modal ─────────────────────────────── -->
+<div class="demo-modal-overlay" id="demoVideoModal" onclick="closeDemoModal(event)">
+  <div class="demo-modal-box" onclick="event.stopPropagation()">
+    <div class="demo-modal-header">
+      <div class="demo-modal-title-wrap">
+        <span class="demo-modal-tag" id="demoModalTag">🪐 OHANA ASTRONIXA</span>
+        <h3 class="demo-modal-title" id="demoModalTitle">Tiêu đề video bài học demo</h3>
+      </div>
+      <button class="demo-modal-close" onclick="closeDemoModal()" title="Đóng">✕</button>
+    </div>
+    <div class="demo-modal-video-wrap">
+      <div class="demo-watermark-overlay" id="demoWatermarkOverlay">OHANA DEMO · SECURE VIEW</div>
+      <iframe id="demoModalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="demo-modal-body">
+      <div class="demo-modal-meta">
+        <span id="demoModalDuration">⏱ 00:00</span>
+        <span id="demoModalChannel">📺 Kênh chính thức</span>
+        <span class="demo-security-pill">🛡️ Video được bảo vệ bản quyền · Chống tua & Chống tải lậu</span>
+      </div>
+      <p class="demo-modal-desc" id="demoModalDesc">Mô tả bài học demo đang tải...</p>
+      <div class="demo-modal-actions">
+        <a id="demoModalFullLessonBtn" href="#" class="btn btn-primary" style="flex:1; justify-content:center; padding:12px 20px;">
+          🚀 Vào học thử đầy đủ (Kèm bài tập & trắc nghiệm) →
+        </a>
+        <a id="demoModalYtBtn" href="https://www.youtube.com/@OhanaAstronixaVN" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;">
+          ▶ Kênh YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="js/data.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/auth.js"></script>

@@ -477,13 +477,36 @@
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid rgba(239,68,68,0.25);margin-bottom:8px;">
           <span>▶</span> <span data-i18n="sec_yt_badge">KÊNH YOUTUBE CHÍNH THỨC · @OhanaAstronixaVN</span>
         </div>
-        <h2 class="section-title"><span data-i18n="sec_yt_title">Video Đào Tạo</span> <span data-i18n="sec_yt_title_grad">Ohana Astronixa VN</span></h2>
-        <p class="section-desc" data-i18n="sec_yt_desc">Trọn bộ video văn hóa mái nhà Ohana và hướng dẫn thao tác đăng ký, KYC, nạp rút tiền ví Astronixa</p>
+        <h2 class="section-title"><span data-i18n="sec_yt_title">Kho Video Demo Học Thử</span> <span data-i18n="sec_yt_title_grad">Ohana Astronixa VN</span></h2>
+        <p class="section-desc" data-i18n="sec_yt_desc">Trọn bộ video văn hóa mái nhà Ohana, hướng dẫn thao tác Astronixa và bài giảng học thử các khóa học thực chiến</p>
       </div>
       <a href="https://www.youtube.com/@OhanaAstronixaVN" target="_blank" rel="noopener noreferrer" class="see-all" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" data-i18n="sec_yt_all">
         Xem tất cả trên YouTube ↗
       </a>
     </div>
+
+    <!-- Category Filter Tabs for Demo Videos -->
+    <div class="demo-tabs-wrap" id="demoVideoTabs">
+      <button class="demo-tab-btn active" onclick="filterDemoVideos('all', this)">
+        <span>🌟</span> <span>Tất cả video demo</span>
+      </button>
+      <button class="demo-tab-btn" onclick="filterDemoVideos('ohana', this)">
+        <span>🪐</span> <span>Ohana Astronixa VN</span>
+      </button>
+      <button class="demo-tab-btn" onclick="filterDemoVideos('ai_media', this)">
+        <span>🎨</span> <span>AI Tạo Ảnh & Video</span>
+      </button>
+      <button class="demo-tab-btn" onclick="filterDemoVideos('ai_agent', this)">
+        <span>🤖</span> <span>AI Agent & Tự Động Hóa</span>
+      </button>
+      <button class="demo-tab-btn" onclick="filterDemoVideos('sales', this)">
+        <span>💼</span> <span>Kỹ Năng Bán Hàng</span>
+      </button>
+      <button class="demo-tab-btn" onclick="filterDemoVideos('leadership', this)">
+        <span>👔</span> <span>Lãnh Đạo & Huấn Luyện</span>
+      </button>
+    </div>
+
     <div class="yt-videos-grid" id="ytVideosGrid">
       <!-- Dynamic rendering by app.js -->
     </div>
@@ -619,6 +642,39 @@
     <span class="bn-label" data-i18n="nav_admin">Quản trị</span>
   </a>
 </nav>
+
+<!-- ─── Quick Demo Video Modal ─────────────────────────────── -->
+<div class="demo-modal-overlay" id="demoVideoModal" onclick="closeDemoModal(event)">
+  <div class="demo-modal-box" onclick="event.stopPropagation()">
+    <div class="demo-modal-header">
+      <div class="demo-modal-title-wrap">
+        <span class="demo-modal-tag" id="demoModalTag">🪐 OHANA ASTRONIXA</span>
+        <h3 class="demo-modal-title" id="demoModalTitle">Tiêu đề video bài học demo</h3>
+      </div>
+      <button class="demo-modal-close" onclick="closeDemoModal()" title="Đóng">✕</button>
+    </div>
+    <div class="demo-modal-video-wrap">
+      <div class="demo-watermark-overlay" id="demoWatermarkOverlay">OHANA DEMO · SECURE VIEW</div>
+      <iframe id="demoModalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="demo-modal-body">
+      <div class="demo-modal-meta">
+        <span id="demoModalDuration">⏱ 00:00</span>
+        <span id="demoModalChannel">📺 Kênh chính thức</span>
+        <span class="demo-security-pill">🛡️ Video được bảo vệ bản quyền · Chống tua & Chống tải lậu</span>
+      </div>
+      <p class="demo-modal-desc" id="demoModalDesc">Mô tả bài học demo đang tải...</p>
+      <div class="demo-modal-actions">
+        <a id="demoModalFullLessonBtn" href="#" class="btn btn-primary" style="flex:1; justify-content:center; padding:12px 20px;">
+          🚀 Vào học thử đầy đủ (Kèm bài tập & trắc nghiệm) →
+        </a>
+        <a id="demoModalYtBtn" href="https://www.youtube.com/@OhanaAstronixaVN" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;">
+          ▶ Kênh YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/i18n.js"></script>
