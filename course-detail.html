@@ -413,49 +413,50 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>`;
   }
 
+  // Unlock Banner
+  const unlockNotice = document.createElement('div');
+  unlockNotice.style.cssText = 'background: rgba(0, 223, 216, 0.1); border: 1px solid rgba(0, 223, 216, 0.35); border-radius: var(--radius); padding: 12px; margin-bottom: 16px; font-size: 13px; color: var(--cyber-cyan); line-height: 1.5;';
+  unlockNotice.innerHTML = `<strong>✨ Mở khóa học thử:</strong> ${user ? 'Tài khoản của bạn đã được mở khóa vào học thử tất cả các bài giảng!' : 'Đăng ký tài khoản miễn phí để mở khóa vào học thử ngay!'}`;
+  enrollBtn.parentNode.insertBefore(unlockNotice, enrollBtn);
+
   // Enroll button
-  const enrollBtn = document.getElementById('enrollBtn');
   if (!user) {
-    enrollBtn.textContent = '🔐 Đăng nhập để bắt đầu học';
-    enrollBtn.onclick = () => window.location.href = `auth.html?redirect=${encodeURIComponent(window.location.href)}`;
-  } else if (!canAccess) {
-    enrollBtn.textContent = '🔒 Tài khoản không có quyền học khóa này';
-    enrollBtn.disabled = true;
-    enrollBtn.style.background = 'var(--gray-400)';
-  } else if (enrolled) {
-    enrollBtn.textContent = '▶ Tiếp tục học bài giảng';
+    enrollBtn.textContent = '🔐 Đăng ký / Đăng nhập để mở khóa học thử';
+    enrollBtn.style.background = 'var(--gradient-astronixa)';
+    enrollBtn.onclick = () => window.location.href = `auth.html?tab=register&redirect=${encodeURIComponent(window.location.href)}`;
+  } else {
+    // Tự động ghi danh cho học viên đã đăng nhập
+    if (!enrolled) {
+      EnrollmentDB.enroll(user.id, courseId);
+    }
+    enrollBtn.textContent = '▶ Vào học thử ngay (Đã mở khóa)';
     enrollBtn.style.background = 'var(--gradient-ohana)';
     enrollBtn.onclick = () => {
       const first = lessons[0];
       if (first) window.location.href = `lesson.html?course=${courseId}&lesson=${first.id}`;
     };
-  } else {
-    if (isPaid) {
-      enrollBtn.textContent = `💳 Đăng ký khóa học (${formatMoney(course.price)})`;
-      enrollBtn.onclick = () => {
-        EnrollmentDB.enroll(user.id, courseId);
-        showToast('Đăng ký khóa học thành công! Chúc bạn học tập hiệu quả!', 'success');
-        setTimeout(() => window.location.reload(), 600);
+
+    if (isPaid && hasCert) {
+      const certBuyBtn = document.createElement('button');
+      certBuyBtn.className = 'btn btn-outline';
+      certBuyBtn.style.cssText = 'width: 100%; padding: 10px; font-size: 13.5px; margin-bottom: 16px; border-color: #d97706; color: #d97706;';
+      certBuyBtn.innerHTML = `🎓 Đăng ký cấp Chứng chỉ Tốt nghiệp (${formatMoney(course.price)})`;
+      certBuyBtn.onclick = () => {
+        showToast('Đã kích hoạt quyền thi & cấp Chứng chỉ tốt nghiệp! Hãy hoàn thành các bài học và bài thi cuối khóa.', 'success');
       };
-    } else {
-      enrollBtn.textContent = '🎁 Đăng ký học Miễn phí ngay';
-      enrollBtn.onclick = () => {
-        EnrollmentDB.enroll(user.id, courseId);
-        showToast('Đăng ký khóa học miễn phí thành công!', 'success');
-        setTimeout(() => window.location.reload(), 600);
-      };
+      enrollBtn.parentNode.insertBefore(certBuyBtn, enrollBtn.nextSibling);
     }
   }
 
   // Quiz Button
   const quizBtn = document.getElementById('quizBtn');
-  if (quiz && user && enrolled && canAccess) {
+  if (quiz && user) {
     quizBtn.style.display = 'inline-flex';
     if (existingResult) {
       quizBtn.innerHTML = `📊 Xem kết quả (${existingResult.score}%)`;
       quizBtn.onclick = () => window.location.href = `quiz.html?course=${courseId}&review=1`;
     } else {
-      quizBtn.innerHTML = `📝 Làm bài kiểm tra`;
+      quizBtn.innerHTML = `📝 Làm bài kiểm tra tốt nghiệp`;
       quizBtn.onclick = () => window.location.href = `quiz.html?course=${courseId}`;
     }
   }
@@ -463,19 +464,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render Lesson Syllabus
   const lessonList = document.getElementById('lessonList');
   if (lessonList) {
-    document.getElementById('syllabusCount').textContent = `${lessons.length} bài học`;
+    document.getElementById('syllabusCount').textContent = `${lessons.length} bài học (Đã mở khóa học thử)`;
     lessonList.innerHTML = lessons.map((l, i) => {
       const done = progress.completedLessons.includes(l.id);
-      const canOpen = user && canAccess && enrolled;
+      const canOpen = !!user;
       return `
-        <div class="lesson-item ${done ? 'completed' : ''}" onclick="${canOpen ? `window.location='lesson.html?course=${courseId}&lesson=${l.id}'` : ''}">
+        <div class="lesson-item ${done ? 'completed' : ''}" onclick="${canOpen ? `window.location='lesson.html?course=${courseId}&lesson=${l.id}'` : `window.location='auth.html?tab=register&redirect=${encodeURIComponent(window.location.href)}'`}">
           <div class="lesson-num">${done ? '✓' : i + 1}</div>
           <div class="lesson-info">
             <div class="lesson-name">${l.title}</div>
             <div class="lesson-dur">⏱ ${l.duration} ${l.docName ? '· 📄 Có tài liệu' : ''}</div>
           </div>
           <div>
-            ${done ? '✅' : (canOpen ? '▶' : '🔒')}
+            ${done ? '✅ Đã học' : (canOpen ? '<span style="color:#00dfd8;font-weight:700;">▶ Học thử</span>' : '🔒 Đăng ký')}
           </div>
         </div>`;
     }).join('');

@@ -202,6 +202,14 @@
 
     <!-- ─── REGISTER PANEL ─────────────────────────────────── -->
     <div class="auth-panel" id="panelRegister">
+      <!-- Mở khóa học thử banner -->
+      <div style="background: rgba(0, 223, 216, 0.12); border: 1px solid rgba(0, 223, 216, 0.4); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 24px;">🎁</span>
+        <div style="font-size: 13px; color: var(--cyber-cyan); line-height: 1.45;">
+          <strong>Đặc quyền thành viên mới:</strong> Đăng ký tài khoản để được <strong>tự động mở khóa 100% khóa học</strong> và vào học thử bài giảng trực tuyến ngay lập tức!
+        </div>
+      </div>
+
       <form id="registerForm" onsubmit="handleRegister(event)">
         <div class="form-group">
           <label class="form-label">Họ và tên của bạn <span class="required">*</span></label>
@@ -314,8 +322,10 @@ function handleRegister(e) {
 
   const res = Auth.register({ name, email, phone, department, password: pass, role: 'customer' });
   if (res.success) {
-    showToast('Đăng ký tài khoản thành công! Đang chuyển hướng...', 'success');
-    setTimeout(() => window.location.href = 'index.html', 700);
+    showToast('🎉 Đăng ký thành công! Đã tự động mở khóa toàn bộ khóa học để bạn vào học thử ngay.', 'success');
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect') || 'courses.html';
+    setTimeout(() => window.location.href = redirect, 800);
   } else {
     errEl.textContent = res.message;
     errEl.classList.add('show');

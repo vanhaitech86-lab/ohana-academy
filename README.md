@@ -49,6 +49,7 @@ Hệ thống đã tích hợp trọn bộ 7 video chuẩn SOP từ kênh [Ohana 
 
 ## 🚀 Các Tính Năng Nổi Bật
 
+- **Mở Khóa Toàn Bộ Khóa Học Khi Đăng Ký**: Học viên mới đăng ký tài khoản được hệ thống tự động mở khóa 100% tất cả các khóa học để vào học thử trực tuyến ngay lập tức mà không gặp bất kỳ rào cản nào.
 - **Admin Auth Gate**: Truy cập trang admin thông minh, tích hợp nút đăng nhập nhanh 1 chạm.
 - **Trình Cấp Chứng Chỉ Điện Tử**: Khi học viên đạt từ 70% bài thi trắc nghiệm, hệ thống cấp Giấy chứng nhận tốt nghiệp chuẩn hoàng gia (kèm dấu đỏ Ohana Group, chữ ký Giám đốc và hỗ trợ in/lưu PDF).
 - **Trình Soạn Đề Thi Trắc Nghiệm (Quiz Question Editor)**: Thêm, sửa, xóa câu hỏi, cấu hình đáp án đúng trực quan trong Admin.

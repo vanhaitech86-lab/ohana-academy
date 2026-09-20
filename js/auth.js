@@ -51,6 +51,19 @@ const Auth = {
     }
 
     Auth.setCurrentUser(user);
+    // Tự động mở khóa toàn bộ khóa học cho người dùng khi đăng nhập
+    try {
+      if (window.CourseDB && window.EnrollmentDB) {
+        const allCourses = CourseDB.getAll();
+        allCourses.forEach(c => {
+          if (!EnrollmentDB.isEnrolled(user.id, c.id)) {
+            EnrollmentDB.enroll(user.id, c.id);
+          }
+        });
+      }
+    } catch (e) {
+      console.error('Auto enroll on login error:', e);
+    }
     return { success: true, user };
   },
 
@@ -80,6 +93,18 @@ const Auth = {
       status: 'active'
     });
 
+    // Tự động mở khóa toàn bộ khóa học cho học viên mới đăng ký để vào học thử ngay
+    try {
+      if (window.CourseDB && window.EnrollmentDB) {
+        const allCourses = CourseDB.getAll();
+        allCourses.forEach(c => {
+          EnrollmentDB.enroll(newUser.id, c.id);
+        });
+      }
+    } catch (e) {
+      console.error('Auto enroll on register error:', e);
+    }
+
     Auth.setCurrentUser(newUser);
     return { success: true, user: newUser };
   },
@@ -88,9 +113,8 @@ const Auth = {
   canAccessCourse: (course) => {
     const user = Auth.getCurrentUser();
     if (!user) return false;
-    if (user.role === 'admin') return true;
-    if (!course || !course.allowedRoles) return false;
-    return course.allowedRoles.includes(user.role);
+    // Mở khóa toàn bộ khóa học cho mọi học viên đã đăng ký/đăng nhập vào học thử
+    return true;
   },
 
   // Bắt buộc đăng nhập nếu muốn vào trang

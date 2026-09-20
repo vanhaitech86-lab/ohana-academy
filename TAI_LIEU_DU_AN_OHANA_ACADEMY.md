@@ -155,7 +155,7 @@ Hệ thống hoạt động hoàn toàn độc lập phía máy khách (Client-s
 | `ohana_progress` | Tiến độ bài học | `userId, courseId, completedLessons: []` |
 | `ohana_settings` | Cấu hình hệ thống | `siteName, hotline, email, website, address, facebook, youtube, zalo` |
 | `ohana_session` | Phiên đăng nhập | `user object` hiện tại |
-| `ohana_db_version` | Phiên bản cơ sở dữ liệu | `2.4` (Tự động di chuyển và cập nhật trường dữ liệu mới) |
+| `ohana_db_version` | Phiên bản cơ sở dữ liệu | `2.5` (Tự động di chuyển, mở khóa toàn bộ khóa học cho user mới đăng ký) |
 
 ---
 

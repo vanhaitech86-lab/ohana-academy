@@ -75,8 +75,9 @@ function buildCourseCard(course, currentUser) {
   const badgeWithCertText = window.I18n ? window.I18n.t('badge_with_cert') : '🎖️ Kèm Chứng chỉ tốt nghiệp';
   const priceFreeText = window.I18n ? window.I18n.t('price_free') : '🎁 Miễn phí 100%';
   const lessonsCountText = window.I18n ? window.I18n.t('lessons_count') : 'bài giảng';
-  const studentsCountText = window.I18n ? window.I18n.t('students_count') : 'học viên';
-  const ctaText = enrolled ? (window.I18n ? window.I18n.t('btn_continue') : '▶ Tiếp tục học') : (window.I18n ? window.I18n.t('btn_details') : 'Chi tiết khóa học');
+  const ctaText = enrolled 
+    ? (window.I18n ? window.I18n.t('btn_continue') : '▶ Tiếp tục học') 
+    : (currentUser ? '▶ Vào học thử' : (window.I18n ? window.I18n.t('btn_details') : 'Chi tiết khóa học'));
   const progressText = window.I18n ? window.I18n.t('progress_label') : 'Tiến độ học tập';
 
   return `
@@ -98,6 +99,9 @@ function buildCourseCard(course, currentUser) {
         ` : `
           <span class="course-type-badge free">${badgeFreeText}</span>
         `}
+        ${currentUser ? `
+          <span class="course-type-badge" style="left:auto;right:10px;top:10px;background:rgba(0,223,216,0.22);color:#00dfd8;border:1px solid rgba(0,223,216,0.5);font-size:11px;font-weight:700;">🔓 Mở khóa học thử</span>
+        ` : ''}
         <span class="course-level-badge" style="background:${levelColor};color:white;">${levelText}</span>
       </div>
       <div class="course-body">

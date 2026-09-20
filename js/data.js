@@ -14,7 +14,7 @@ const DB_KEYS = {
   session:     'ohana_session',
   settings:    'ohana_settings',
 };
-const DB_VERSION = '2.4';
+const DB_VERSION = '2.5';
 
 // ─── Default Users ─────────────────────────────────────────────
 const DEFAULT_USERS = [
@@ -234,7 +234,7 @@ const DEFAULT_COURSES = [
     duration: '8 giờ',
     totalLessons: 4,
     level: 'Nâng cao',
-    allowedRoles: ['admin', 'employee_new', 'employee_old'],
+    allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
     lessonIds: [9, 10, 11, 12],
     quizId: 3,
     rating: 4.88,
@@ -1416,6 +1416,7 @@ function initDB() {
           return {
             ...def,
             ...ec,
+            allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
             priceType: ec.priceType || def.priceType,
             price: ec.price !== undefined ? ec.price : def.price,
             originalPrice: ec.originalPrice !== undefined ? ec.originalPrice : def.originalPrice,
@@ -1429,6 +1430,7 @@ function initDB() {
           originalPrice: 0,
           hasCertificate: false,
           certificateTitle: '',
+          allowedRoles: ['admin', 'employee_new', 'employee_old', 'customer'],
           ...ec
         };
       });
@@ -1461,6 +1463,15 @@ function initDB() {
   if (!localStorage.getItem(DB_KEYS.results))     setDB(DB_KEYS.results, []);
   if (!localStorage.getItem(DB_KEYS.enrollments)) setDB(DB_KEYS.enrollments, []);
   if (!localStorage.getItem(DB_KEYS.progress))    setDB(DB_KEYS.progress, []);
+
+  // Tự động mở khóa toàn bộ khóa học cho tài khoản đang có phiên đăng nhập
+  const sessionUser = getDB(DB_KEYS.session);
+  if (sessionUser && sessionUser.id) {
+    const allCourses = getDB(DB_KEYS.courses) || [];
+    allCourses.forEach(c => {
+      EnrollmentDB.enroll(sessionUser.id, c.id);
+    });
+  }
   if (!localStorage.getItem(DB_KEYS.settings) || storedVer !== DB_VERSION) {
     const prevSettings = getDB(DB_KEYS.settings) || {};
     setDB(DB_KEYS.settings, {
@@ -1519,8 +1530,8 @@ const CourseDB = {
   getByCategory: (catId) => getDB(DB_KEYS.courses).filter(c => c.categoryId === parseInt(catId) && c.status === 'active'),
   getByRole: (role) => {
     const all = getDB(DB_KEYS.courses);
-    if (role === 'admin') return all;
-    return all.filter(c => c.allowedRoles.includes(role) && c.status === 'active');
+    // Mở khóa toàn bộ khóa học cho tất cả vai trò học viên
+    return all.filter(c => c.status === 'active');
   },
   create: (data) => {
     const courses = getDB(DB_KEYS.courses);
