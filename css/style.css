@@ -417,11 +417,154 @@ ul { list-style: none; }
   width: 100%;
   padding: 60px 0 70px;
 }
-.hero-slide.active { display: block; animation: fadeIn 0.5s ease; }
+.hero-slide.active { 
+  display: block; 
+  animation: heroSlideEnterFromLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; 
+}
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ─── Snow Effect Canvas & Controls ────────────────────────── */
+.hero-snow-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snow-toggle-btn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(0, 223, 216, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-full);
+  color: #a5f3fc;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+.snow-toggle-btn:hover {
+  background: rgba(0, 223, 216, 0.2);
+  border-color: #00dfd8;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 223, 216, 0.45);
+}
+.snow-toggle-btn .snow-icon {
+  font-size: 14px;
+  animation: snowIconSpin 8s linear infinite;
+  display: inline-block;
+}
+@keyframes snowIconSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.snow-toggle-btn.snow-paused {
+  opacity: 0.65;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--gray-400);
+}
+.snow-toggle-btn.snow-paused .snow-icon {
+  animation: none;
+}
+
+/* ─── Hero Left-to-Right Entrance & Motion Animations ───────── */
+@keyframes heroSlideEnterFromLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-70px, 0, 0);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideInFromLeftSoft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-40px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Staggered left-to-right sweep on child elements */
+.hero-slide.active .astronixa-pill,
+.hero-slide.active .hero-badge {
+  animation: slideInFromLeft 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.05s;
+}
+
+.hero-slide.active .astronixa-hero-title,
+.hero-slide.active .hero-title {
+  animation: slideInFromLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.15s;
+}
+
+.hero-slide.active .astronixa-hero-desc,
+.hero-slide.active .hero-desc {
+  animation: slideInFromLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.25s;
+}
+
+.hero-slide.active .astronixa-hero-actions,
+.hero-slide.active .hero-actions {
+  animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.35s;
+}
+
+.hero-slide.active .hero-stats {
+  animation: slideInFromLeft 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.45s;
+}
+
+.hero-slide.active .hero-visual {
+  animation: slideInFromLeft 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.22s;
+}
+
+.hero-slide.active .hero-card-float .course-mini:nth-of-type(1) {
+  animation: slideInFromLeftSoft 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.38s;
+}
+.hero-slide.active .hero-card-float .course-mini:nth-of-type(2) {
+  animation: slideInFromLeftSoft 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.48s;
+}
+.hero-slide.active .hero-card-float .course-mini:nth-of-type(3) {
+  animation: slideInFromLeftSoft 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.58s;
+}
+.hero-slide.active .hero-card-float .course-mini:nth-of-type(4) {
+  animation: slideInFromLeftSoft 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.68s;
 }
 
 .hero-bg {
@@ -531,6 +674,27 @@ ul { list-style: none; }
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
   width: 100%;
   max-width: 440px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card-float::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 223, 216, 0.1), rgba(168, 85, 247, 0.18), transparent);
+  transform: skewX(-20deg);
+  animation: cardRayLeftToRight 6.5s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes cardRayLeftToRight {
+  0% { left: -130%; }
+  32%, 100% { left: 170%; }
 }
 
 .hero-card-float .card-title {
@@ -599,11 +763,19 @@ ul { list-style: none; }
   margin-bottom: 20px;
 }
 .astronixa-hero-title .gradient-text {
-  background: linear-gradient(135deg, #00dfd8 0%, #a855f7 50%, #ec4899 100%);
+  background: linear-gradient(90deg, #00dfd8 0%, #a855f7 25%, #ec4899 50%, #00dfd8 75%, #a855f7 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.4));
+  animation: shineLeftToRight 5s linear infinite;
+  filter: drop-shadow(0 0 28px rgba(168, 85, 247, 0.45));
 }
+
+@keyframes shineLeftToRight {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
 .astronixa-hero-title .white-text {
   color: #ffffff;
   text-shadow: 0 2px 20px rgba(255, 255, 255, 0.35);
@@ -626,6 +798,8 @@ ul { list-style: none; }
 }
 
 .btn-astronixa-primary {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
   color: white !important;
   padding: 14px 32px;
@@ -640,6 +814,22 @@ ul { list-style: none; }
   gap: 10px;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+.btn-astronixa-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-25deg);
+  animation: btnSweepLeftToRight 4.5s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes btnSweepLeftToRight {
+  0% { left: -120%; }
+  28%, 100% { left: 180%; }
 }
 .btn-astronixa-primary:hover {
   transform: translateY(-2px);

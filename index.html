@@ -261,6 +261,15 @@
 
 <!-- ─── Hero Slider ────────────────────────────────────────── -->
 <section class="hero">
+  <!-- Interactive Falling Snow Effect Canvas -->
+  <canvas id="heroSnowCanvas" class="hero-snow-canvas"></canvas>
+  
+  <!-- Snow Toggle Button -->
+  <button class="snow-toggle-btn" id="snowToggleBtn" onclick="toggleHeroSnow()" title="Bật / Tắt hiệu ứng tuyết rơi" aria-label="Bật hoặc tắt tuyết rơi">
+    <span class="snow-icon">❄️</span>
+    <span class="snow-label">Tuyết rơi</span>
+  </button>
+
   <div class="hero-slider" id="heroSlider">
     
     <!-- Slide 1: Astronixa Universe & Ohana Flagship -->

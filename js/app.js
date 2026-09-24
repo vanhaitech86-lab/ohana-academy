@@ -12,7 +12,15 @@ function initSlider() {
   if (!slides.length) return;
 
   function goTo(idx) {
-    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    slides.forEach((s, i) => {
+      if (i === idx) {
+        s.classList.remove('active');
+        void s.offsetWidth; // Re-trigger smooth left-to-right entrance animation
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     sliderIndex = idx;
   }
@@ -572,12 +580,228 @@ window.closeMobileNav = function() {
   document.body.style.overflow = '';
 };
 
+// ─── Interactive Cosmic Falling Snow System ─────────────────────
+let snowAnimationId = null;
+let isSnowActive = true;
+
+function initHeroSnow() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  const canvas = document.getElementById('heroSnowCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let flakes = [];
+  const mouse = { x: -9999, y: -9999 };
+
+  function resizeCanvas() {
+    const rect = hero.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  const isMobile = window.innerWidth < 768;
+  const flakeCount = isMobile ? 65 : 125;
+
+  class Snowflake {
+    constructor(initial = false) {
+      this.reset(initial);
+    }
+
+    reset(initial = false) {
+      this.x = Math.random() * (width + 120) - 80;
+      this.y = initial ? Math.random() * height : -15;
+
+      const rand = Math.random();
+      if (rand < 0.55) {
+        // Deep background layer: small, gentle, subtle drift
+        this.radius = Math.random() * 1.3 + 0.8;
+        this.vy = Math.random() * 0.7 + 0.5;
+        this.vx = Math.random() * 0.4 + 0.25; // Drifting left to right
+        this.alpha = Math.random() * 0.35 + 0.2;
+        this.isCrystal = false;
+      } else if (rand < 0.88) {
+        // Midground layer: sparkling flake
+        this.radius = Math.random() * 1.5 + 1.8;
+        this.vy = Math.random() * 1.1 + 0.8;
+        this.vx = Math.random() * 0.6 + 0.45; // Drifting left to right
+        this.alpha = Math.random() * 0.4 + 0.45;
+        this.isCrystal = Math.random() < 0.22;
+      } else {
+        // Foreground hero layer: luminous cosmic snow
+        this.radius = Math.random() * 2.0 + 2.5;
+        this.vy = Math.random() * 1.5 + 1.2;
+        this.vx = Math.random() * 0.9 + 0.6; // Dynamic drift left to right
+        this.alpha = Math.random() * 0.35 + 0.65;
+        this.isCrystal = Math.random() < 0.35;
+      }
+
+      this.angle = Math.random() * Math.PI * 2;
+      this.spinSpeed = (Math.random() - 0.5) * 0.04;
+      this.swayRate = Math.random() * 0.02 + 0.01;
+      this.swayDistance = Math.random() * 0.6 + 0.3;
+
+      // Color tints: pure white, cosmic cyan, and stardust violet
+      const colorRoll = Math.random();
+      if (colorRoll > 0.45) {
+        this.color = '255, 255, 255'; // Pure crystalline white
+      } else if (colorRoll > 0.15) {
+        this.color = '0, 223, 216'; // Astronixa Cyan
+      } else {
+        this.color = '168, 85, 247'; // Stardust Purple
+      }
+    }
+
+    update() {
+      this.angle += this.swayRate;
+      // Drift predominantly from left to right with a gentle wind wave
+      this.x += this.vx + Math.sin(this.angle) * this.swayDistance;
+      this.y += this.vy;
+
+      // Gentle mouse interaction breeze
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 110) {
+        const force = (110 - dist) / 110;
+        this.x += (dx / dist) * force * 2.6;
+        this.y += (dy / dist) * force * 1.6;
+      }
+
+      // Recycle when out of bounds
+      if (this.y > height + 20 || this.x > width + 60) {
+        this.reset(false);
+      }
+      if (this.x < -80) {
+        this.x = width + 50;
+      }
+    }
+
+    draw() {
+      ctx.save();
+      if (this.isCrystal) {
+        // Draw 6-branch stellar snowflake
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.strokeStyle = `rgba(${this.color}, ${this.alpha})`;
+        ctx.lineWidth = 1.3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+          ctx.rotate(Math.PI / 3);
+          ctx.moveTo(-this.radius * 2, 0);
+          ctx.lineTo(this.radius * 2, 0);
+          // Tiny branchlets on ends
+          const branch = this.radius * 0.75;
+          ctx.moveTo(this.radius * 1.3, -branch * 0.4);
+          ctx.lineTo(this.radius * 1.3, branch * 0.4);
+          ctx.moveTo(-this.radius * 1.3, -branch * 0.4);
+          ctx.lineTo(-this.radius * 1.3, branch * 0.4);
+        }
+        ctx.stroke();
+      } else {
+        // Soft glowing snow pellet
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+        if (this.radius > 2.2) {
+          ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+          ctx.shadowBlur = 10;
+        }
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+
+  function createFlakes() {
+    flakes = [];
+    for (let i = 0; i < flakeCount; i++) {
+      flakes.push(new Snowflake(true));
+    }
+  }
+
+  function renderSnow() {
+    if (!isSnowActive) return;
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < flakes.length; i++) {
+      flakes[i].update();
+      flakes[i].draw();
+    }
+    snowAnimationId = requestAnimationFrame(renderSnow);
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+  });
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
+    } else if (isSnowActive) {
+      renderSnow();
+    }
+  });
+
+  resizeCanvas();
+  createFlakes();
+  renderSnow();
+
+  // Window toggle helper
+  window.toggleHeroSnow = function() {
+    isSnowActive = !isSnowActive;
+    const btn = document.getElementById('snowToggleBtn');
+    if (isSnowActive) {
+      if (btn) {
+        btn.classList.remove('snow-paused');
+        const lbl = btn.querySelector('.snow-label');
+        if (lbl) lbl.textContent = 'Tuyết rơi';
+        btn.title = 'Tạm dừng hiệu ứng tuyết rơi';
+      }
+      renderSnow();
+    } else {
+      if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
+      ctx.clearRect(0, 0, width, height);
+      if (btn) {
+        btn.classList.add('snow-paused');
+        const lbl = btn.querySelector('.snow-label');
+        if (lbl) lbl.textContent = 'Tuyết: Tắt';
+        btn.title = 'Bật lại hiệu ứng tuyết rơi';
+      }
+    }
+  };
+}
+
 // ─── Page Lifecycle ────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initGlobalSearch();
   const page = document.body.dataset.page;
   if (page === 'home') {
     initSlider();
+    initHeroSnow();
     loadHomepage();
   } else if (page === 'courses') {
     loadCoursesPage();
