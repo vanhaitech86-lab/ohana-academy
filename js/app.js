@@ -184,6 +184,7 @@ function renderCourseGrid(courses, user) {
     return;
   }
   grid.innerHTML = courses.map(c => buildCourseCard(c, user)).join('');
+  setTimeout(init3DTiltEffect, 60);
 }
 
 // ─── Filter Courses on Homepage ────────────────────────────────
@@ -308,6 +309,7 @@ function renderYtVideos(group = currentDemoGroup || 'all') {
       </div>
     </div>
   `).join('');
+  setTimeout(init3DTiltEffect, 60);
 }
 
 // ─── Quick Demo Video Modal Controller ─────────────────────────
@@ -622,36 +624,39 @@ function initHeroSnow() {
 
     reset(initial = false) {
       this.x = Math.random() * (width + 120) - 80;
-      this.y = initial ? Math.random() * height : -15;
+      this.y = initial ? Math.random() * height : -20;
+      this.z = Math.random() * 550; // 3D depth coordinate (0 = close, 550 = far)
+      const p = 350 / (350 + this.z); // 3D perspective multiplier
 
       const rand = Math.random();
       if (rand < 0.55) {
         // Deep background layer: small, gentle, subtle drift
-        this.radius = Math.random() * 1.3 + 0.8;
-        this.vy = Math.random() * 0.7 + 0.5;
-        this.vx = Math.random() * 0.4 + 0.25; // Drifting left to right
-        this.alpha = Math.random() * 0.35 + 0.2;
+        this.baseRadius = Math.random() * 1.3 + 0.8;
+        this.vy = (Math.random() * 0.7 + 0.5) * p;
+        this.vx = (Math.random() * 0.4 + 0.25) * p; // Drifting left to right
+        this.alpha = (Math.random() * 0.35 + 0.2) * p;
         this.isCrystal = false;
       } else if (rand < 0.88) {
         // Midground layer: sparkling flake
-        this.radius = Math.random() * 1.5 + 1.8;
-        this.vy = Math.random() * 1.1 + 0.8;
-        this.vx = Math.random() * 0.6 + 0.45; // Drifting left to right
-        this.alpha = Math.random() * 0.4 + 0.45;
+        this.baseRadius = Math.random() * 1.5 + 1.8;
+        this.vy = (Math.random() * 1.1 + 0.8) * p;
+        this.vx = (Math.random() * 0.6 + 0.45) * p; // Drifting left to right
+        this.alpha = (Math.random() * 0.4 + 0.45) * p;
         this.isCrystal = Math.random() < 0.22;
       } else {
         // Foreground hero layer: luminous cosmic snow
-        this.radius = Math.random() * 2.0 + 2.5;
-        this.vy = Math.random() * 1.5 + 1.2;
-        this.vx = Math.random() * 0.9 + 0.6; // Dynamic drift left to right
-        this.alpha = Math.random() * 0.35 + 0.65;
+        this.baseRadius = Math.random() * 2.0 + 2.5;
+        this.vy = (Math.random() * 1.5 + 1.2) * p;
+        this.vx = (Math.random() * 0.9 + 0.6) * p; // Dynamic drift left to right
+        this.alpha = (Math.random() * 0.35 + 0.65);
         this.isCrystal = Math.random() < 0.35;
       }
 
+      this.radius = this.baseRadius * p * 1.3;
       this.angle = Math.random() * Math.PI * 2;
       this.spinSpeed = (Math.random() - 0.5) * 0.04;
       this.swayRate = Math.random() * 0.02 + 0.01;
-      this.swayDistance = Math.random() * 0.6 + 0.3;
+      this.swayDistance = (Math.random() * 0.6 + 0.3) * p;
 
       // Color tints: pure white, cosmic cyan, and stardust violet
       const colorRoll = Math.random();
@@ -670,6 +675,15 @@ function initHeroSnow() {
       this.x += this.vx + Math.sin(this.angle) * this.swayDistance;
       this.y += this.vy;
 
+      // 3D Parallax shift from mouse
+      if (mouse.x > -1000) {
+        const p = 350 / (350 + this.z);
+        const parallaxX = ((mouse.x - width / 2) / (width / 2)) * (1 - p) * 1.5;
+        const parallaxY = ((mouse.y - height / 2) / (height / 2)) * (1 - p) * 1.2;
+        this.x += parallaxX * 0.08;
+        this.y += parallaxY * 0.08;
+      }
+
       // Gentle mouse interaction breeze
       const dx = this.x - mouse.x;
       const dy = this.y - mouse.y;
@@ -681,7 +695,7 @@ function initHeroSnow() {
       }
 
       // Recycle when out of bounds
-      if (this.y > height + 20 || this.x > width + 60) {
+      if (this.y > height + 25 || this.x > width + 60) {
         this.reset(false);
       }
       if (this.x < -80) {
@@ -696,7 +710,7 @@ function initHeroSnow() {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.strokeStyle = `rgba(${this.color}, ${this.alpha})`;
-        ctx.lineWidth = 1.3;
+        ctx.lineWidth = Math.max(1, this.radius * 0.4);
         ctx.lineCap = 'round';
         ctx.beginPath();
         for (let i = 0; i < 3; i++) {
@@ -714,9 +728,9 @@ function initHeroSnow() {
       } else {
         // Soft glowing snow pellet
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, Math.max(0.8, this.radius), 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-        if (this.radius > 2.2) {
+        if (this.radius > 2.0) {
           ctx.shadowColor = `rgba(${this.color}, 0.8)`;
           ctx.shadowBlur = 10;
         }
@@ -795,6 +809,49 @@ function initHeroSnow() {
   };
 }
 
+// ─── 3D Spatial Tilt Engine ─────────────────────────────────────
+function init3DTiltEffect() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const tiltCards = document.querySelectorAll('.hero-card-float, .astronixa-pillar-card, .course-card, .yt-video-card, .feature-card');
+  tiltCards.forEach(card => {
+    if (card.dataset.tiltInit) return;
+    card.dataset.tiltInit = 'true';
+
+    const isHeroFloat = card.classList.contains('hero-card-float');
+
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.12s ease-out, box-shadow 0.2s ease-out';
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const percentX = (x - centerX) / centerX;
+      const percentY = (y - centerY) / centerY;
+
+      const maxTilt = isHeroFloat ? 8 : 10;
+      const rotateX = -percentY * maxTilt;
+      const rotateY = percentX * maxTilt;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(16px) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease';
+      if (isHeroFloat) {
+        card.style.transform = 'perspective(1000px) rotateY(-6deg) rotateX(3deg) translateZ(10px)';
+      } else {
+        card.style.transform = '';
+      }
+    });
+  });
+}
+
 // ─── Page Lifecycle ────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initGlobalSearch();
@@ -806,6 +863,9 @@ document.addEventListener('DOMContentLoaded', () => {
   } else if (page === 'courses') {
     loadCoursesPage();
   }
+
+  // Initialize 3D Tilt across all static elements
+  setTimeout(init3DTiltEffect, 100);
 
   // Load site settings (hotline, social links)
   try {

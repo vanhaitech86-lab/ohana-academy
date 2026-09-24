@@ -146,6 +146,13 @@
   .hero-desc { margin: 0 auto 30px; }
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; }
+  .hero-card-float {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0);
+    margin: 0 auto;
+  }
+  .hero-card-float:hover {
+    transform: perspective(1000px) translateY(-5px) scale(1.01);
+  }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 32px;
